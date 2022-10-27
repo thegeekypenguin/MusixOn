@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import MusicPlayer from '../layout/MusicPlayer';
 
 const Dashboard = (props) => {
-  return <div>Welcome</div>;
+  return <MusicPlayer />;
 };
 
 Dashboard.propTypes = {};
