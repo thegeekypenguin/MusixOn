@@ -2,3 +2,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap');
 
 
+
+
+.icons {
+    margin-top: 14px;
+}
+
+.icons i {
+    cursor: pointer;
+}
+
+#myProgressBar {
+    width: 80vw;
+    cursor: pointer;
+}

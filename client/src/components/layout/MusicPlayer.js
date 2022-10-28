@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './style.css';
 import 'https://kit.fontawesome.com/26504e4a1f.js';
 import song1 from './songs/Kesariya.mp3';
@@ -8,11 +9,12 @@ import song3 from './songs/Kya Mujhe Pyar Hai.mp3';
 
 const MusicPlayer = (props) => {
   const songs = [song1, song2, song3];
-  const source = [];
 
   const [isPlaying, setPlay] = useState(false);
   const [index, setIndex] = useState(0);
-  const [audio, setAudio] = useState(new Audio(songs[index]));
+  const [audio, setAudio] = useState(
+    new Audio('/src/components/layout/songs/Deva Deva.mp3')
+  );
 
   useEffect(() => {
     audio.pause();
@@ -51,6 +53,28 @@ const MusicPlayer = (props) => {
     else setIndex(index - 1);
   };
 
+  const handleShuffle = () => {
+    var array = new Array();
+    for (var i = 0; i < songs.length; i++) array.push(i);
+    let currentIndex = array.length,
+      randomIndex;
+
+    // While there remain elements to shuffle.
+    while (currentIndex != 0) {
+      // Pick a remaining element.
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+
+      // And swap it with the current element.
+      [array[currentIndex], array[randomIndex]] = [
+        array[randomIndex],
+        array[currentIndex],
+      ];
+    }
+    for (var i = 0; i < songs.length; i++) setIndex(array[i]);
+    console.log(array);
+  };
+
   return (
     <div>
       <div class='bottom'>
@@ -63,6 +87,9 @@ const MusicPlayer = (props) => {
           max='100'
         />
         <div class='icons'>
+          <button className='btn btn-danger' onClick={handleShuffle}>
+            Shuffle
+          </button>
           <i
             class='fas fa-3x fa-step-backward'
             onClick={handlePrevious}
