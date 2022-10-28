@@ -1,14 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import './style.css';
-import 'https://kit.fontawesome.com/26504e4a1f.js';
-import song1 from './songs/Kesariya.mp3';
-import song2 from './songs/Deva Deva.mp3';
-import song3 from './songs/Kya Mujhe Pyar Hai.mp3';
+import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+import { Card,Button } from "react-bootstrap";
+import { Row, Col } from "react-bootstrap";
+import "./style.css";
+import "https://kit.fontawesome.com/26504e4a1f.js";
+import song1 from "./songs/Kesariya.mp3";
+import song2 from "./songs/Saiyyan.mp3";
+import song3 from "./songs/Samjhawan.mp3";
+import songslist from "../../songs.json";
+import Song from "./Song";
 
 const MusicPlayer = (props) => {
-  const songs = [song1, song2, song3];
-  const source = [];
+  // const songs = [song1, song2, song3];
+  
+  const songs = ["https://cdn.discordapp.com/attachments/775740994595323954/775741536591806484/Alan_Walker_-_Fade_NCS_ReleaseMP3_160K.mp3",
+    "https://cdn.discordapp.com/attachments/775740994595323954/775741544149549096/Andromedik_-_SHE_NCS_ReleaseMP3_160K.mp3",
+    "https://cdn.discordapp.com/attachments/775740994595323954/775741547203002389/Ascence_-_About_You_NCS_ReleaseMP3_160K.mp3" ];
 
   const [isPlaying, setPlay] = useState(false);
   const [index, setIndex] = useState(0);
@@ -53,37 +60,45 @@ const MusicPlayer = (props) => {
 
   return (
     <div>
-      <div class='bottom'>
+      <div className="bottom" style={{ cursor:'pointer' }}>
         <input
-          type='range'
-          name='range'
-          id='myProgressBar'
-          min='0'
-          value='0'
-          max='100'
+          type="range"
+          name="range"
+          id="myProgressBar"
+          min="0"
+          value="0"
+          max="100"
         />
-        <div class='icons'>
+        <div className="icons">
           <i
-            class='fas fa-3x fa-step-backward'
+            className="fas fa-3x fa-step-backward"
             onClick={handlePrevious}
-            id='previous'
+            id="previous"
           ></i>
           <i
-            class={
+            className={
               isPlaying
-                ? 'fas fa-3x fa-pause-circle'
-                : 'fas fa-3x fa-play-circle'
+                ? "fas fa-3x fa-pause-circle"
+                : "fas fa-3x fa-play-circle"
             }
             onClick={handlePlayAndPause}
-            id='masterPlay'
+            id="masterPlay"
           ></i>
           <i
-            class='fas fa-3x fa-step-forward'
+            className="fas fa-3x fa-step-forward"
             onClick={handleNext}
-            id='next'
+            id="next"
           ></i>
         </div>
       </div>
+      <Row>
+        {songslist.map((song) => (
+          <Col key={song.id} sm={12} md={6} lg={4} xl={3}>
+
+            <Song song={song} />
+          </Col>
+        ))}
+      </Row>
     </div>
   );
 };
