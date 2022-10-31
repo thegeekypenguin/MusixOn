@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
-import './bootstrap.min.css'
+import './bootstrap.min.css';
 
 import './App.css';
 import Navbar from './components/layout/Navbar';
@@ -11,6 +11,8 @@ import Register from './components/auth/Register';
 import Alert from './components/layout/Alert';
 import { loadUser } from './actions/auth';
 import Dashboard from './components/dashboard/Dashboard';
+import Search from './components/layout/Search';
+import Artist from './components/layout/Artist';
 
 // redux
 import { Provider } from 'react-redux';
@@ -42,6 +44,8 @@ const App = () => {
               <Route exact path='/login' element={<Login />} />
               <Route element={<PrivateRoute />}>
                 <Route exact path='/dashboard' element={<Dashboard />} />
+                <Route exact path='/search' element={<Search />} />
+                <Route exact path='/artist' element={<Artist />} />
               </Route>
             </Routes>
           </section>

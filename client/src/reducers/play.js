@@ -6,6 +6,8 @@ import {
   LOAD_AUDIO,
   INDEX,
   LOADING_SONG,
+  LOAD_ARTIST,
+  ARTIST_ID,
 } from '../actions/types';
 
 const initialState = {
@@ -15,6 +17,8 @@ const initialState = {
   currentSong: {},
   audio: new Audio(''),
   loading: false,
+  artist: {},
+  artistId: -1,
 };
 
 export default function (state = initialState, action) {
@@ -54,6 +58,16 @@ export default function (state = initialState, action) {
       return {
         ...state,
         loading: payload,
+      };
+    case LOAD_ARTIST:
+      return {
+        ...state,
+        artist: payload,
+      };
+    case ARTIST_ID:
+      return {
+        ...state,
+        artistId: payload,
       };
     default:
       return state;

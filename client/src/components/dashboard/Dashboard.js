@@ -5,6 +5,7 @@ import Song from '../layout/Song';
 import { connect } from 'react-redux';
 import { setCurrentSong, setSongs } from '../../actions/play';
 import axios from 'axios';
+import Search from '../layout/Search';
 
 const Dashboard = ({ setSongs }) => {
   useEffect(() => {
@@ -14,7 +15,7 @@ const Dashboard = ({ setSongs }) => {
       //   url: 'https://shazam-core.p.rapidapi.com/v1/charts/world',
       //   headers: {
       //     'X-RapidAPI-Key':
-      //       '706d3a5b38mshe15b089b58ae6f0p168fa8jsn35fe315b0a5b',
+      //       '6d949040fdmshfdcdc66ae8a65ccp1c0957jsnb0af325e6225',
       //     'X-RapidAPI-Host': 'shazam-core.p.rapidapi.com',
       //   },
       // };
@@ -24,7 +25,7 @@ const Dashboard = ({ setSongs }) => {
         params: { country_code: 'IN' },
         headers: {
           'X-RapidAPI-Key':
-            '706d3a5b38mshe15b089b58ae6f0p168fa8jsn35fe315b0a5b',
+            '6d949040fdmshfdcdc66ae8a65ccp1c0957jsnb0af325e6225',
           'X-RapidAPI-Host': 'shazam-core.p.rapidapi.com',
         },
       };
@@ -39,7 +40,7 @@ const Dashboard = ({ setSongs }) => {
       //   },
       //   headers: {
       //     'X-RapidAPI-Key':
-      //       '706d3a5b38mshe15b089b58ae6f0p168fa8jsn35fe315b0a5b',
+      //       '6d949040fdmshfdcdc66ae8a65ccp1c0957jsnb0af325e6225',
       //     'X-RapidAPI-Host': 'shazam.p.rapidapi.com',
       //   },
       // };

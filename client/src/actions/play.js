@@ -6,6 +6,8 @@ import {
   LOAD_AUDIO,
   INDEX,
   LOADING_SONG,
+  LOAD_ARTIST,
+  ARTIST_ID,
 } from '../actions/types';
 
 export const setCurrentSong = (song) => (dispatch) => {
@@ -51,6 +53,20 @@ export const setIndex = (index) => (dispatch) => {
 export const setLoading = (value) => (dispatch) => {
   dispatch({
     type: LOADING_SONG,
+    payload: value,
+  });
+};
+
+export const setArtist = (value) => (dispatch) => {
+  dispatch({
+    type: LOAD_ARTIST,
+    payload: value,
+  });
+};
+
+export const setArtistId = (value) => (dispatch) => {
+  dispatch({
+    type: ARTIST_ID,
     payload: value,
   });
 };

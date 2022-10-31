@@ -9,6 +9,7 @@ import {
   setAudio,
   setIndex,
   setLoading,
+  setArtistId,
 } from '../../actions/play';
 import axios from 'axios';
 
@@ -24,6 +25,8 @@ const Song = ({
   setIndex,
   setLoading,
   loading,
+  artistId,
+  setArtistId,
 }) => {
   // const [audio, setAudio] = useState(new Audio());
 
@@ -167,6 +170,7 @@ const mapStateToProps = (state) => ({
   audio: state.play.audio,
   index: state.play.index,
   loading: state.play.loading,
+  artistId: state.play.artistId,
 });
 
 Song.propTypes = {
@@ -180,6 +184,8 @@ Song.propTypes = {
   setIndex: PropTypes.func.isRequired,
   loading: PropTypes.bool.isRequired,
   setLoading: PropTypes.func.isRequired,
+  artistId: PropTypes.number.isRequired,
+  setArtistId: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, {
@@ -189,4 +195,5 @@ export default connect(mapStateToProps, {
   setAudio,
   setIndex,
   setLoading,
+  setArtistId,
 })(Song);

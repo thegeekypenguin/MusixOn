@@ -14,3 +14,5 @@ export const LOAD_CURRENT_SONG = 'LOAD_CURRENT_SONG';
 export const LOAD_AUDIO = 'LOAD_AUDIO';
 export const INDEX = 'INDEX';
 export const LOADING_SONG = 'LOADING_SONG';
+export const LOAD_ARTIST = 'LOAD_ARTIST';
+export const ARTIST_ID = 'ARTIST_ID';

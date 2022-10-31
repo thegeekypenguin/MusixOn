@@ -88,7 +88,7 @@ const MusicPlayer = ({
       const options = {
         method: 'GET',
         url: 'https://youtube-music1.p.rapidapi.com/v2/search',
-        params: { query: songs[index].title },
+        params: { query: songs[index]?.title },
         headers: {
           'X-RapidAPI-Key':
             '706d3a5b38mshe15b089b58ae6f0p168fa8jsn35fe315b0a5b',
