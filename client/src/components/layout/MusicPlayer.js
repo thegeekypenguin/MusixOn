@@ -43,6 +43,7 @@ const MusicPlayer = ({
   const [shuffleOn, setShuffleOn] = useState(false);
   const [randomArray, setRandomArray] = useState([]);
   const [counter, setCounter] = useState(0);
+  const [repeatOn, setRepeatOn] = useState(false);
 
   function handleShuffle() {
     if (counter < randomArray.length) {
@@ -77,6 +78,11 @@ const MusicPlayer = ({
       if (!playing) handleShuffle();
     }
   }, [shuffleOn]);
+
+  useEffect(() => {
+    if (repeatOn) {
+    }
+  }, [repeatOn]);
 
   useEffect(() => {
     async function call() {
@@ -174,9 +180,10 @@ const MusicPlayer = ({
 
   audio.addEventListener('ended', function () {
     audio.currentTime = 0;
-    handleNext();
+    if (repeatOn) {
+      audio.play();
+    } else handleNext();
   });
-  console.log(audio.src);
   return (
     <div>
       <div className='bottom' style={{ cursor: 'pointer' }}>
@@ -196,6 +203,14 @@ const MusicPlayer = ({
             }}
           >
             Shuffle
+          </button>
+          <button
+            className={repeatOn ? 'btn btn-primary' : 'btn btn-secondary'}
+            onClick={() => {
+              setRepeatOn(!repeatOn);
+            }}
+          >
+            Repeat
           </button>
           <i
             className='fas fa-3x fa-step-backward'

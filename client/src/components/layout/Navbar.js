@@ -16,6 +16,12 @@ const Navbar = ({ auth: { isAuthenticated, loading }, logout }) => {
           <i className='fas fa-search'></i>{' '}
           <span className='hide-sm'>Search</span>
         </Link>
+        <Link to='/playlist'>
+          <span>Playlist</span>
+        </Link>
+        <Link to='/queue'>
+          <span>Queue</span>
+        </Link>
       </li>
     </ul>
   );
@@ -34,7 +40,7 @@ const Navbar = ({ auth: { isAuthenticated, loading }, logout }) => {
   return (
     <nav className='navbar bg-dark'>
       <h1>
-        <Link to='/'>
+        <Link to='/dashboard'>
           <i className='fas fa-code'></i> MusixOn
         </Link>
       </h1>

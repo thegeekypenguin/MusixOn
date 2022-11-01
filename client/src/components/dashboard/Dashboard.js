@@ -1,63 +1,129 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import MusicPlayer from '../layout/MusicPlayer';
+import { Link } from 'react-router-dom';
 import Song from '../layout/Song';
+import { useNavigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { setCurrentSong, setSongs } from '../../actions/play';
 import axios from 'axios';
 import Search from '../layout/Search';
+import { setPlaylistCheck } from '../../actions/playlist';
+import { loadQueue, deleteFromQueue } from '../../actions/queue';
 
-const Dashboard = ({ setSongs }) => {
+const Dashboard = ({
+  songs,
+  setSongs,
+  setPlaylistCheck,
+  loadQueue,
+  deleteFromQueue,
+  queueSongs,
+}) => {
+  const navigate = useNavigate();
+
   useEffect(() => {
-    async function call() {
-      // const options = {
-      //   method: 'GET',
-      //   url: 'https://shazam-core.p.rapidapi.com/v1/charts/world',
-      //   headers: {
-      //     'X-RapidAPI-Key':
-      //       '6d949040fdmshfdcdc66ae8a65ccp1c0957jsnb0af325e6225',
-      //     'X-RapidAPI-Host': 'shazam-core.p.rapidapi.com',
-      //   },
-      // };
-      const options = {
-        method: 'GET',
-        url: 'https://shazam-core.p.rapidapi.com/v1/charts/country',
-        params: { country_code: 'IN' },
-        headers: {
-          'X-RapidAPI-Key':
-            '6d949040fdmshfdcdc66ae8a65ccp1c0957jsnb0af325e6225',
-          'X-RapidAPI-Host': 'shazam-core.p.rapidapi.com',
-        },
-      };
-      // const options = {
-      //   method: 'GET',
-      //   url: 'https://shazam.p.rapidapi.com/charts/track',
-      //   params: {
-      //     locale: 'en-US',
-      //     listId: 'ip-country-chart-IN',
-      //     pageSize: '20',
-      //     startFrom: '0',
-      //   },
-      //   headers: {
-      //     'X-RapidAPI-Key':
-      //       '6d949040fdmshfdcdc66ae8a65ccp1c0957jsnb0af325e6225',
-      //     'X-RapidAPI-Host': 'shazam.p.rapidapi.com',
-      //   },
-      // };
-      try {
-        const res = await axios.request(options);
-        console.log(res.data[0].title);
-        setSongs(res.data);
-      } catch (err) {
-        console.log(err.message);
-      }
-    }
-    call();
+    loadQueue();
+    setSongs(queueSongs);
   }, []);
+
+  console.log(songs);
+  console.log(queueSongs);
 
   return (
     <div>
-      <Song />
+      <Link to='/top-indian-songs'>
+        <button className='btn btn-primary'>Top Indian Trending Songs</button>
+      </Link>
+      <br />
+      <br />
+      <Link to='/top-world-songs'>
+        <button className='btn btn-primary'>Top World Songs</button>
+      </Link>
+      <br />
+      <br />
+
+      <Link to='/POP'>
+        <button className='btn btn-primary'>Top Pop Songs</button>
+      </Link>
+      <br />
+      <br />
+
+      <Link to='/HIP_HOP_RAP'>
+        <button className='btn btn-primary'>Top Hip hop Songs</button>
+      </Link>
+      <br />
+      <br />
+
+      <Link to='/DANCE'>
+        <button className='btn btn-primary'>Top Dance Songs</button>
+      </Link>
+      <br />
+      <br />
+
+      <Link to='/ELECTRONIC'>
+        <button className='btn btn-primary'>Top Electronic Songs</button>
+      </Link>
+      <br />
+      <br />
+
+      <Link to='/SOUL_RNB'>
+        <button className='btn btn-primary'>Top Soul Rnb Songs</button>
+      </Link>
+      <br />
+      <br />
+
+      <Link to='/ALTERNATIVE'>
+        <button className='btn btn-primary'>Top Alternative Songs</button>
+      </Link>
+      <br />
+      <br />
+
+      <Link to='/ROCK'>
+        <button className='btn btn-primary'>Top Rock Songs</button>
+      </Link>
+      <br />
+      <br />
+
+      <Link to='/LATIN'>
+        <button className='btn btn-primary'>Top Latin Songs</button>
+      </Link>
+      <br />
+      <br />
+
+      <Link to='/FILM_TV'>
+        <button className='btn btn-primary'>Top Film Tv Songs</button>
+      </Link>
+      <br />
+      <br />
+
+      <Link to='/COUNTRY'>
+        <button className='btn btn-primary'>Top Country Songs</button>
+      </Link>
+      <br />
+      <br />
+
+      <Link to='/AFRO_BEATS'>
+        <button className='btn btn-primary'>Top Afro Beats Songs</button>
+      </Link>
+      <br />
+      <br />
+
+      <Link to='/WORLDWIDE'>
+        <button className='btn btn-primary'>Top Worldwide Songs</button>
+      </Link>
+      <br />
+      <br />
+
+      <Link to='/K_POP'>
+        <button className='btn btn-primary'>Top K-Pop Songs</button>
+      </Link>
+      <br />
+      <br />
+
+      <Link to='/FRENCH_POP'>
+        <button className='btn btn-primary'>Top French Pop Songs</button>
+      </Link>
+
       <MusicPlayer />
     </div>
   );
@@ -66,6 +132,7 @@ const Dashboard = ({ setSongs }) => {
 const mapStateToProps = (state) => ({
   songs: state.play.songs,
   currentSong: state.play.currentSong,
+  queueSongs: state.queue.queueSongs,
 });
 
 Dashboard.propTypes = {
@@ -75,6 +142,10 @@ Dashboard.propTypes = {
   currentSong: PropTypes.object,
 };
 
-export default connect(mapStateToProps, { setSongs, setCurrentSong })(
-  Dashboard
-);
+export default connect(mapStateToProps, {
+  setSongs,
+  setCurrentSong,
+  setPlaylistCheck,
+  loadQueue,
+  deleteFromQueue,
+})(Dashboard);

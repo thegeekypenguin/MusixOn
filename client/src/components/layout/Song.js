@@ -11,7 +11,10 @@ import {
   setLoading,
   setArtistId,
 } from '../../actions/play';
+import { addToPlaylist, deleteFromPlaylist } from '../../actions/playlist';
 import axios from 'axios';
+import { setAlert } from '../../actions/alert';
+import { deleteFromQueue, addToQueue } from '../../actions/queue';
 
 const Song = ({
   songs,
@@ -27,6 +30,12 @@ const Song = ({
   loading,
   artistId,
   setArtistId,
+  addToPlaylist,
+  playlistCheck,
+  deleteFromPlaylist,
+  addToQueue,
+  deleteFromQueue,
+  queueCheck,
 }) => {
   // const [audio, setAudio] = useState(new Audio());
 
@@ -130,7 +139,19 @@ const Song = ({
     }
   }
 
-  console.log(songs);
+  const handleAddToPlaylist = (song) => {
+    const { title, subtitle, images } = song;
+    const image = images?.coverart;
+    addToPlaylist({ title, subtitle, image });
+    setAlert('Added to Playlist', 'success');
+  };
+
+  const handleAddToQueue = (song) => {
+    const { title, subtitle, images } = song;
+    const image = images?.coverart;
+    addToQueue({ title, subtitle, image });
+    setAlert('Added to Queue', 'success');
+  };
 
   return (
     <div>
@@ -140,12 +161,12 @@ const Song = ({
             <Card
               className='my-3 p-3 rounded'
               style={{ cursor: 'pointer' }}
-              onClick={() => handleClick(song)}
               key={song.key}
             >
               <Card.Img
                 className={playing ? 'bg-secondary' : 'bg-primary'}
-                src={song?.images?.coverart}
+                src={song?.images?.coverart ? song.images.coverart : song.image}
+                onClick={() => handleClick(song)}
                 style={{ height: '15vw', objectFit: 'cover' }}
               />
 
@@ -155,6 +176,27 @@ const Song = ({
                 </Card.Title>
                 <div>Singer: {song.subtitle}</div>
               </Card.Body>
+              <button
+                className='btn btn-primary'
+                onClick={() =>
+                  !playlistCheck
+                    ? handleAddToPlaylist(song)
+                    : deleteFromPlaylist(song._id)
+                }
+              >
+                {playlistCheck ? 'Remove from playlist' : 'Add to playlist'}
+              </button>
+              <br />
+              <button
+                className='btn btn-primary'
+                onClick={() =>
+                  !queueCheck
+                    ? handleAddToQueue(song)
+                    : deleteFromQueue(song._id)
+                }
+              >
+                {queueCheck ? 'Remove from queue' : 'Add to queue'}
+              </button>
             </Card>
           </Col>
         ))}
@@ -171,6 +213,8 @@ const mapStateToProps = (state) => ({
   index: state.play.index,
   loading: state.play.loading,
   artistId: state.play.artistId,
+  playlistCheck: state.playlist.playlistCheck,
+  queueCheck: state.queue.queueCheck,
 });
 
 Song.propTypes = {
@@ -186,6 +230,10 @@ Song.propTypes = {
   setLoading: PropTypes.func.isRequired,
   artistId: PropTypes.number.isRequired,
   setArtistId: PropTypes.func.isRequired,
+  deleteFromPlaylist: PropTypes.func.isRequired,
+  playlistCheck: PropTypes.bool,
+  queueCheck: PropTypes.bool,
+  deleteFromQueue: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps, {
@@ -196,4 +244,8 @@ export default connect(mapStateToProps, {
   setIndex,
   setLoading,
   setArtistId,
+  addToPlaylist,
+  deleteFromPlaylist,
+  addToQueue,
+  deleteFromQueue,
 })(Song);
