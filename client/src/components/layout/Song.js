@@ -4,6 +4,8 @@ import { connect } from "react-redux";
 import { Card, Row, Col } from "react-bootstrap";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { likeSong, getLikedSongs } from "../../actions/like";
+import { addCurrentSongInHistory,deleteFromHistory } from '../../actions/history';
+
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import {
   setCurrentSong,
@@ -31,6 +33,9 @@ const Song = ({
   setIndex,
   setLoading,
   loading,
+  addCurrentSongInHistory,
+  deleteFromHistory,
+  historyCheck,
   artistId,
   setArtistId,
   addToPlaylist,
@@ -76,6 +81,25 @@ const Song = ({
       setLoading(true);
       setPlaying();
       setCurrentSong(song);
+          //add it in history
+
+      console.log('-----------------------------------------------')
+      console.log('Song Data');
+      console.log(song);
+      const {title,subtitle,images} = song;
+      console.log(images);
+      const img_url = images?.coverart;
+      console.log(img_url);
+      if(historyCheck){
+        deleteFromHistory(song.id);
+      }
+      addCurrentSongInHistory({title,subtitle,img_url});
+      console.log(images);
+      setAlert('Added in the history','success');
+
+
+
+
       setIndex(songs.indexOf(song));
       console.log(index);
       const options = {
@@ -230,7 +254,7 @@ const Song = ({
                               src={
                                 song?.images?.coverart
                                   ? song.images.coverart
-                                  : song.image
+                                  : song.img_url
                               }
                               className="w-30 h-20 rounded-lg"
                               onClick={() => handleClick(song)}
@@ -299,6 +323,7 @@ const mapStateToProps = (state) => ({
   index: state.play.index,
   loading: state.play.loading,
   artistId: state.play.artistId,
+  historyCheck: state.history.historyCheck,
   playlistCheck: state.playlist.playlistCheck,
   queueCheck: state.queue.queueCheck,
   likedSongs: state.like.likedSongs,
@@ -319,6 +344,9 @@ Song.propTypes = {
   setArtistId: PropTypes.func.isRequired,
   deleteFromPlaylist: PropTypes.func.isRequired,
   playlistCheck: PropTypes.bool,
+  addCurrentSongInHistory: PropTypes.func.isRequired,
+  deleteFromHistory: PropTypes.func.isRequired,
+  historyCheck: PropTypes.bool,
   queueCheck: PropTypes.bool,
   deleteFromQueue: PropTypes.func.isRequired,
 };
@@ -329,6 +357,8 @@ export default connect(mapStateToProps, {
   setNotPlaying,
   setAudio,
   setIndex,
+  addCurrentSongInHistory,
+  deleteFromHistory,
   setLoading,
   setArtistId,
   addToPlaylist,

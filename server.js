@@ -15,6 +15,7 @@ app.use('/api/auth', require('./routes/api/auth'));
 app.use('/api/playlist', require('./routes/api/playlist'));
 app.use('/api/queue', require('./routes/api/queue'));
 app.use('/api/likedSong', require('./routes/api/likedSong'));
+app.use('/api/history',require('./routes/api/history'));
 // app.use('/api/profile', require('./routes/api/profile'));
 // app.use('/api/posts', require('./routes/api/posts'));
 

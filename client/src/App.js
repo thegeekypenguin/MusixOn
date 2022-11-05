@@ -15,7 +15,7 @@ import Dashboard from "./components/dashboard/Dashboard";
 import Search from "./components/layout/Search";
 import Artist from "./components/layout/Artist";
 import Playlist from "./components/layout/Playlist";
-
+import History from './components/features/History';
 // redux
 import { Provider } from "react-redux";
 import store from "./store";
@@ -43,7 +43,7 @@ const App = ({ isAuthenticated }) => {
           <div className="relative flex">
             <Sidebar />
             <div className="flex-1 h-fit pb-40">
-              {/* <Navbar /> */}
+              <Navbar />
 
               <section>
                 <Alert />
@@ -58,6 +58,7 @@ const App = ({ isAuthenticated }) => {
                     <Route exact path="/artist" element={<Artist />} />
                     <Route exact path="/playlist" element={<Playlist />} />
                     <Route exact path="/queue" element={<Queue />} />
+                    <Route exact path = '/history' element = {<History />} />
                     <Route
                       exact
                       path="/top-indian-songs"
