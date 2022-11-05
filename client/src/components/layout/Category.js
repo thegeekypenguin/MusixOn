@@ -78,6 +78,16 @@ const Category = ({ setSongs, setPlaylistCheck, setQueueCheck }) => {
   }, []);
   return (
     <div>
+      <header
+        className="header-main"
+        style={{
+          background:
+            ' no-repeat center/cover url("https://img.freepik.com/premium-photo/classic-sheets-with-music-notes-sign_488220-9925.jpg?w=2000")',
+          height: "30vw",
+          position: "relative",
+          objectFit: "contain",
+        }}
+      > </header>
       <Song />
       {/* <MusicPlayer /> */}
     </div>

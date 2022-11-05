@@ -1,24 +1,26 @@
 import { LIKE_SONG, LOAD_LIKED_SONGS } from "./types";
+import { setAlert } from './alert';
+import axios from "axios";
 
 export const likeSong = () => {
-    ({ title, subtitle, image }) =>
-      async (dispatch) => {
-        const config = {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        };
-        const body = JSON.stringify({ title, subtitle, image });
-        try {
-          const res = await axios.post('/api/likedSong', body, config);
-          dispatch({
-            type: LIKE_SONG,
-          });
-          dispatch(setAlert('Added to liked songs', 'success'));
-        } catch (err) {
-          console.log(err.message);
-        }
-      };
+    // ({ title, subtitle, image }) =>
+    //   async (dispatch) => {
+    //     const config = {
+    //       headers: {
+    //         'Content-Type': 'application/json',
+    //       },
+    //     };
+    //     const body = JSON.stringify({ title, subtitle, image });
+    //     try {
+    //       const res = await axios.post('/api/likedSong', body, config);
+    //       dispatch({
+    //         type: LIKE_SONG,
+    //       });
+    //       dispatch(setAlert('Added to liked songs', 'success'));
+    //     } catch (err) {
+    //       console.log(err.message);
+    //     }
+    //   };
 }
 
 export const getLikedSongs = () => async (dispatch) => {

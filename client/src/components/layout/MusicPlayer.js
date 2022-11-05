@@ -1,23 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { Card, Button } from 'react-bootstrap';
-import { Row, Col } from 'react-bootstrap';
-import './style.css';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import 'https://kit.fontawesome.com/26504e4a1f.js';
-import song1 from './songs/Kesariya.mp3';
-import song2 from './songs/Deva Deva.mp3';
-import song3 from './songs/Kya Mujhe Pyar Hai.mp3';
-import songslist from '../../songs.json';
-import Song from './Song';
-import { lazy } from 'react';
-import axios from 'axios';
-import { connect } from 'react-redux';
-import { deleteFromQueue, addToQueue } from '../../actions/queue';
-import Queue from '../layout/Queue';
-import { setAlert } from '../../actions/alert';
+import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+import { Card, Button } from "react-bootstrap";
+import { Row, Col } from "react-bootstrap";
+import "./style.css";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import "https://kit.fontawesome.com/26504e4a1f.js";
 
-import { addToPlaylist, deleteFromPlaylist } from '../../actions/playlist';
+import songslist from "../../songs.json";
+import Song from "./Song";
+import { lazy } from "react";
+import axios from "axios";
+import { connect } from "react-redux";
+import { deleteFromQueue, addToQueue } from "../../actions/queue";
+import Queue from "../layout/Queue";
+import { setAlert } from "../../actions/alert";
+
+import { addToPlaylist, deleteFromPlaylist } from "../../actions/playlist";
 import {
   setCurrentSong,
   setNotPlaying,
@@ -27,7 +25,7 @@ import {
   setArtistId,
   setIndex,
   setLoading,
-} from '../../actions/play';
+} from "../../actions/play";
 
 const MusicPlayer = ({
   songs,
@@ -54,6 +52,34 @@ const MusicPlayer = ({
   setArtistId,
   setAlert,
 }) => {
+  const [open, setOpen] = useState(true);
+
+  const [isMobile, setIsMobile] = useState(false);
+
+  //choose the screen size
+  const handleResize = () => {
+    if (window.innerWidth < 720) {
+      setOpen(false);
+    } else {
+      setOpen(true);
+    }
+  };
+
+  // create an event listener
+  useEffect(() => {
+    window.addEventListener("resize", handleResize);
+  });
+
+  const Menus = [
+    { title: "Dashboard", src: "Chart_fill" },
+    { title: "Inbox", src: "Chat" },
+    { title: "Accounts", src: "User", gap: true },
+    { title: "Schedule ", src: "Calendar" },
+    { title: "Search", src: "Search" },
+    { title: "Analytics", src: "Chart" },
+    { title: "Files ", src: "Folder", gap: true },
+    { title: "Setting", src: "Setting" },
+  ];
   // const [index, setIndex] = useState(0);
   // const [audio, setAudio] = useState(new Audio(song2));
 
@@ -75,7 +101,7 @@ const MusicPlayer = ({
   }
 
   useEffect(() => {
-    console.log('useEffect');
+    console.log("useEffect");
     console.log(queueSongs);
     console.log(songs);
     if (queueSongs.length > 0) {
@@ -117,13 +143,13 @@ const MusicPlayer = ({
       setLoading(true);
       setCurrentSong(songsList[index]);
       const options = {
-        method: 'GET',
-        url: 'https://youtube-music1.p.rapidapi.com/v2/search',
+        method: "GET",
+        url: "https://youtube-music1.p.rapidapi.com/v2/search",
         params: { query: songsList[index]?.title },
         headers: {
-          'X-RapidAPI-Key':
-            '841dbc2911msh1827b6e51607720p13b93fjsn4313f055b1f1',
-          'X-RapidAPI-Host': 'youtube-music1.p.rapidapi.com',
+          "X-RapidAPI-Key":
+            "841dbc2911msh1827b6e51607720p13b93fjsn4313f055b1f1",
+          "X-RapidAPI-Host": "youtube-music1.p.rapidapi.com",
         },
       };
       try {
@@ -131,13 +157,13 @@ const MusicPlayer = ({
         const id = res.data.result.songs[0].id;
         console.log(id);
         const options2 = {
-          method: 'GET',
-          url: 'https://youtube-music1.p.rapidapi.com/get_download_url',
-          params: { id: id, ext: 'mp3' },
+          method: "GET",
+          url: "https://youtube-music1.p.rapidapi.com/get_download_url",
+          params: { id: id, ext: "mp3" },
           headers: {
-            'X-RapidAPI-Key':
-              '841dbc2911msh1827b6e51607720p13b93fjsn4313f055b1f1',
-            'X-RapidAPI-Host': 'youtube-music1.p.rapidapi.com',
+            "X-RapidAPI-Key":
+              "841dbc2911msh1827b6e51607720p13b93fjsn4313f055b1f1",
+            "X-RapidAPI-Host": "youtube-music1.p.rapidapi.com",
           },
         };
         try {
@@ -211,21 +237,21 @@ const MusicPlayer = ({
     }
   };
 
-  audio?.addEventListener('ended', function () {
+  audio?.addEventListener("ended", function () {
     audio.currentTime = 0;
     if (repeatOn) {
       audio.play();
     } else handleNext();
   });
 
-  const myProgressBar = document.getElementById('myProgressBar');
-  audio?.addEventListener('timeupdate', () => {
+  const myProgressBar = document.getElementById("myProgressBar");
+  audio?.addEventListener("timeupdate", () => {
     var val = audio.duration;
     const progress = parseInt((audio.currentTime / audio.duration) * 100);
     myProgressBar.value = audio.currentTime;
   });
 
-  myProgressBar?.addEventListener('change', () => {
+  myProgressBar?.addEventListener("change", () => {
     audio.currentTime = (myProgressBar.value * audio.duration) / 100;
   });
 
@@ -243,19 +269,19 @@ const MusicPlayer = ({
       console.log(currentSong);
       if (currentSong && queueSongs.includes(currentSong)) {
         deleteFromQueue(currentSong._id);
-        console.log('deleted');
+        console.log("deleted");
       }
       setCurrentSong(song);
       setIndex(songsList.indexOf(song));
       console.log(index);
       const options = {
-        method: 'GET',
-        url: 'https://youtube-music1.p.rapidapi.com/v2/search',
+        method: "GET",
+        url: "https://youtube-music1.p.rapidapi.com/v2/search",
         params: { query: song?.title },
         headers: {
-          'X-RapidAPI-Key':
-            '841dbc2911msh1827b6e51607720p13b93fjsn4313f055b1f1',
-          'X-RapidAPI-Host': 'youtube-music1.p.rapidapi.com',
+          "X-RapidAPI-Key":
+            "841dbc2911msh1827b6e51607720p13b93fjsn4313f055b1f1",
+          "X-RapidAPI-Host": "youtube-music1.p.rapidapi.com",
         },
       };
       try {
@@ -263,13 +289,13 @@ const MusicPlayer = ({
         const id = res.data.result.songs[0].id;
         console.log(id);
         const options2 = {
-          method: 'GET',
-          url: 'https://youtube-music1.p.rapidapi.com/get_download_url',
-          params: { id: id, ext: 'mp3' },
+          method: "GET",
+          url: "https://youtube-music1.p.rapidapi.com/get_download_url",
+          params: { id: id, ext: "mp3" },
           headers: {
-            'X-RapidAPI-Key':
-              '841dbc2911msh1827b6e51607720p13b93fjsn4313f055b1f1',
-            'X-RapidAPI-Host': 'youtube-music1.p.rapidapi.com',
+            "X-RapidAPI-Key":
+              "841dbc2911msh1827b6e51607720p13b93fjsn4313f055b1f1",
+            "X-RapidAPI-Host": "youtube-music1.p.rapidapi.com",
           },
         };
         try {
@@ -293,13 +319,13 @@ const MusicPlayer = ({
       setCurrentSong(song);
       setIndex(queueSongs.indexOf(song));
       const options = {
-        method: 'GET',
-        url: 'https://youtube-music1.p.rapidapi.com/v2/search',
+        method: "GET",
+        url: "https://youtube-music1.p.rapidapi.com/v2/search",
         params: { query: song.title },
         headers: {
-          'X-RapidAPI-Key':
-            '841dbc2911msh1827b6e51607720p13b93fjsn4313f055b1f1',
-          'X-RapidAPI-Host': 'youtube-music1.p.rapidapi.com',
+          "X-RapidAPI-Key":
+            "841dbc2911msh1827b6e51607720p13b93fjsn4313f055b1f1",
+          "X-RapidAPI-Host": "youtube-music1.p.rapidapi.com",
         },
       };
       try {
@@ -307,13 +333,13 @@ const MusicPlayer = ({
         const id = res.data.result.songs[0].id;
         console.log(id);
         const options2 = {
-          method: 'GET',
-          url: 'https://youtube-music1.p.rapidapi.com/get_download_url',
-          params: { id: id, ext: 'mp3' },
+          method: "GET",
+          url: "https://youtube-music1.p.rapidapi.com/get_download_url",
+          params: { id: id, ext: "mp3" },
           headers: {
-            'X-RapidAPI-Key':
-              '841dbc2911msh1827b6e51607720p13b93fjsn4313f055b1f1',
-            'X-RapidAPI-Host': 'youtube-music1.p.rapidapi.com',
+            "X-RapidAPI-Key":
+              "841dbc2911msh1827b6e51607720p13b93fjsn4313f055b1f1",
+            "X-RapidAPI-Host": "youtube-music1.p.rapidapi.com",
           },
         };
         try {
@@ -334,81 +360,191 @@ const MusicPlayer = ({
     const { title, subtitle, images } = song;
     const image = images?.coverart;
     addToPlaylist({ title, subtitle, image });
-    setAlert('Added to Playlist', 'success');
+    setAlert("Added to Playlist", "success");
   };
 
   const handleAddToQueue = (song) => {
     const { title, subtitle, images } = song;
     const image = images?.coverart;
     addToQueue({ title, subtitle, image });
-    setAlert('Added to Queue', 'success');
+    setAlert("Added to Queue", "success");
   };
 
   return (
     <div>
-      {console.log('Queue')}
+      {console.log("Queue")}
       <Queue />
       {/* Displaying the queueSongs */}
-      <Row>
-        {queueSongs.map((song) => (
-          <Col key={song.id} sm={12} md={6} lg={4} xl={3}>
-            <Card
-              className='my-3 p-3 rounded'
-              style={{ cursor: 'pointer' }}
-              key={song.key}
+      <div className="flex flex-col">
+        <div className="overflow-x-auto">
+          <div className="p-1.5 w-full inline-block align-middle">
+            <div className="overflow-hidden border rounded-lg">
+              <table className="min-w-full divide-y divide-gray-200  table-auto">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase  overflow-hidden truncate w-2 "
+                    >
+                      #
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase "
+                    >
+                      Song
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase  "
+                    >
+                      Singer
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-xs font-bold text-right text-gray-500 uppercase "
+                    >
+                      Duration
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-xs font-bold text-right text-gray-500 uppercase "
+                    >
+                      buttons
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-200">
+                  {queueSongs.map((song, i) => (
+                    <tr key={song.key}>
+                      <td className="px-6 py-4 text-sm font-medium text-gray-800 whitespace-nowrap">
+                        {i + 1}
+                      </td>
+                      <td>
+                        <div class="flex flex-row  ">
+                          <div>
+                            <img
+                              alt="song_img"
+                              src={
+                                song?.images?.coverart
+                                  ? song.images.coverart
+                                  : song.image
+                              }
+                              className="w-30 h-20 rounded-lg"
+                              onClick={() => handleClick(song)}
+                              style={{ cursor: "pointer" }}
+                            />
+                          </div>
+                          <div>
+                            {" "}
+                            <strong>{song.title}</strong>
+                          </div>
+                        </div>
+                      </td>
+
+                      <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap ">
+                        {song.subtitle}
+                      </td>
+                      <td>3min</td>
+                      <td>
+                        {" "}
+                        <button
+                          className="btn btn-primary"
+                          onClick={() =>
+                            !playlistCheck
+                              ? handleAddToPlaylist(song)
+                              : deleteFromPlaylist(song._id)
+                          }
+                        >
+                          {playlistCheck
+                            ? "Remove from playlist"
+                            : "Add to playlist"}
+                        </button>
+                        <button
+                          className="btn btn-primary"
+                          onClick={() =>
+                            !queueCheck
+                              ? handleAddToQueue(song)
+                              : deleteFromQueue(song._id)
+                          }
+                        >
+                          {queueCheck ? "Remove from queue" : "Add to queue"}
+                        </button>
+                        <FavoriteBorderIcon />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+{/* 
+      <div className="absolute h-screen inset-y-0 right-0 w-16  sticky ">
+        <div
+          className={` ${
+            open ? "w-72" : "w-20 "
+          } bg-dark-purple h-screen p-5  pt-8 relative duration-300`}
+        >
+          <img
+            src=" /assets/control.png"
+            className={`absolute cursor-pointer -left-3 top-9 w-7 border-dark-purple
+           border-2 rounded-full  ${!open && "rotate-180"}`}
+            onClick={() => setOpen(!open)}
+            alt="assets"
+          />
+          <div className="flex gap-x-4 items-center">
+            <img
+              src="/assets/logo.png"
+              className={`cursor-pointer duration-500 ${
+                open && "rotate-[360deg]"
+              }`}
+              alt="logo"
+            />
+            <h1
+              className={`text-white origin-left font-medium text-xl duration-200 ${
+                !open && "scale-0"
+              }`}
             >
-              <Card.Img
-                className={playing ? 'bg-secondary' : 'bg-primary'}
-                src={song?.images?.coverart ? song.images.coverart : song.image}
-                onClick={() => handleClick(song)}
-                style={{ height: '15vw', objectFit: 'cover' }}
-              />
-
-              <Card.Body>
-                <Card.Title>
-                  <strong>{song.title}</strong>
-                </Card.Title>
-                <div>Singer: {song.subtitle}</div>
-              </Card.Body>
-              <button
-                className='btn btn-primary'
-                onClick={() =>
-                  !playlistCheck
-                    ? handleAddToPlaylist(song)
-                    : deleteFromPlaylist(song._id)
-                }
+              MusixOn
+            </h1>
+          </div>
+          <ul className="pt-6">
+            {Menus.map((Menu, index) => (
+              <li
+                key={index}
+                className={`flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-gray-300 text-sm items-center gap-x-4 
+              ${Menu.gap ? "mt-9" : "mt-2"} ${
+                  index === 0 && "bg-light-white"
+                } `}
               >
-                {playlistCheck ? 'Remove from playlist' : 'Add to playlist'}
-              </button>
-              <br />
-              <button
-                className='btn btn-primary'
-                onClick={() =>
-                  !queueCheck
-                    ? handleAddToQueue(song)
-                    : deleteFromQueue(song._id)
-                }
-              >
-                {queueCheck ? 'Remove from queue' : 'Add to queue'}
-              </button>
-              <FavoriteBorderIcon />
-            </Card>
-          </Col>
-        ))}
-      </Row>
+                <img src={`/assets/${Menu.src}.png`} alt="type" />
+                <span
+                  className={`${!open && "hidden"} origin-left duration-200`}
+                >
+                  {Menu.title}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div> */}
 
-      <div className='bottom' style={{ cursor: 'pointer' }}>
+      {/*displaying player*/}
+
+      <div className="bottom" style={{ cursor: "pointer" }}>
         <input
-          type='range'
-          name='range'
-          id='myProgressBar'
-          min='0'
-          value='0'
-          max='200'
+          type="range"
+          name="range"
+          id="myProgressBar"
+          min="0"
+          value="0"
+          max="200"
         />
-        <div className='icons'>
+        <div className="icons">
           <button
-            className={shuffleOn ? 'btn btn-primary' : 'btn btn-secondary'}
+            className={shuffleOn ? "btn btn-primary" : "btn btn-secondary"}
             onClick={() => {
               setShuffleOn(!shuffleOn);
             }}
@@ -416,7 +552,7 @@ const MusicPlayer = ({
             Shuffle
           </button>
           <button
-            className={repeatOn ? 'btn btn-primary' : 'btn btn-secondary'}
+            className={repeatOn ? "btn btn-primary" : "btn btn-secondary"}
             onClick={() => {
               setRepeatOn(!repeatOn);
             }}
@@ -424,21 +560,21 @@ const MusicPlayer = ({
             Repeat
           </button>
           <i
-            className='fas fa-3x fa-step-backward'
+            className="fas fa-3x fa-step-backward"
             onClick={handlePrevious}
-            id='previous'
+            id="previous"
           ></i>
           <i
             className={
-              playing ? 'fas fa-3x fa-pause-circle' : 'fas fa-3x fa-play-circle'
+              playing ? "fas fa-3x fa-pause-circle" : "fas fa-3x fa-play-circle"
             }
             onClick={handlePlayAndPause}
-            id='masterPlay'
+            id="masterPlay"
           ></i>
           <i
-            className='fas fa-3x fa-step-forward'
+            className="fas fa-3x fa-step-forward"
             onClick={handleNext}
-            id='next'
+            id="next"
           ></i>
         </div>
       </div>

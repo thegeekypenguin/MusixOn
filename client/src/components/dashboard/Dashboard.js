@@ -10,6 +10,8 @@ import axios from 'axios';
 import Search from '../layout/Search';
 import { setPlaylistCheck } from '../../actions/playlist';
 import { loadQueue, deleteFromQueue } from '../../actions/queue';
+import { genres } from "../layout/constants/GenreConstants";
+
 
 const Dashboard = ({
   songs,
@@ -31,101 +33,41 @@ const Dashboard = ({
 
   return (
     <div>
-      <Link to='/top-indian-songs'>
-        <button className='btn btn-primary'>Top Indian Trending Songs</button>
-      </Link>
-      <br />
-      <br />
-      <Link to='/top-world-songs'>
-        <button className='btn btn-primary'>Top World Songs</button>
-      </Link>
-      <br />
-      <br />
+    <header className="bg-white shadow">
+      <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+        <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
+      </div>
+    </header>
+    <div className="flex flex-wrap sm:justify-start justify-center gap-8">
+      {genres.map((genre, i) => (
+        <div className="flex flex-col w-[250px] p-4 bg-white/5 bg-opacity-80 backdrop-blur-sm animate-slideup rounded-lg cursor-pointer">
+          <Link to={genre.link}>
+            <div className="relative w-full h-56 group">
+              <div
+                className={`absolute inset-0 justify-center items-center bg-black bg-opacity-50 group-hover:flex`}
+              ></div>
+              <div>
+                <img
+                  alt="genre_img"
+                  src={genre.image}
+                  className="w-full h-full rounded-lg"
+                />
+              </div>
+            </div>
 
-      <Link to='/POP'>
-        <button className='btn btn-primary'>Top Pop Songs</button>
-      </Link>
-      <br />
-      <br />
-
-      <Link to='/HIP_HOP_RAP'>
-        <button className='btn btn-primary'>Top Hip hop Songs</button>
-      </Link>
-      <br />
-      <br />
-
-      <Link to='/DANCE'>
-        <button className='btn btn-primary'>Top Dance Songs</button>
-      </Link>
-      <br />
-      <br />
-
-      <Link to='/ELECTRONIC'>
-        <button className='btn btn-primary'>Top Electronic Songs</button>
-      </Link>
-      <br />
-      <br />
-
-      <Link to='/SOUL_RNB'>
-        <button className='btn btn-primary'>Top Soul Rnb Songs</button>
-      </Link>
-      <br />
-      <br />
-
-      <Link to='/ALTERNATIVE'>
-        <button className='btn btn-primary'>Top Alternative Songs</button>
-      </Link>
-      <br />
-      <br />
-
-      <Link to='/ROCK'>
-        <button className='btn btn-primary'>Top Rock Songs</button>
-      </Link>
-      <br />
-      <br />
-
-      <Link to='/LATIN'>
-        <button className='btn btn-primary'>Top Latin Songs</button>
-      </Link>
-      <br />
-      <br />
-
-      <Link to='/FILM_TV'>
-        <button className='btn btn-primary'>Top Film Tv Songs</button>
-      </Link>
-      <br />
-      <br />
-
-      <Link to='/COUNTRY'>
-        <button className='btn btn-primary'>Top Country Songs</button>
-      </Link>
-      <br />
-      <br />
-
-      <Link to='/AFRO_BEATS'>
-        <button className='btn btn-primary'>Top Afro Beats Songs</button>
-      </Link>
-      <br />
-      <br />
-
-      <Link to='/WORLDWIDE'>
-        <button className='btn btn-primary'>Top Worldwide Songs</button>
-      </Link>
-      <br />
-      <br />
-
-      <Link to='/K_POP'>
-        <button className='btn btn-primary'>Top K-Pop Songs</button>
-      </Link>
-      <br />
-      <br />
-
-      <Link to='/FRENCH_POP'>
-        <button className='btn btn-primary'>Top French Pop Songs</button>
-      </Link>
-      {/* <Song /> */}
-      {/* <MusicPlayer /> */}
+            <div className="mt-4 flex flex-col">
+              <p className="font-semibold text-lg text-black truncate">
+                {genre.title}
+              </p>
+            </div>
+          </Link>
+        </div>
+      ))}
     </div>
+    <div>
+ 
+    </div>
+  </div>
   );
 };
 
