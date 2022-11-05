@@ -22,21 +22,24 @@ import setAuthToken from './utils/setAuthToken';
 import PrivateRoute from './utils/PrivateRoute';
 import Category from './components/layout/Category';
 import Queue from './components/layout/Queue';
+import MusicPlayer from './components/layout/MusicPlayer';
+import {connect} from 'react-redux'
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
 }
 
-const App = () => {
+const App = ({isAuthenticated}) => {
   useEffect(() => {
     store.dispatch(loadUser());
   }, []);
 
   return (
-    <Provider store={store}>
+    <>
       <Router>
         <Fragment>
           <Navbar />
+          {/* <Queue /> */}
           <Routes>
             <Route exact path='/' element={<Landing />} />
           </Routes>
@@ -72,8 +75,13 @@ const App = () => {
           </section>
         </Fragment>
       </Router>
-    </Provider>
+      {isAuthenticated && <MusicPlayer />}
+    </>
   );
 };
 
-export default App;
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated
+})
+
+export default connect(mapStateToProps, {})(App);

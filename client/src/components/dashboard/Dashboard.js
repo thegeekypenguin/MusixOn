@@ -21,13 +21,13 @@ const Dashboard = ({
 }) => {
   const navigate = useNavigate();
 
-  useEffect(() => {
-    loadQueue();
-    setSongs(queueSongs);
-  }, []);
+  // useEffect(() => {
+  //   loadQueue();
+  //   // setSongs(queueSongs);
+  // }, []);
 
-  console.log(songs);
-  console.log(queueSongs);
+  // console.log(songs);
+  // console.log(queueSongs);
 
   return (
     <div>
@@ -123,8 +123,8 @@ const Dashboard = ({
       <Link to='/FRENCH_POP'>
         <button className='btn btn-primary'>Top French Pop Songs</button>
       </Link>
-
-      <MusicPlayer />
+      {/* <Song /> */}
+      {/* <MusicPlayer /> */}
     </div>
   );
 };

@@ -26,7 +26,7 @@ const Search = ({ songs, setSongs, artist, setArtist, setArtistId }) => {
         params: { query: e.target.value },
         headers: {
           'X-RapidAPI-Key':
-            '6d949040fdmshfdcdc66ae8a65ccp1c0957jsnb0af325e6225',
+            '1ea658d25amsh824f1d735d7d19ap1a8537jsnb9ebc90ed564',
           'X-RapidAPI-Host': 'shazam-core.p.rapidapi.com',
         },
       };
@@ -46,7 +46,7 @@ const Search = ({ songs, setSongs, artist, setArtist, setArtistId }) => {
       url: 'https://shazam-core.p.rapidapi.com/v1/artists/details',
       params: { artist_id: id },
       headers: {
-        'X-RapidAPI-Key': '6d949040fdmshfdcdc66ae8a65ccp1c0957jsnb0af325e6225',
+        'X-RapidAPI-Key': '1ea658d25amsh824f1d735d7d19ap1a8537jsnb9ebc90ed564',
         'X-RapidAPI-Host': 'shazam-core.p.rapidapi.com',
       },
     };
@@ -70,7 +70,7 @@ const Search = ({ songs, setSongs, artist, setArtist, setArtistId }) => {
       url: 'https://shazam-core.p.rapidapi.com/v1/search/multi',
       params: { query: i, search_type: 'SONGS_ARTISTS' },
       headers: {
-        'X-RapidAPI-Key': '6d949040fdmshfdcdc66ae8a65ccp1c0957jsnb0af325e6225',
+        'X-RapidAPI-Key': '1ea658d25amsh824f1d735d7d19ap1a8537jsnb9ebc90ed564',
         'X-RapidAPI-Host': 'shazam-core.p.rapidapi.com',
       },
     };
@@ -159,7 +159,7 @@ const Search = ({ songs, setSongs, artist, setArtist, setArtistId }) => {
           </Col>
         ))}
       </Row>
-      <MusicPlayer />
+      {/* <MusicPlayer /> */}
     </div>
   );
 };

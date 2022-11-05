@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { loadQueue, setQueueCheck } from '../../actions/queue';
 import { setSongs } from '../../actions/play';
+import { setPlaylistCheck } from '../../actions/playlist';
 import MusicPlayer from './MusicPlayer';
 import Song from './Song';
 
@@ -12,6 +13,7 @@ const Queue = ({
   setSongs,
   queueCheck,
   setQueueCheck,
+  setPlaylistCheck,
 }) => {
   useEffect(() => {
     setSongs([]);
@@ -19,16 +21,22 @@ const Queue = ({
   }, []);
 
   useEffect(() => {
-    setSongs(queueSongs);
-    setQueueCheck(true);
-  }, [queueSongs]);
+    console.log("Queuepage",queueSongs);
 
-  console.log(queueSongs);
+    // setSongs(queueSongs);
+    console.log('SetQueuepage', queueSongs);
+
+    
+    setQueueCheck(true);
+    setPlaylistCheck(false);
+
+
+  }, [queueSongs]);
 
   return (
     <div>
-      <Song />
-      <MusicPlayer />
+      {/* <Song /> */}
+      {/* <MusicPlayer /> */}
     </div>
   );
 };
@@ -39,6 +47,7 @@ Queue.propTypes = {
   setSongs: PropTypes.func.isRequired,
   queueCheck: PropTypes.bool.isRequired,
   setQueueCheck: PropTypes.func.isRequired,
+  setPlaylistCheck: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -50,4 +59,5 @@ export default connect(mapStateToProps, {
   loadQueue,
   setSongs,
   setQueueCheck,
+  setPlaylistCheck,
 })(Queue);

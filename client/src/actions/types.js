@@ -25,3 +25,5 @@ export const QUEUE_CHECK = 'QUEUE_CHECK';
 export const LOAD_QUEUE = 'LOAD_QUEUE';
 export const DELETE_FROM_QUEUE = 'DELETE_FROM_QUEUE';
 export const CLEAR_QUEUE = 'CLEAR_QUEUE';
+export const LIKE_SONG = 'LIKE_SONG';
+export const LOAD_LIKED_SONGS = 'LOAD_LIKED_SONGS';

@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { loadPlaylist, setPlaylistCheck } from '../../actions/playlist';
 import { setSongs } from '../../actions/play';
 import MusicPlayer from './MusicPlayer';
+import { setQueueCheck } from '../../actions/queue';
 import Song from './Song';
 
 const Playlist = ({
@@ -12,6 +13,7 @@ const Playlist = ({
   setSongs,
   playlistCheck,
   setPlaylistCheck,
+  setQueueCheck,
 }) => {
   useEffect(() => {
     setSongs([]);
@@ -21,6 +23,7 @@ const Playlist = ({
   useEffect(() => {
     setSongs(playlistSongs);
     setPlaylistCheck(true);
+    setQueueCheck(false);
   }, [playlistSongs]);
 
   console.log(playlistSongs);
@@ -28,7 +31,7 @@ const Playlist = ({
   return (
     <div>
       <Song />
-      <MusicPlayer />
+      {/* <MusicPlayer /> */}
     </div>
   );
 };
@@ -39,6 +42,7 @@ Playlist.propTypes = {
   setSongs: PropTypes.func.isRequired,
   playlistCheck: PropTypes.bool.isRequired,
   setPlaylistCheck: PropTypes.func.isRequired,
+  setQueueCheck: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -50,4 +54,5 @@ export default connect(mapStateToProps, {
   loadPlaylist,
   setSongs,
   setPlaylistCheck,
+  setQueueCheck,
 })(Playlist);

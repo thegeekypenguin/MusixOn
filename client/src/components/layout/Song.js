@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Card, Row, Col } from 'react-bootstrap';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import { likeSong, getLikedSongs } from '../../actions/like';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import {
   setCurrentSong,
   setPlaying,
@@ -36,6 +39,9 @@ const Song = ({
   addToQueue,
   deleteFromQueue,
   queueCheck,
+  likeSong,
+  getLikedSongs,
+  likedSongs
 }) => {
   // const [audio, setAudio] = useState(new Audio());
 
@@ -46,10 +52,24 @@ const Song = ({
   //   // setAudio();
   // }, []);
 
+  const [titles, setTitles] = useState([]);
+
   useEffect(() => {
     audio.play();
     setLoading(false);
   }, [audio]);
+
+  useEffect(() => {
+    getLikedSongs();
+  },[])
+
+  useEffect(() => {
+    var array = new Array();
+    for(var i=0; i<likedSongs.length; i++){
+      array.push(likedSongs[i].title);
+    }
+    setTitles(array);
+  },[likedSongs])
 
   async function handleClick(song) {
     if (!playing) {
@@ -64,7 +84,7 @@ const Song = ({
         params: { query: song?.title },
         headers: {
           'X-RapidAPI-Key':
-            '706d3a5b38mshe15b089b58ae6f0p168fa8jsn35fe315b0a5b',
+            '841dbc2911msh1827b6e51607720p13b93fjsn4313f055b1f1',
           'X-RapidAPI-Host': 'youtube-music1.p.rapidapi.com',
         },
       };
@@ -78,7 +98,7 @@ const Song = ({
           params: { id: id, ext: 'mp3' },
           headers: {
             'X-RapidAPI-Key':
-              '706d3a5b38mshe15b089b58ae6f0p168fa8jsn35fe315b0a5b',
+              '841dbc2911msh1827b6e51607720p13b93fjsn4313f055b1f1',
             'X-RapidAPI-Host': 'youtube-music1.p.rapidapi.com',
           },
         };
@@ -92,7 +112,7 @@ const Song = ({
       } catch (err) {
         console.log(err.message);
       }
-    } else if (currentSong.title === song.title) {
+    } else if (currentSong?.title === song?.title) {
       setNotPlaying();
       audio.pause();
     } else {
@@ -108,7 +128,7 @@ const Song = ({
         params: { query: song.title },
         headers: {
           'X-RapidAPI-Key':
-            '706d3a5b38mshe15b089b58ae6f0p168fa8jsn35fe315b0a5b',
+            '841dbc2911msh1827b6e51607720p13b93fjsn4313f055b1f1',
           'X-RapidAPI-Host': 'youtube-music1.p.rapidapi.com',
         },
       };
@@ -122,7 +142,7 @@ const Song = ({
           params: { id: id, ext: 'mp3' },
           headers: {
             'X-RapidAPI-Key':
-              '706d3a5b38mshe15b089b58ae6f0p168fa8jsn35fe315b0a5b',
+              '841dbc2911msh1827b6e51607720p13b93fjsn4313f055b1f1',
             'X-RapidAPI-Host': 'youtube-music1.p.rapidapi.com',
           },
         };
@@ -152,6 +172,10 @@ const Song = ({
     addToQueue({ title, subtitle, image });
     setAlert('Added to Queue', 'success');
   };
+
+  const handleLikeSong = (song) => {
+
+  }
 
   return (
     <div>
@@ -197,6 +221,8 @@ const Song = ({
               >
                 {queueCheck ? 'Remove from queue' : 'Add to queue'}
               </button>
+              {titles}
+              <FavoriteBorderIcon onClick={(e) => {handleLikeSong(song)}}/>
             </Card>
           </Col>
         ))}
@@ -215,6 +241,7 @@ const mapStateToProps = (state) => ({
   artistId: state.play.artistId,
   playlistCheck: state.playlist.playlistCheck,
   queueCheck: state.queue.queueCheck,
+  likedSongs: state.like.likedSongs,
 });
 
 Song.propTypes = {
@@ -248,4 +275,6 @@ export default connect(mapStateToProps, {
   deleteFromPlaylist,
   addToQueue,
   deleteFromQueue,
+  getLikedSongs, 
+  likeSong
 })(Song);
