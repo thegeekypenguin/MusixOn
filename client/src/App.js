@@ -4,18 +4,18 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 // import "./bootstrap.min.css";
 
 // import "./App.css";
-import './index.css';
-import Navbar from './components/layout/Navbar';
-import Landing from './components/layout/Landing';
-import Login from './components/auth/Login';
-import Register from './components/auth/Register';
-import Alert from './components/layout/Alert';
-import { loadUser } from './actions/auth';
-import Dashboard from './components/dashboard/Dashboard';
-import Search from './components/layout/Search';
-import Artist from './components/layout/Artist';
-import Playlist from './components/layout/Playlist';
-
+import "./index.css";
+import Navbar from "./components/layout/Navbar";
+import Landing from "./components/layout/Landing";
+import Login from "./components/auth/Login";
+import Register from "./components/auth/Register";
+import Alert from "./components/layout/Alert";
+import { loadUser } from "./actions/auth";
+import Dashboard from "./components/dashboard/Dashboard";
+import Search from "./components/layout/Search";
+import Artist from "./components/layout/Artist";
+import Playlist from "./components/layout/Playlist";
+import History from './components/features/History';
 // redux
 import { Provider } from 'react-redux';
 import store from './store';
@@ -43,8 +43,8 @@ const App = ({ isAuthenticated }) => {
         <Fragment>
           <div className='relative flex'>
             <Sidebar />
-            <div className='flex-1 h-fit pb-40'>
-              {/* <Navbar /> */}
+            <div className="flex-1 h-fit pb-40">
+              <Navbar />
 
               <section>
                 <Alert />
@@ -60,7 +60,7 @@ const App = ({ isAuthenticated }) => {
                     <Route exact path='/playlist' element={<Playlist />} />
                     <Route exact path='/queue' element={<Queue />} />
                     <Route exact path='/likedSong' element={<LikedSong />} />
-
+                    <Route exact path = '/history' element = {<History />} />
                     <Route
                       exact
                       path='/top-indian-songs'
