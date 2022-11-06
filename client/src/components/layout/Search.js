@@ -43,7 +43,7 @@ const Search = ({ songs, setSongs, artist, setArtist, setArtistId }) => {
     setArtistId(id);
     const options = {
       method: 'GET',
-      url: 'https://shazam-core.p.rapidapi.com/v1/artists/details',
+      url: 'https://shazam-core.p.rapidapi.com/v2/artists/details',
       params: { artist_id: id },
       headers: {
         'X-RapidAPI-Key': '841dbc2911msh1827b6e51607720p13b93fjsn4313f055b1f1',

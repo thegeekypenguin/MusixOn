@@ -181,10 +181,10 @@ const MusicPlayer = ({
     call();
   }, [index]);
 
-  useEffect(() => {
-    if (playing) audio.play();
-    setLoading(false);
-  }, [audio]);
+  // useEffect(() => {
+  //   if (playing) audio.play();
+  //   setLoading(false);
+  // }, [audio]);
 
   const handlePlayAndPause = () => {
     if (playing) {

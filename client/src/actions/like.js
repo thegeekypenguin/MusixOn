@@ -5,6 +5,7 @@ import axios from 'axios';
 export const likeSong=
   ({ title, subtitle, image }) =>
     async (dispatch) => {
+      
       const config = {
         headers: {
           'Content-Type': 'application/json',
@@ -17,6 +18,7 @@ export const likeSong=
           type: LIKE_SONG,
         });
         dispatch(setAlert('Added to liked songs', 'success'));
+        console.log('Like song from actions');
       } catch (err) {
         console.log(err.message);
       }

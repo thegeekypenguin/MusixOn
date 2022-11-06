@@ -199,16 +199,17 @@ const Song = ({
     setAlert('Added to Queue', 'success');
   };
 
-  const handleLikeSong = (song) => {
+  const handleLikeSong = async (song) => {
     const { title, subtitle, images } = song;
     const image = images?.coverart;
-    likeSong({ title, subtitle, image });
+    await likeSong({ title, subtitle, image });
+    console.log('From handle like');
     setAlert('Added to Liked songs', 'success');
     getLikedSongs();
   };
 
-  const handleUnlikeSong = (song) => {
-    unlikeSong(song.title);
+  const handleUnlikeSong = async (song) => {
+    await unlikeSong(song.title);
     getLikedSongs();
     setAlert('Removed from Liked songs', 'success');
   };
