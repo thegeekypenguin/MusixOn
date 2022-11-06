@@ -55,11 +55,12 @@ router.get('/', auth, async (req, res) => {
   }
 });
 
-router.delete('/:id', auth, async (req, res) => {
+router.delete('/:title', auth, async (req, res) => {
   try {
-    const song = await LikedSong.findById(req.params.id);
-    if (!song) return res.status(404).json({ msg: 'Song not found' });
-    await song.remove();
+    const song = await LikedSong.find({ title: req.params.title });
+    console.log(song);
+    if (!song[0]) return res.status(404).json({ msg: 'Song not found' });
+    await song[0].remove();
     res.json({ msg: 'Song removed from LikedSong' });
   } catch (err) {
     console.error(err.message);

@@ -27,3 +27,4 @@ export const DELETE_FROM_QUEUE = 'DELETE_FROM_QUEUE';
 export const CLEAR_QUEUE = 'CLEAR_QUEUE';
 export const LIKE_SONG = 'LIKE_SONG';
 export const LOAD_LIKED_SONGS = 'LOAD_LIKED_SONGS';
+export const UNLIKE_SONG = 'UNLIKE_SONG';

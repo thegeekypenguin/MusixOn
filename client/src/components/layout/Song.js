@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { Card, Row, Col } from "react-bootstrap";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import { likeSong, getLikedSongs } from "../../actions/like";
-import FavoriteIcon from "@mui/icons-material/Favorite";
+import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { Card, Row, Col } from 'react-bootstrap';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import { likeSong, getLikedSongs, unlikeSong } from '../../actions/like';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+
 import {
   setCurrentSong,
   setPlaying,
@@ -13,11 +14,11 @@ import {
   setIndex,
   setLoading,
   setArtistId,
-} from "../../actions/play";
-import { addToPlaylist, deleteFromPlaylist } from "../../actions/playlist";
-import axios from "axios";
-import { setAlert } from "../../actions/alert";
-import { deleteFromQueue, addToQueue } from "../../actions/queue";
+} from '../../actions/play';
+import { addToPlaylist, deleteFromPlaylist } from '../../actions/playlist';
+import axios from 'axios';
+import { setAlert } from '../../actions/alert';
+import { deleteFromQueue, addToQueue } from '../../actions/queue';
 
 const Song = ({
   songs,
@@ -42,6 +43,7 @@ const Song = ({
   likeSong,
   getLikedSongs,
   likedSongs,
+  unlikeSong,
 }) => {
   // const [audio, setAudio] = useState(new Audio());
 
@@ -79,13 +81,13 @@ const Song = ({
       setIndex(songs.indexOf(song));
       console.log(index);
       const options = {
-        method: "GET",
-        url: "https://youtube-music1.p.rapidapi.com/v2/search",
+        method: 'GET',
+        url: 'https://youtube-music1.p.rapidapi.com/v2/search',
         params: { query: song?.title },
         headers: {
-          "X-RapidAPI-Key":
-            "841dbc2911msh1827b6e51607720p13b93fjsn4313f055b1f1",
-          "X-RapidAPI-Host": "youtube-music1.p.rapidapi.com",
+          'X-RapidAPI-Key':
+            '841dbc2911msh1827b6e51607720p13b93fjsn4313f055b1f1',
+          'X-RapidAPI-Host': 'youtube-music1.p.rapidapi.com',
         },
       };
       try {
@@ -93,13 +95,13 @@ const Song = ({
         const id = res.data.result.songs[0].id;
         console.log(id);
         const options2 = {
-          method: "GET",
-          url: "https://youtube-music1.p.rapidapi.com/get_download_url",
-          params: { id: id, ext: "mp3" },
+          method: 'GET',
+          url: 'https://youtube-music1.p.rapidapi.com/get_download_url',
+          params: { id: id, ext: 'mp3' },
           headers: {
-            "X-RapidAPI-Key":
-              "841dbc2911msh1827b6e51607720p13b93fjsn4313f055b1f1",
-            "X-RapidAPI-Host": "youtube-music1.p.rapidapi.com",
+            'X-RapidAPI-Key':
+              '841dbc2911msh1827b6e51607720p13b93fjsn4313f055b1f1',
+            'X-RapidAPI-Host': 'youtube-music1.p.rapidapi.com',
           },
         };
         try {
@@ -123,13 +125,13 @@ const Song = ({
       setCurrentSong(song);
       setIndex(songs.indexOf(song));
       const options = {
-        method: "GET",
-        url: "https://youtube-music1.p.rapidapi.com/v2/search",
+        method: 'GET',
+        url: 'https://youtube-music1.p.rapidapi.com/v2/search',
         params: { query: song.title },
         headers: {
-          "X-RapidAPI-Key":
-            "841dbc2911msh1827b6e51607720p13b93fjsn4313f055b1f1",
-          "X-RapidAPI-Host": "youtube-music1.p.rapidapi.com",
+          'X-RapidAPI-Key':
+            '841dbc2911msh1827b6e51607720p13b93fjsn4313f055b1f1',
+          'X-RapidAPI-Host': 'youtube-music1.p.rapidapi.com',
         },
       };
       try {
@@ -137,13 +139,13 @@ const Song = ({
         const id = res.data.result.songs[0].id;
         console.log(id);
         const options2 = {
-          method: "GET",
-          url: "https://youtube-music1.p.rapidapi.com/get_download_url",
-          params: { id: id, ext: "mp3" },
+          method: 'GET',
+          url: 'https://youtube-music1.p.rapidapi.com/get_download_url',
+          params: { id: id, ext: 'mp3' },
           headers: {
-            "X-RapidAPI-Key":
-              "841dbc2911msh1827b6e51607720p13b93fjsn4313f055b1f1",
-            "X-RapidAPI-Host": "youtube-music1.p.rapidapi.com",
+            'X-RapidAPI-Key':
+              '841dbc2911msh1827b6e51607720p13b93fjsn4313f055b1f1',
+            'X-RapidAPI-Host': 'youtube-music1.p.rapidapi.com',
           },
         };
         try {
@@ -163,95 +165,107 @@ const Song = ({
     const { title, subtitle, images } = song;
     const image = images?.coverart;
     addToPlaylist({ title, subtitle, image });
-    setAlert("Added to Playlist", "success");
+    setAlert('Added to Playlist', 'success');
   };
 
   const handleAddToQueue = (song) => {
     const { title, subtitle, images } = song;
     const image = images?.coverart;
     addToQueue({ title, subtitle, image });
-    setAlert("Added to Queue", "success");
+    setAlert('Added to Queue', 'success');
   };
 
-  const handleLikeSong = (song) => {};
+  const handleLikeSong = (song) => {
+    const { title, subtitle, images } = song;
+    const image = images?.coverart;
+    likeSong({ title, subtitle, image });
+    setAlert('Added to Liked songs', 'success');
+    getLikedSongs();
+  };
+
+  const handleUnlikeSong = (song) => {
+    unlikeSong(song.title);
+    getLikedSongs();
+    setAlert('Removed from Liked songs', 'success');
+  };
 
   return (
     <div>
-      <div className="flex flex-col">
-        <div className="overflow-x-auto">
-          <div className="p-1.5 w-full inline-block align-middle">
-            <div className="overflow-hidden border rounded-lg">
-              <table className="min-w-full divide-y divide-gray-200  table-auto">
-                <thead className="bg-gray-50">
+      <div className='flex flex-col'>
+        <div className='overflow-x-auto'>
+          <div className='p-1.5 w-full inline-block align-middle'>
+            <div className='overflow-hidden border rounded-lg'>
+              <table className='min-w-full divide-y divide-gray-200  table-auto'>
+                <thead className='bg-gray-50'>
                   <tr>
                     <th
-                      scope="col"
-                      className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase  overflow-hidden truncate w-2 "
+                      scope='col'
+                      className='px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase  overflow-hidden truncate w-2 '
                     >
                       #
                     </th>
                     <th
-                      scope="col"
-                      className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase "
+                      scope='col'
+                      className='px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase '
                     >
                       Song
                     </th>
                     <th
-                      scope="col"
-                      className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase  "
+                      scope='col'
+                      className='px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase  '
                     >
                       Singer
                     </th>
                     <th
-                      scope="col"
-                      className="px-6 py-3 text-xs font-bold text-right text-gray-500 uppercase "
+                      scope='col'
+                      className='px-6 py-3 text-xs font-bold text-right text-gray-500 uppercase '
                     >
                       Duration
                     </th>
                     <th
-                      scope="col"
-                      className="px-6 py-3 text-xs font-bold text-right text-gray-500 uppercase "
+                      scope='col'
+                      className='px-6 py-3 text-xs font-bold text-right text-gray-500 uppercase '
                     >
                       buttons
                     </th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-200">
+                <tbody className='divide-y divide-gray-200'>
                   {songs.map((song, i) => (
                     <tr key={song.key}>
-                      <td className="px-6 py-4 text-sm font-medium text-gray-800 whitespace-nowrap">
+                      <td className='px-6 py-4 text-sm font-medium text-gray-800 whitespace-nowrap'>
                         {i + 1}
                       </td>
                       <td>
-                        <div class="flex flex-row  ">
+                        <div class='flex flex-row  '>
                           <div>
                             <img
-                              alt="song_img"
+                              alt='song_img'
                               src={
                                 song?.images?.coverart
                                   ? song.images.coverart
                                   : song.image
                               }
-                              className="w-30 h-20 rounded-lg"
+                              className='w-30 h-20 rounded-lg'
                               onClick={() => handleClick(song)}
-                              style={{ cursor: "pointer" }}
+                              style={{ cursor: 'pointer' }}
                             />
                           </div>
                           <div>
-                            {" "}
+                            {' '}
                             <strong>{song.title}</strong>
                           </div>
                         </div>
                       </td>
 
-                      <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap ">
+                      <td className='px-6 py-4 text-sm text-gray-800 whitespace-nowrap '>
                         {song.subtitle}
                       </td>
                       <td>3min</td>
                       <td>
-                        {" "}
+                        {' '}
                         <button
-                          className="btn btn-primary"
+                          className='btn btn-primary'
                           onClick={() =>
                             !playlistCheck
                               ? handleAddToPlaylist(song)
@@ -259,25 +273,33 @@ const Song = ({
                           }
                         >
                           {playlistCheck
-                            ? "Remove from playlist"
-                            : "Add to playlist"}
+                            ? 'Remove from playlist'
+                            : 'Add to playlist'}
                         </button>
                         <button
-                          className="btn btn-primary"
+                          className='btn btn-primary'
                           onClick={() =>
                             !queueCheck
                               ? handleAddToQueue(song)
                               : deleteFromQueue(song._id)
                           }
                         >
-                          {queueCheck ? "Remove from queue" : "Add to queue"}
+                          {queueCheck ? 'Remove from queue' : 'Add to queue'}
                         </button>
-                        {titles}
-                        <FavoriteBorderIcon
-                          onClick={(e) => {
-                            handleLikeSong(song);
-                          }}
-                        />
+                        {!titles.includes(song.title) ? (
+                          <FavoriteBorderIcon
+                            onClick={(e) => {
+                              handleLikeSong(song);
+                            }}
+                          />
+                        ) : (
+                          <FavoriteIcon
+                            onClick={(e) => {
+                              // console.log(song.id)
+                              handleUnlikeSong(song);
+                            }}
+                          />
+                        )}
                       </td>
                     </tr>
                   ))}
@@ -337,4 +359,5 @@ export default connect(mapStateToProps, {
   deleteFromQueue,
   getLikedSongs,
   likeSong,
+  unlikeSong,
 })(Song);
