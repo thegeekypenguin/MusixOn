@@ -148,7 +148,7 @@ const MusicPlayer = ({
         params: { query: songsList[index]?.title },
         headers: {
           "X-RapidAPI-Key":
-            "841dbc2911msh1827b6e51607720p13b93fjsn4313f055b1f1",
+            "2c061aba86msh183b4c22b799477p1cda77jsnf97151caa57d",
           "X-RapidAPI-Host": "youtube-music1.p.rapidapi.com",
         },
       };
@@ -162,7 +162,7 @@ const MusicPlayer = ({
           params: { id: id, ext: "mp3" },
           headers: {
             "X-RapidAPI-Key":
-              "841dbc2911msh1827b6e51607720p13b93fjsn4313f055b1f1",
+              "2c061aba86msh183b4c22b799477p1cda77jsnf97151caa57d",
             "X-RapidAPI-Host": "youtube-music1.p.rapidapi.com",
           },
         };
@@ -280,7 +280,7 @@ const MusicPlayer = ({
         params: { query: song?.title },
         headers: {
           "X-RapidAPI-Key":
-            "841dbc2911msh1827b6e51607720p13b93fjsn4313f055b1f1",
+            "2c061aba86msh183b4c22b799477p1cda77jsnf97151caa57d",
           "X-RapidAPI-Host": "youtube-music1.p.rapidapi.com",
         },
       };
@@ -294,7 +294,7 @@ const MusicPlayer = ({
           params: { id: id, ext: "mp3" },
           headers: {
             "X-RapidAPI-Key":
-              "841dbc2911msh1827b6e51607720p13b93fjsn4313f055b1f1",
+              "2c061aba86msh183b4c22b799477p1cda77jsnf97151caa57d",
             "X-RapidAPI-Host": "youtube-music1.p.rapidapi.com",
           },
         };
@@ -324,7 +324,7 @@ const MusicPlayer = ({
         params: { query: song.title },
         headers: {
           "X-RapidAPI-Key":
-            "841dbc2911msh1827b6e51607720p13b93fjsn4313f055b1f1",
+            "2c061aba86msh183b4c22b799477p1cda77jsnf97151caa57d",
           "X-RapidAPI-Host": "youtube-music1.p.rapidapi.com",
         },
       };
@@ -338,7 +338,7 @@ const MusicPlayer = ({
           params: { id: id, ext: "mp3" },
           headers: {
             "X-RapidAPI-Key":
-              "841dbc2911msh1827b6e51607720p13b93fjsn4313f055b1f1",
+              "2c061aba86msh183b4c22b799477p1cda77jsnf97151caa57d",
             "X-RapidAPI-Host": "youtube-music1.p.rapidapi.com",
           },
         };

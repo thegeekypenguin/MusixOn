@@ -27,6 +27,8 @@ import MusicPlayer from './components/layout/MusicPlayer';
 import { connect } from 'react-redux';
 import Sidebar from './components/layout/Sidebar';
 import LikedSong from './components/layout/LikedSong';
+import SharePlaylist from './components/layout/SharePlaylist';
+import PlaylistsShared from './components/layout/PlaylistsShared';
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
@@ -61,6 +63,8 @@ const App = ({ isAuthenticated }) => {
                     <Route exact path='/queue' element={<Queue />} />
                     <Route exact path='/likedSong' element={<LikedSong />} />
                     <Route exact path = '/history' element = {<History />} />
+                    <Route exact path = '/share' element={<SharePlaylist />} />
+                    <Route exact path='/playlistsShared' element={<PlaylistsShared />} />
                     <Route
                       exact
                       path='/top-indian-songs'

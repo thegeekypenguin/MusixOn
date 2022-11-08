@@ -6,6 +6,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../../models/User');
 const config = require('config');
+const auth = require('../../middleware/auth');
 
 router.post(
   '/',
@@ -64,5 +65,25 @@ router.post(
     }
   }
 );
+
+router.get('/:email', auth, async (req, res) => {
+  try {
+    const data = await User.findOne({ email: req.params.email });
+    res.json(data);
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send('Server error');
+  }
+});
+
+router.get('/id/:id', auth, async (req, res) => {
+  try {
+    const data = await User.findOne({ _id: req.params.id });
+    res.json(data);
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send('Server error');
+  }
+});
 
 module.exports = router;

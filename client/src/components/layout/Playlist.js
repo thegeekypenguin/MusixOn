@@ -6,6 +6,7 @@ import { setSongs } from '../../actions/play';
 import MusicPlayer from './MusicPlayer';
 import { setQueueCheck } from '../../actions/queue';
 import Song from './Song';
+import { useNavigate } from 'react-router-dom';
 
 const Playlist = ({
   playlistSongs,
@@ -26,12 +27,17 @@ const Playlist = ({
     setQueueCheck(false);
   }, [playlistSongs]);
 
+  const navigate = useNavigate();
   console.log(playlistSongs);
+
+  const handleSharePlaylist = () => {
+    navigate('/share');
+  }
 
   return (
     <div>
       <Song />
-      {/* <MusicPlayer /> */}
+      <button className='btn btn-danger' onClick={handleSharePlaylist}>Share</button>
     </div>
   );
 };

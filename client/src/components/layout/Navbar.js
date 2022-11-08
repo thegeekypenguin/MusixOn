@@ -42,6 +42,12 @@ function Navbar({ auth: { isAuthenticated, loading }, logout }) {
         <span>History</span>
       </Link>
       <Link
+        to='/playlistsShared'
+        className='text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium'
+      >
+        <span>Shared Playlists</span>
+      </Link>
+      <Link
         to='#!'
         onClick={logout}
         className='text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium'
