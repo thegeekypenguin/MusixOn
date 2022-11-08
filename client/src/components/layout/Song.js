@@ -4,7 +4,10 @@ import { connect } from "react-redux";
 import { Card, Row, Col } from "react-bootstrap";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { likeSong, getLikedSongs } from "../../actions/like";
-import { addCurrentSongInHistory,deleteFromHistory } from '../../actions/history';
+import {
+  addCurrentSongInHistory,
+  deleteFromHistory,
+} from "../../actions/history";
 
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import {
@@ -20,9 +23,11 @@ import { addToPlaylist, deleteFromPlaylist } from "../../actions/playlist";
 import axios from "axios";
 import { setAlert } from "../../actions/alert";
 import { deleteFromQueue, addToQueue } from "../../actions/queue";
+import { useNavigate } from "react-router-dom";
 
 const Song = ({
   songs,
+  setCurrentSong,
   playing,
   setPlaying,
   setNotPlaying,
@@ -58,7 +63,11 @@ const Song = ({
   // }, []);
 
   const [titles, setTitles] = useState([]);
-
+  const [title, setTitle] = useState('')
+  const [subtitle, setSubtitle] = useState('');
+  const [image, setImage] = useState('');
+  const [downloadUrl, setDownloadUrl] = useState("");
+  const navigate = useNavigate();
   useEffect(() => {
     audio.play();
     setLoading(false);
@@ -77,28 +86,37 @@ const Song = ({
   }, [likedSongs]);
 
   async function handleClick(song) {
-    if (!playing) {
-      setLoading(true);
-      setPlaying();
-      setCurrentSong(song);
-          //add it in history
 
-      console.log('-----------------------------------------------')
-      console.log('Song Data');
-      console.log(song);
-      const {title,subtitle,images} = song;
+    if (!playing) {
+
+      setLoading(true);
+      setPlaying();      
+        // setCurrentSong(song);
+      console.log("debugg",currentSong)
+      //add it in history
+
+      // console.log("-----------------------------------------------");
+      // console.log("Song Data");
+      // console.log(song);
+      const { title, subtitle, images } = song;
+      setTitle(title)
+      setSubtitle(subtitle)
+      setImage(images.coverart);
+      const image = images?.coverart
+      setCurrentSong({ title, subtitle, image });
       console.log(images);
       const img_url = images?.coverart;
       console.log(img_url);
-      if(historyCheck){
+      if (historyCheck) {
         deleteFromHistory(song.id);
       }
-      addCurrentSongInHistory({title,subtitle,img_url});
-      console.log(images);
-      setAlert('Added in the history','success');
+      addCurrentSongInHistory({ title, subtitle, img_url });
+      // console.log("---------------Debug----------")
+      // console.log(song);
+      // console.log(currentSong)
 
 
-
+      setAlert("Added in the history", "success");
 
       setIndex(songs.indexOf(song));
       console.log(index);
@@ -108,7 +126,7 @@ const Song = ({
         params: { query: song?.title },
         headers: {
           "X-RapidAPI-Key":
-            "841dbc2911msh1827b6e51607720p13b93fjsn4313f055b1f1",
+            "29eb251975msh4e8a63ff852eb80p18ac0bjsn6337e2cb89fc",
           "X-RapidAPI-Host": "youtube-music1.p.rapidapi.com",
         },
       };
@@ -122,13 +140,15 @@ const Song = ({
           params: { id: id, ext: "mp3" },
           headers: {
             "X-RapidAPI-Key":
-              "841dbc2911msh1827b6e51607720p13b93fjsn4313f055b1f1",
+              "29eb251975msh4e8a63ff852eb80p18ac0bjsn6337e2cb89fc",
             "X-RapidAPI-Host": "youtube-music1.p.rapidapi.com",
           },
         };
         try {
           const res2 = await axios.request(options2);
           console.log(res2.data.result.download_url);
+          //setting deownload url
+          setDownloadUrl(res2.data.result.download_url);
           setAudio(res2.data.result.download_url);
         } catch (err) {
           console.log(err.message);
@@ -144,7 +164,10 @@ const Song = ({
       setPlaying();
       audio.pause();
       audio.currentTime = 0;
-      setCurrentSong(song);
+      const { title, subtitle, images } = song;
+      const image = images.coverart
+      setCurrentSong({ title, subtitle, image });
+
       setIndex(songs.indexOf(song));
       const options = {
         method: "GET",
@@ -152,7 +175,7 @@ const Song = ({
         params: { query: song.title },
         headers: {
           "X-RapidAPI-Key":
-            "841dbc2911msh1827b6e51607720p13b93fjsn4313f055b1f1",
+            "29eb251975msh4e8a63ff852eb80p18ac0bjsn6337e2cb89fc",
           "X-RapidAPI-Host": "youtube-music1.p.rapidapi.com",
         },
       };
@@ -166,14 +189,18 @@ const Song = ({
           params: { id: id, ext: "mp3" },
           headers: {
             "X-RapidAPI-Key":
-              "841dbc2911msh1827b6e51607720p13b93fjsn4313f055b1f1",
+              "29eb251975msh4e8a63ff852eb80p18ac0bjsn6337e2cb89fc",
             "X-RapidAPI-Host": "youtube-music1.p.rapidapi.com",
           },
         };
         try {
           const res2 = await axios.request(options2);
           console.log(res2.data.result.download_url);
+
+          setDownloadUrl(res2.data.result.download_url);
           setAudio(res2.data.result.download_url);
+
+          //setting download url
         } catch (err) {
           console.log(err.message);
         }
@@ -182,6 +209,8 @@ const Song = ({
       }
     }
   }
+
+
 
   const handleAddToPlaylist = (song) => {
     const { title, subtitle, images } = song;
@@ -200,118 +229,82 @@ const Song = ({
   const handleLikeSong = (song) => {};
 
   return (
-    <div>
-      <div className="flex flex-col">
-        <div className="overflow-x-auto">
-          <div className="p-1.5 w-full inline-block align-middle">
-            <div className="overflow-hidden border rounded-lg">
-              <table className="min-w-full divide-y divide-gray-200  table-auto">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase  overflow-hidden truncate w-2 "
-                    >
-                      #
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase "
-                    >
-                      Song
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase  "
-                    >
-                      Singer
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-xs font-bold text-right text-gray-500 uppercase "
-                    >
-                      Duration
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-xs font-bold text-right text-gray-500 uppercase "
-                    >
-                      buttons
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-200">
-                  {songs.map((song, i) => (
-                    <tr key={song.key}>
-                      <td className="px-6 py-4 text-sm font-medium text-gray-800 whitespace-nowrap">
-                        {i + 1}
-                      </td>
-                      <td>
-                        <div class="flex flex-row  ">
-                          <div>
-                            <img
-                              alt="song_img"
-                              src={
-                                song?.images?.coverart
-                                  ? song.images.coverart
-                                  : song.img_url
-                              }
-                              className="w-30 h-20 rounded-lg"
-                              onClick={() => handleClick(song)}
-                              style={{ cursor: "pointer" }}
-                            />
-                          </div>
-                          <div>
-                            {" "}
-                            <strong>{song.title}</strong>
-                          </div>
-                        </div>
-                      </td>
+    <ul class="text-xs sm:text-base divide-y border-t cursor-default">
+      {songs.map((song, i) => (
+        <li class="flex items-center space-x-3 hover:bg-gray-100">
+          <button class="p-3 hover:bg-green-500 group focus:outline-none">
+            <svg
+              class="w-4 h-4 group-hover:text-white"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+          </button>
+          {/* <div class="flex">{i + 1}</div> */}
 
-                      <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap ">
-                        {song.subtitle}
-                      </td>
-                      <td>3min</td>
-                      <td>
-                        {" "}
-                        <button
-                          className="btn btn-primary"
-                          onClick={() =>
-                            !playlistCheck
-                              ? handleAddToPlaylist(song)
-                              : deleteFromPlaylist(song._id)
-                          }
-                        >
-                          {playlistCheck
-                            ? "Remove from playlist"
-                            : "Add to playlist"}
-                        </button>
-                        <button
-                          className="btn btn-primary"
-                          onClick={() =>
-                            !queueCheck
-                              ? handleAddToQueue(song)
-                              : deleteFromQueue(song._id)
-                          }
-                        >
-                          {queueCheck ? "Remove from queue" : "Add to queue"}
-                        </button>
-                        {titles}
-                        <FavoriteBorderIcon
-                          onClick={(e) => {
-                            handleLikeSong(song);
-                          }}
-                        />
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+          <div className="flex">
+            <img
+              alt="song_img"
+              src={song?.images?.coverart ? song.images.coverart : song.img_url}
+              className="w-30 h-20 rounded-lg"
+              onClick={() => handleClick(song)}
+              style={{ cursor: "pointer" }}
+            />
           </div>
-        </div>
-      </div>
-    </div>
+          <div class="flex-1">
+            <div>
+              <strong>{song.title}</strong>
+            </div>
+            <div> {song.subtitle}</div>
+          </div>
+          <div class="text-xs text-gray-400">3:20</div>
+     
+          <button class="focus:outline-none pr-4 group">
+            <svg
+              class="w-4 h-4 group-hover:text-green-600"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              onClick={() => {
+                console.log("yooo");
+                console.log("download wala", downloadUrl);
+                const urlTest = "https://www.google.com/";
+                window.location.href = downloadUrl;
+              }}
+            >
+              <path d="M3 15v4c0 1.1.9 2 2 2h14a2 2 0 0 0 2-2v-4M17 9l-5 5-5-5M12 12.8V2.5" />
+            </svg>
+          </button>
+
+          <button
+            className="btn btn-primary"
+            onClick={() =>
+              !playlistCheck
+                ? handleAddToPlaylist(song)
+                : deleteFromPlaylist(song._id)
+            }
+          >
+            {playlistCheck ? "Remove from playlist" : "Add to playlist"}
+          </button>
+          <button
+            className="btn btn-primary"
+            onClick={() =>
+              !queueCheck ? handleAddToQueue(song) : deleteFromQueue(song._id)
+            }
+          >
+            {queueCheck ? "Remove from queue" : "Add to queue"}
+          </button>
+        </li>
+      ))}
+    </ul>
   );
 };
 
@@ -368,3 +361,116 @@ export default connect(mapStateToProps, {
   getLikedSongs,
   likeSong,
 })(Song);
+
+// <div>
+// <div className="flex flex-col">
+//   <div className="overflow-x-auto">
+//     <div className="p-1.5 w-full inline-block align-middle">
+//       <div className="overflow-hidden border rounded-lg">
+//         <table className="min-w-full divide-y divide-gray-200   ">
+//           <thead className="bg-gray-50">
+//             <tr>
+//               <th
+//                 scope="col"
+//                 className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase  overflow-hidden truncate w-2 "
+//               >
+//                 #
+//               </th>
+//               <th
+//                 scope="col"
+//                 className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase "
+//               >
+//                 Song
+//               </th>
+//               <th
+//                 scope="col"
+//                 className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase  "
+//               >
+//                 Singer
+//               </th>
+//               <th
+//                 scope="col"
+//                 className="px-6 py-3 text-xs font-bold text-right text-gray-500 uppercase "
+//               >
+//                 Duration
+//               </th>
+//               <th
+//                 scope="col"
+//                 className="px-6 py-3 text-xs font-bold text-right text-gray-500 uppercase "
+//               >
+//                 buttons
+//               </th>
+//             </tr>
+//           </thead>
+//           <tbody className="divide-y divide-gray-200">
+//             {songs.map((song, i) => (
+//               <tr key={song.key}>
+//                 <td className="px-6 py-4 text-sm font-medium text-gray-800 whitespace-nowrap">
+//                   {i + 1}
+//                 </td>
+//                 <td>
+//                   <div class="flex flex-row  ">
+//                     <div>
+//                       <img
+//                         alt="song_img"
+//                         src={
+//                           song?.images?.coverart
+//                             ? song.images.coverart
+//                             : song.img_url
+//                         }
+//                         className="w-30 h-20 rounded-lg"
+//                         onClick={() => handleClick(song)}
+//                         style={{ cursor: "pointer" }}
+//                       />
+//                     </div>
+//                     <div>
+//                       {" "}
+//                       <strong>{song.title}</strong>
+//                     </div>
+//                   </div>
+//                 </td>
+
+//                 <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap ">
+//                   {song.subtitle}
+//                 </td>
+//                 <td>3min</td>
+//                 <td>
+//                   {" "}
+//                   <button
+//                     className="btn btn-primary"
+//                     onClick={() =>
+//                       !playlistCheck
+//                         ? handleAddToPlaylist(song)
+//                         : deleteFromPlaylist(song._id)
+//                     }
+//                   >
+//                     {playlistCheck
+//                       ? "Remove from playlist"
+//                       : "Add to playlist"}
+//                   </button>
+//                   <button
+//                     className="btn btn-primary"
+//                     onClick={() =>
+//                       !queueCheck
+//                         ? handleAddToQueue(song)
+//                         : deleteFromQueue(song._id)
+//                     }
+//                   >
+//                     {queueCheck ? "Remove from queue" : "Add to queue"}
+//                   </button>
+//                   {titles}
+//                   <FavoriteBorderIcon
+//                     onClick={(e) => {
+//                       handleLikeSong(song);
+//                     }}
+//                   />
+//                 </td>
+//               </tr>
+//             ))}
+//           </tbody>
+//         </table>
+//       </div>
+//     </div>
+//   </div>
+// </div>
+// </div>

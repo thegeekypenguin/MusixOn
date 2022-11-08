@@ -35,11 +35,11 @@ useEffect(() => {
       <div
         className={` ${
           open ? "w-72" : "w-20 "
-        } bg-dark-purple h-screen p-5  pt-8 relative duration-300`}
+        } bg-light-black h-screen p-5  pt-8 relative duration-300`}
       >
         <img
           src=" /assets/control.png"
-          className={`absolute cursor-pointer -right-3 top-9 w-7 border-dark-purple
+          className={`absolute cursor-pointer -right-3 top-9 w-7 border-light-black
            border-2 rounded-full  ${!open && "rotate-180"}`}
           onClick={() => setOpen(!open)}
           alt="assets"
@@ -77,6 +77,8 @@ useEffect(() => {
           ))}
         </ul>
       </div>
+
+      
   
     </div>
   );

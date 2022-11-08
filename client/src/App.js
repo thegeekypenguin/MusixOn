@@ -15,7 +15,7 @@ import Dashboard from "./components/dashboard/Dashboard";
 import Search from "./components/layout/Search";
 import Artist from "./components/layout/Artist";
 import Playlist from "./components/layout/Playlist";
-import History from './components/features/History';
+import History from "./components/features/History";
 // redux
 import { Provider } from "react-redux";
 import store from "./store";
@@ -42,6 +42,7 @@ const App = ({ isAuthenticated }) => {
         <Fragment>
           <div className="relative flex">
             <Sidebar />
+            {/* <div className="  h-[calc(100vh-72px)]   flex xl:flex-row flex-col-reverse"> */}
             <div className="flex-1 h-fit pb-40">
               <Navbar />
 
@@ -58,7 +59,7 @@ const App = ({ isAuthenticated }) => {
                     <Route exact path="/artist" element={<Artist />} />
                     <Route exact path="/playlist" element={<Playlist />} />
                     <Route exact path="/queue" element={<Queue />} />
-                    <Route exact path = '/history' element = {<History />} />
+                    <Route exact path="/history" element={<History />} />
                     <Route
                       exact
                       path="/top-indian-songs"
@@ -87,11 +88,55 @@ const App = ({ isAuthenticated }) => {
                 </Routes>
               </section>
             </div>
-            <div />
           </div>
+
+          {/* <div className="fixed w-screen bottom-0 inset-x-0 ">
+            <div className="py-3 bg-neutral-800/60 backdrop-blur-xl rounded-t-[2rem] text-white shadow-lg shadow-purple-50">
+              <div className="container mx-auto px-3 lg:px-0 flex justify-between">
+            
+                <div className="flex items-center lg:w-3/12 gap-2">
+                  <div className="w-14 h-14 lg:flex-shrink-0">image</div>
+                  <div className="flex flex-col gap-1">
+                    <h6 className="text-sm font-semibold">title</h6>
+                    <span className="text-xs text-gray-400">artist</span>
+                  </div>
+                </div>
+                <div className="flex items-center justify-center gap-3 lg:w-2/12">
+                  <button>skk</button>
+                  <button className="rounded-full p-1 border border-purple-700">
+                    tbplay/pause
+                  </button>
+                  <button>skipforward</button>
+                </div>
+                <div className="hidden lg:flex w-6/12 flex-col gap-1 justify-center">
+                  slider
+                  <div className="flex justify-between text-xs">
+                    <span>currtime</span>
+                    <span>duration</span>
+                  </div>
+                </div>
+                <div className="flex justify-end gap-3 lg:w-1/12">
+                  <div
+                    className="relative flex items-center h-full"
+                 
+                  >
+                    <div className="flex absolute -top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 shadow-lg w-8 h-20 rounded-2xl overflow-hidden bg-neutral-100 py-4 justify-center">
+                      slider
+                    </div>
+
+                    <button>tbvol</button>
+                  </div>
+                  <button>shuffle</button>
+                </div>
+              </div>
+            </div>
+          </div> */}
+          <div className="absolute bottom-0 left-0">
+              {isAuthenticated && <MusicPlayer />}
+            </div>
+          {/* </div> */}
         </Fragment>
       </Router>
-      {isAuthenticated && <MusicPlayer />}
     </>
   );
 };

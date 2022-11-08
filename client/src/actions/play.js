@@ -10,7 +10,11 @@ import {
   ARTIST_ID,
 } from '../actions/types';
 
+
+
 export const setCurrentSong = (song) => (dispatch) => {
+
+  console.log(song,"setCurrentSong actionnnnnnnnnnnnnnnnnd")
   dispatch({
     type: LOAD_CURRENT_SONG,
     payload: song,
@@ -18,6 +22,8 @@ export const setCurrentSong = (song) => (dispatch) => {
 };
 
 export const setSongs = (songs) => (dispatch) => {
+  console.log(songs, "setSongs actionnnnnnnnnnnnnnnnnd")
+
   dispatch({
     type: LOAD_SONGS,
     payload: songs,
@@ -25,18 +31,24 @@ export const setSongs = (songs) => (dispatch) => {
 };
 
 export const setPlaying = () => (dispatch) => {
+  console.log("setPlaying actionnnnnnnnnnnnnnnnnd")
+
   dispatch({
     type: SONG_PLAYING,
   });
 };
 
 export const setNotPlaying = () => (dispatch) => {
+  console.log( "setNotPlaying actionnnnnnnnnnnnnnnnnd")
+
   dispatch({
     type: SONG_NOT_PLAYING,
   });
 };
 
 export const setAudio = (url) => (dispatch) => {
+  console.log( url,"setAudio actionnnnnnnnnnnnnnnnnd")
+
   dispatch({
     type: LOAD_AUDIO,
     payload: url,
@@ -44,6 +56,8 @@ export const setAudio = (url) => (dispatch) => {
 };
 
 export const setIndex = (index) => (dispatch) => {
+
+  console.log( index,"setIndex actionnnnnnnnnnnnnnnnnd")
   dispatch({
     type: INDEX,
     payload: index,
@@ -51,6 +65,8 @@ export const setIndex = (index) => (dispatch) => {
 };
 
 export const setLoading = (value) => (dispatch) => {
+  console.log( value,"setLoading actionnnnnnnnnnnnnnnnnd")
+
   dispatch({
     type: LOADING_SONG,
     payload: value,

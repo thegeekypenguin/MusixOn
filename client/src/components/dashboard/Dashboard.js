@@ -38,7 +38,7 @@ const Dashboard = ({
         <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
       </div>
     </header>
-    <div className="flex flex-wrap sm:justify-start justify-center gap-8">
+    <div className="flex flex-wrap sm:justify-start justify-center gap-4">
       {genres.map((genre, i) => (
         <div className="flex flex-col w-[250px] p-4 bg-white/5 bg-opacity-80 backdrop-blur-sm animate-slideup rounded-lg cursor-pointer">
           <Link to={genre.link}>

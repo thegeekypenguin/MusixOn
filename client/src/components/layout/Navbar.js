@@ -12,7 +12,7 @@ function Navbar({ auth: { isAuthenticated, loading }, logout }) {
   const [isOpen, setIsOpen] = useState(false);
 
   const authLinks = (
-    <div>
+    <div  >
       <Link
         to="/search"
         className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
@@ -55,6 +55,7 @@ function Navbar({ auth: { isAuthenticated, loading }, logout }) {
         to="/register"
         className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
       >
+        
         Register
       </Link>
 
@@ -68,7 +69,7 @@ function Navbar({ auth: { isAuthenticated, loading }, logout }) {
   );
 
   return (
-    <div>
+    <div style={{width:"30 rem"}}  >
       <nav className="bg-gray-800  ">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">

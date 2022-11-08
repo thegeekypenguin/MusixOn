@@ -14,15 +14,21 @@ const initialState = {
   index: -1,
   playing: false,
   songs: [],
-  currentSong: {},
+  currentSong:  {},
   audio: new Audio(''),
   loading: false,
   artist: {},
   artistId: -1,
+  title: '',
+  subtitle: '',
+  image: ''
 };
 
 export default function (state = initialState, action) {
   const { type, payload } = action;
+  console.log(type, payload, "payloadddddddddddddddddd");
+  console.log(typeof (payload), "Data typeeeeeeeeee")
+  // console.log(state,{...state,currentSong:payload})
   switch (type) {
     case SONG_PLAYING:
       return {
@@ -37,7 +43,9 @@ export default function (state = initialState, action) {
     case LOAD_CURRENT_SONG:
       return {
         ...state,
-        currentSong: payload,
+        title: payload.title,
+        subtitle: payload.subtitle,
+        image: payload.image,
       };
     case LOAD_SONGS:
       return {

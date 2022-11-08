@@ -2,7 +2,22 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Card, Button } from "react-bootstrap";
 import { Row, Col } from "react-bootstrap";
+import Slider, { Range } from "rc-slider";
+import "rc-slider/assets/index.css";
+
 import "./style.css";
+import {
+  TbArrowsShuffle2,
+  TbPlayerPause,
+  TbPlayerPlay,
+  TbPlayerSkipBack,
+  TbPlayerSkipForward,
+  TbVolume,
+  TbPlayerTrackNext,
+  TbPlayerTrackPrev,
+  TbRepeat,
+  TbVolume3,
+} from "react-icons/tb";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import "https://kit.fontawesome.com/26504e4a1f.js";
 
@@ -51,10 +66,24 @@ const MusicPlayer = ({
   deleteFromPlaylist,
   setArtistId,
   setAlert,
+  title, subtitle, image
 }) => {
   const [open, setOpen] = useState(true);
 
   const [isMobile, setIsMobile] = useState(false);
+
+  const secondsToMinutes = (sec) => {
+    if (!sec) return "00:00";
+    sec = Math.trunc(+sec);
+    const minutes = Math.floor(sec / 60);
+    const seconds = sec % 60;
+
+    return (
+      minutes.toString().padStart(2, "0") +
+      ":" +
+      seconds.toString().padStart(2, "0")
+    );
+  };
 
   //choose the screen size
   const handleResize = () => {
@@ -141,14 +170,14 @@ const MusicPlayer = ({
       audio.currentTime = 0;
       setNotPlaying();
       setLoading(true);
-      setCurrentSong(songsList[index]);
+      // await setCurrentSong(songsList[index]);
       const options = {
         method: "GET",
         url: "https://youtube-music1.p.rapidapi.com/v2/search",
         params: { query: songsList[index]?.title },
         headers: {
           "X-RapidAPI-Key":
-            "841dbc2911msh1827b6e51607720p13b93fjsn4313f055b1f1",
+            "29eb251975msh4e8a63ff852eb80p18ac0bjsn6337e2cb89fc",
           "X-RapidAPI-Host": "youtube-music1.p.rapidapi.com",
         },
       };
@@ -162,7 +191,7 @@ const MusicPlayer = ({
           params: { id: id, ext: "mp3" },
           headers: {
             "X-RapidAPI-Key":
-              "841dbc2911msh1827b6e51607720p13b93fjsn4313f055b1f1",
+              "29eb251975msh4e8a63ff852eb80p18ac0bjsn6337e2cb89fc",
             "X-RapidAPI-Host": "youtube-music1.p.rapidapi.com",
           },
         };
@@ -236,6 +265,16 @@ const MusicPlayer = ({
       else setIndex(index - 1);
     }
   };
+  const handleFastForward = () => {
+    audio.currentTime += 10;
+  };
+  const handleRewind = () => {
+    if (audio.currentTime >= 10) {
+      audio.currentTime -= 10;
+    } else {
+      audio.currentTime = 0;
+    }
+  };
 
   audio?.addEventListener("ended", function () {
     audio.currentTime = 0;
@@ -244,34 +283,42 @@ const MusicPlayer = ({
     } else handleNext();
   });
 
+  const [volume, setVolume] = useState(1);
+  const [isVolumeOpen, setIsVolumeOpen] = useState(false);
+
+  const [currentSongTime, setCurrentSongTime] = useState(0);
   const myProgressBar = document.getElementById("myProgressBar");
   audio?.addEventListener("timeupdate", () => {
-    var val = audio.duration;
-    const progress = parseInt((audio.currentTime / audio.duration) * 100);
-    myProgressBar.value = audio.currentTime;
+    // console.log("time is updating")
+    // var val = audio.duration;
+    setCurrentSongTime(audio.currentTime);
+    // const progress = parseInt((audio.currentTime / audio.duration) * 100);
+    // myProgressBar.value = audio.currentTime;
   });
 
-  myProgressBar?.addEventListener("change", () => {
-    audio.currentTime = (myProgressBar.value * audio.duration) / 100;
-  });
+  // myProgressBar?.addEventListener("change", () => {
+  //   audio.currentTime = (myProgressBar.value * audio.duration) / 100;
+  // });
 
   // to display queue songs on every page we are loading the queuesongs and displaying them in the musicplayer
 
-  useEffect(() => {
-    audio.play();
-    setLoading(false);
-  }, [audio]);
+  //why two
+  // useEffect(() => {
+  //   audio.play();
+  //   setLoading(false);
+  // }, [audio]);
 
   async function handleClick(song) {
     if (!playing) {
       setLoading(true);
+      
       setPlaying();
       console.log(currentSong);
       if (currentSong && queueSongs.includes(currentSong)) {
         deleteFromQueue(currentSong._id);
         console.log("deleted");
       }
-      setCurrentSong(song);
+      // setCurrentSong(song);
       setIndex(songsList.indexOf(song));
       console.log(index);
       const options = {
@@ -280,7 +327,7 @@ const MusicPlayer = ({
         params: { query: song?.title },
         headers: {
           "X-RapidAPI-Key":
-            "841dbc2911msh1827b6e51607720p13b93fjsn4313f055b1f1",
+            "29eb251975msh4e8a63ff852eb80p18ac0bjsn6337e2cb89fc",
           "X-RapidAPI-Host": "youtube-music1.p.rapidapi.com",
         },
       };
@@ -294,7 +341,7 @@ const MusicPlayer = ({
           params: { id: id, ext: "mp3" },
           headers: {
             "X-RapidAPI-Key":
-              "841dbc2911msh1827b6e51607720p13b93fjsn4313f055b1f1",
+              "29eb251975msh4e8a63ff852eb80p18ac0bjsn6337e2cb89fc",
             "X-RapidAPI-Host": "youtube-music1.p.rapidapi.com",
           },
         };
@@ -316,7 +363,7 @@ const MusicPlayer = ({
       setPlaying();
       audio.pause();
       audio.currentTime = 0;
-      setCurrentSong(song);
+      // setCurrentSong(song);
       setIndex(queueSongs.indexOf(song));
       const options = {
         method: "GET",
@@ -324,7 +371,7 @@ const MusicPlayer = ({
         params: { query: song.title },
         headers: {
           "X-RapidAPI-Key":
-            "841dbc2911msh1827b6e51607720p13b93fjsn4313f055b1f1",
+            "29eb251975msh4e8a63ff852eb80p18ac0bjsn6337e2cb89fc",
           "X-RapidAPI-Host": "youtube-music1.p.rapidapi.com",
         },
       };
@@ -338,7 +385,7 @@ const MusicPlayer = ({
           params: { id: id, ext: "mp3" },
           headers: {
             "X-RapidAPI-Key":
-              "841dbc2911msh1827b6e51607720p13b93fjsn4313f055b1f1",
+              "29eb251975msh4e8a63ff852eb80p18ac0bjsn6337e2cb89fc",
             "X-RapidAPI-Host": "youtube-music1.p.rapidapi.com",
           },
         };
@@ -372,10 +419,287 @@ const MusicPlayer = ({
 
   return (
     <div>
-      {console.log("Queue")}
+      {/*        
+        <div class="absolute inset-y-0 right-0 w-16 ...">0fhgfhg6</div>
+    */}
+      {/* {console.log("Queue")} */}
       <Queue />
-      {/* Displaying the queueSongs */}
-      <div className="flex flex-col">
+     
+
+      {/* 
+      <div className="absolute h-screen inset-y-0 right-0 w-16  sticky ">
+        <div
+          className={` ${
+            open ? "w-72" : "w-20 "
+          } bg-dark-purple h-screen p-5  pt-8 relative duration-300`}
+        >
+          <img
+            src=" /assets/control.png"
+            className={`absolute cursor-pointer -left-3 top-9 w-7 border-dark-purple
+           border-2 rounded-full  ${!open && "rotate-180"}`}
+            onClick={() => setOpen(!open)}
+            alt="assets"
+          />
+          <div className="flex gap-x-4 items-center">
+            <img
+              src="/assets/logo.png"
+              className={`cursor-pointer duration-500 ${
+                open && "rotate-[360deg]"
+              }`}
+              alt="logo"
+            />
+            <h1
+              className={`text-white origin-left font-medium text-xl duration-200 ${
+                !open && "scale-0"
+              }`}
+            >
+              MusixOn
+            </h1>
+          </div>
+          <ul className="pt-6">
+            {Menus.map((Menu, index) => (
+              <li
+                key={index}
+                className={`flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-gray-300 text-sm items-center gap-x-4 
+              ${Menu.gap ? "mt-9" : "mt-2"} ${
+                  index === 0 && "bg-light-white"
+                } `}
+              >
+                <img src={`/assets/${Menu.src}.png`} alt="type" />
+                <span
+                  className={`${!open && "hidden"} origin-left duration-200`}
+                >
+                  {Menu.title}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div> */}
+
+      {/*displaying player*/}
+
+      {/* 
+
+
+
+      <div className="bottom" style={{ cursor: "pointer" }}>
+        <input
+          type="range"
+          name="range"
+          id="myProgressBar"
+          min="0"
+          value="0"
+          max="200"
+        />
+        <div className="icons">
+          <button
+            className={shuffleOn ? "btn btn-primary" : "btn btn-secondary"}
+            onClick={() => {
+              setShuffleOn(!shuffleOn);
+            }}
+          >
+            Shuffle
+          </button>
+          <button
+            className={repeatOn ? "btn btn-primary" : "btn btn-secondary"}
+            onClick={() => {
+              setRepeatOn(!repeatOn);
+            }}
+          >
+            Repeat
+          </button>
+          <i
+            className="fas fa-3x fa-step-backward"
+            onClick={handlePrevious}
+            id="previous"
+          ></i>
+          <i
+            className={
+              playing ? "fas fa-3x fa-pause-circle" : "fas fa-3x fa-play-circle"
+            }
+            onClick={handlePlayAndPause}
+            id="masterPlay"
+          ></i>
+          <i
+            className="fas fa-3x fa-step-forward"
+            onClick={handleNext}
+            id="next"
+          ></i>
+        </div>
+      </div>
+      <h5>{currentSong?.title}</h5>
+      <h6>{currentSong?.subtitle}</h6>
+
+  */}
+      {/* <div className="fixed w-screen bottom-0 inset-x-0 ">
+            <div className="py-3 bg-neutral-800/60 backdrop-blur-xl rounded-t-[2rem] text-white shadow-lg shadow-purple-50">
+              <div className="container mx-auto px-3 lg:px-0 flex justify-between">
+            
+                <div className="flex items-center lg:w-3/12 gap-2">
+                  <div className="w-14 h-14 lg:flex-shrink-0">image</div>
+                  <div className="flex flex-col gap-1">
+                    <h6 className="text-sm font-semibold">title</h6>
+                    <span className="text-xs text-gray-400">artist</span>
+                  </div>
+                </div>
+                <div className="flex items-center justify-center gap-3 lg:w-2/12">
+                  <button>skk</button>
+                  <button className="rounded-full p-1 border border-purple-700">
+                    tbplay/pause
+                  </button>
+                  <button>skipforward</button>
+                </div>
+                <div className="hidden lg:flex w-6/12 flex-col gap-1 justify-center">
+                  slider
+                  <div className="flex justify-between text-xs">
+                    <span>currtime</span>
+                    <span>duration</span>
+                  </div>
+                </div>
+                <div className="flex justify-end gap-3 lg:w-1/12">
+                  <div
+                    className="relative flex items-center h-full"
+                 
+                  >
+                    <div className="flex absolute -top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 shadow-lg w-8 h-20 rounded-2xl overflow-hidden bg-neutral-100 py-4 justify-center">
+                      slider
+                    </div>
+
+                    <button>tbvol</button>
+                  </div>
+                  <button>shuffle</button>
+                </div>
+              </div>
+            </div>
+          </div> */}
+
+      <div className="fixed w-screen bottom-0 inset-x-0 ">
+        <div className="py-3 bg-neutral-800/60 backdrop-blur-xl rounded-t-[2rem] text-white shadow-lg shadow-purple-50">
+          <div className="container mx-auto px-3 lg:px-0 flex justify-between">
+            {/* title and thumbnail */}
+            <div className="flex items-center lg:w-2/12 gap-2">
+              <div className="w-14 h-14 lg:flex-shrink-0">
+                <img
+                  src={
+                    image? image
+                      : null
+                  }
+                  alt="img"
+                  className="rounded-lg"
+                />
+              </div>
+              <div className="flex flex-col gap-1">
+                <h6 className="text-sm font-semibold">
+                  {title ? title : ""}
+                </h6>
+                <span className="text-xs text-gray-400">
+                  {" "}
+                  {subtitle ?subtitle : ""}
+                </span>
+              </div>
+            </div>
+            {/* play/pause and next/prev icons */}
+
+            <div className="flex items-center justify-center gap-3 lg:w-2/12">
+              <button onClick={handlePrevious}>
+                <TbPlayerSkipBack size={20} />
+              </button>
+
+              <button onClick={handleRewind}>
+                <TbPlayerTrackPrev size={20} />
+              </button>
+
+              <button
+                onClick={handlePlayAndPause}
+                id="masterPlay"
+                className="rounded-full p-1 border border-black"
+              >
+                {playing ? (
+                  <TbPlayerPause size={26} />
+                ) : (
+                  <TbPlayerPlay size={26} />
+                )}
+              </button>
+              <button onClick={handleFastForward}>
+                <TbPlayerTrackNext size={20} />
+              </button>
+              <button onClick={handleNext} id="next">
+                <TbPlayerSkipForward size={20} />
+              </button>
+            </div>
+            {/* progress */}
+            <div className="hidden lg:flex w-6/12 flex-col gap-1 justify-center">
+              <div style={{ cursor: "pointer" }}>
+                <Slider
+                  trackStyle={{ background: "#081A51" }}
+                  handleStyle={{
+                    border: "2px solid #081A51",
+                    background: "#081A51",
+                    boxShadow: "none",
+                    opacity: 1,
+                  }}
+                  min={0}
+                  max={200}
+                  value={currentSongTime}
+                  onChange={(value) => {
+                    audio.currentTime = value;
+                  }}
+                  id="myProgressBar"
+                />
+              </div>
+              <div className="flex justify-between text-xs">
+                <span>{secondsToMinutes(currentSongTime)}</span>
+                <span>{secondsToMinutes(200)}</span>
+              </div>
+            </div>
+            {/* settings */}
+
+            <div className="flex justify-between lg:w-1/12">
+              <button class="mx-2">
+                <TbRepeat size={20}></TbRepeat>
+              </button>
+              <button class="mx-2">
+                <TbArrowsShuffle2 size={20} />
+              </button>
+              <div className="relative flex items-center h-full mx-2">
+                {isVolumeOpen && (<div className="flex absolute -top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 shadow-lg w-8 h-20 rounded-2xl overflow-hidden bg-neutral-800/60 py-4 justify-center">
+                  <Slider
+                    vertical
+                    min={0}
+                    max={1}
+                    step={0.01}
+                    value={volume}
+                    onChange={(val) => {
+                      console.log(volume);
+                      audio.volume = val;
+                      setVolume(val);
+                    }}
+                  trackStyle={{ background: "#081A51" }}
+
+                    handleStyle={{
+                      background: "#081A51",
+                      border: "2px solid #081A51",
+                    }}
+                  />
+                </div>)}
+
+                <button onClick={() => setIsVolumeOpen(!isVolumeOpen)}>
+                  {volume === 0 ? (
+                    <TbVolume3 size={20} />
+                  ) : (
+                    <TbVolume size={20} />
+                  )}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+       {/* Displaying the queueSongs */}
+       <div className="flex flex-col">
         <div className="overflow-x-auto">
           <div className="p-1.5 w-full inline-block align-middle">
             <div className="overflow-hidden border rounded-lg">
@@ -470,6 +794,8 @@ const MusicPlayer = ({
                         >
                           {queueCheck ? "Remove from queue" : "Add to queue"}
                         </button>
+
+                        
                         <FavoriteBorderIcon />
                       </td>
                     </tr>
@@ -480,106 +806,6 @@ const MusicPlayer = ({
           </div>
         </div>
       </div>
-{/* 
-      <div className="absolute h-screen inset-y-0 right-0 w-16  sticky ">
-        <div
-          className={` ${
-            open ? "w-72" : "w-20 "
-          } bg-dark-purple h-screen p-5  pt-8 relative duration-300`}
-        >
-          <img
-            src=" /assets/control.png"
-            className={`absolute cursor-pointer -left-3 top-9 w-7 border-dark-purple
-           border-2 rounded-full  ${!open && "rotate-180"}`}
-            onClick={() => setOpen(!open)}
-            alt="assets"
-          />
-          <div className="flex gap-x-4 items-center">
-            <img
-              src="/assets/logo.png"
-              className={`cursor-pointer duration-500 ${
-                open && "rotate-[360deg]"
-              }`}
-              alt="logo"
-            />
-            <h1
-              className={`text-white origin-left font-medium text-xl duration-200 ${
-                !open && "scale-0"
-              }`}
-            >
-              MusixOn
-            </h1>
-          </div>
-          <ul className="pt-6">
-            {Menus.map((Menu, index) => (
-              <li
-                key={index}
-                className={`flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-gray-300 text-sm items-center gap-x-4 
-              ${Menu.gap ? "mt-9" : "mt-2"} ${
-                  index === 0 && "bg-light-white"
-                } `}
-              >
-                <img src={`/assets/${Menu.src}.png`} alt="type" />
-                <span
-                  className={`${!open && "hidden"} origin-left duration-200`}
-                >
-                  {Menu.title}
-                </span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div> */}
-
-      {/*displaying player*/}
-
-      <div className="bottom" style={{ cursor: "pointer" }}>
-        <input
-          type="range"
-          name="range"
-          id="myProgressBar"
-          min="0"
-          value="0"
-          max="200"
-        />
-        <div className="icons">
-          <button
-            className={shuffleOn ? "btn btn-primary" : "btn btn-secondary"}
-            onClick={() => {
-              setShuffleOn(!shuffleOn);
-            }}
-          >
-            Shuffle
-          </button>
-          <button
-            className={repeatOn ? "btn btn-primary" : "btn btn-secondary"}
-            onClick={() => {
-              setRepeatOn(!repeatOn);
-            }}
-          >
-            Repeat
-          </button>
-          <i
-            className="fas fa-3x fa-step-backward"
-            onClick={handlePrevious}
-            id="previous"
-          ></i>
-          <i
-            className={
-              playing ? "fas fa-3x fa-pause-circle" : "fas fa-3x fa-play-circle"
-            }
-            onClick={handlePlayAndPause}
-            id="masterPlay"
-          ></i>
-          <i
-            className="fas fa-3x fa-step-forward"
-            onClick={handleNext}
-            id="next"
-          ></i>
-        </div>
-      </div>
-      <h5>{currentSong?.title}</h5>
-      <h6>{currentSong?.subtitle}</h6>
     </div>
   );
 };
@@ -595,6 +821,9 @@ const mapStateToProps = (state) => ({
   artistId: state.play.artistId,
   playlistCheck: state.playlist.playlistCheck,
   queueCheck: state.queue.queueCheck,
+  title: state.play.title,
+  subtitle: state.play.subtitle,
+  image: state.play.image,
 });
 
 MusicPlayer.propTypes = {
