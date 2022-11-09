@@ -17,6 +17,7 @@ import {
   TbPlayerTrackPrev,
   TbRepeat,
   TbVolume3,
+  TbDownload
 } from "react-icons/tb";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import "https://kit.fontawesome.com/26504e4a1f.js";
@@ -210,10 +211,10 @@ const MusicPlayer = ({
     call();
   }, [index]);
 
-  useEffect(() => {
-    if (playing) audio.play();
-    setLoading(false);
-  }, [audio]);
+  // useEffect(() => {
+  //   if (playing) audio.play();
+  //   setLoading(false);
+  // }, [audio]);
 
   const handlePlayAndPause = () => {
     if (playing) {
@@ -656,10 +657,10 @@ const MusicPlayer = ({
             {/* settings */}
 
             <div className="flex justify-between lg:w-1/12">
-              <button class="mx-2">
+              <button class="mx-1.5">
                 <TbRepeat size={20}></TbRepeat>
               </button>
-              <button class="mx-2">
+              <button class="mx-1.5">
                 <TbArrowsShuffle2 size={20} />
               </button>
               <div className="relative flex items-center h-full mx-2">
@@ -692,6 +693,9 @@ const MusicPlayer = ({
                   )}
                 </button>
               </div>
+              <button class="mx-1.5">
+                <TbDownload size={20} />
+              </button>
             </div>
           </div>
         </div>
@@ -699,7 +703,7 @@ const MusicPlayer = ({
 
 
        {/* Displaying the queueSongs */}
-       <div className="flex flex-col">
+       {/* <div className="flex flex-col">
         <div className="overflow-x-auto">
           <div className="p-1.5 w-full inline-block align-middle">
             <div className="overflow-hidden border rounded-lg">
@@ -805,7 +809,7 @@ const MusicPlayer = ({
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

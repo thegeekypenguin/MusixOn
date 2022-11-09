@@ -6,43 +6,38 @@ import { setSongs } from '../../actions/play';
 import MusicPlayer from './MusicPlayer';
 import { setQueueCheck } from '../../actions/queue';
 import Song from './Song';
-import { useNavigate } from 'react-router-dom';
+import { getLikedSongs } from '../../actions/like';
 
-const Playlist = ({
+const LikedSong = ({
   playlistSongs,
   loadPlaylist,
   setSongs,
   playlistCheck,
   setPlaylistCheck,
   setQueueCheck,
+  getLikedSongs,
+  likedSongs,
 }) => {
   useEffect(() => {
     setSongs([]);
-    loadPlaylist();
+    getLikedSongs();
   }, []);
 
   useEffect(() => {
-    setSongs(playlistSongs);
-    setPlaylistCheck(true);
-    setQueueCheck(false);
-  }, [playlistSongs]);
+    setSongs(likedSongs);
+  }, [likedSongs]);
 
-  const navigate = useNavigate();
   console.log(playlistSongs);
-
-  const handleSharePlaylist = () => {
-    navigate('/share');
-  }
 
   return (
     <div>
       <Song />
-      <button className='btn btn-danger' onClick={handleSharePlaylist}>Share</button>
+      {/* <MusicPlayer /> */}
     </div>
   );
 };
 
-Playlist.propTypes = {
+LikedSong.propTypes = {
   playlistSongs: PropTypes.array.isRequired,
   loadPlaylist: PropTypes.func.isRequired,
   setSongs: PropTypes.func.isRequired,
@@ -54,6 +49,7 @@ Playlist.propTypes = {
 const mapStateToProps = (state) => ({
   playlistSongs: state.playlist.playlistSongs,
   playlistCheck: state.playlist.playlistCheck,
+  likedSongs: state.like.likedSongs,
 });
 
 export default connect(mapStateToProps, {
@@ -61,4 +57,5 @@ export default connect(mapStateToProps, {
   setSongs,
   setPlaylistCheck,
   setQueueCheck,
-})(Playlist);
+  getLikedSongs
+})(LikedSong);

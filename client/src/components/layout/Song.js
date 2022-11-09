@@ -1,15 +1,16 @@
-import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { Card, Row, Col } from "react-bootstrap";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import { likeSong, getLikedSongs } from "../../actions/like";
+import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { Card, Row, Col } from 'react-bootstrap';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import { likeSong, getLikedSongs, unlikeSong } from '../../actions/like';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+
 import {
   addCurrentSongInHistory,
   deleteFromHistory,
-} from "../../actions/history";
+} from '../../actions/history';
 
-import FavoriteIcon from "@mui/icons-material/Favorite";
 import {
   setCurrentSong,
   setPlaying,
@@ -52,6 +53,7 @@ const Song = ({
   likeSong,
   getLikedSongs,
   likedSongs,
+  unlikeSong,
 }) => {
   // const [audio, setAudio] = useState(new Audio());
 
@@ -121,8 +123,8 @@ const Song = ({
       setIndex(songs.indexOf(song));
       console.log(index);
       const options = {
-        method: "GET",
-        url: "https://youtube-music1.p.rapidapi.com/v2/search",
+        method: 'GET',
+        url: 'https://youtube-music1.p.rapidapi.com/v2/search',
         params: { query: song?.title },
         headers: {
           "X-RapidAPI-Key":
@@ -135,9 +137,9 @@ const Song = ({
         const id = res.data.result.songs[0].id;
         console.log(id);
         const options2 = {
-          method: "GET",
-          url: "https://youtube-music1.p.rapidapi.com/get_download_url",
-          params: { id: id, ext: "mp3" },
+          method: 'GET',
+          url: 'https://youtube-music1.p.rapidapi.com/get_download_url',
+          params: { id: id, ext: 'mp3' },
           headers: {
             "X-RapidAPI-Key":
               "29eb251975msh4e8a63ff852eb80p18ac0bjsn6337e2cb89fc",
@@ -170,8 +172,8 @@ const Song = ({
 
       setIndex(songs.indexOf(song));
       const options = {
-        method: "GET",
-        url: "https://youtube-music1.p.rapidapi.com/v2/search",
+        method: 'GET',
+        url: 'https://youtube-music1.p.rapidapi.com/v2/search',
         params: { query: song.title },
         headers: {
           "X-RapidAPI-Key":
@@ -184,9 +186,9 @@ const Song = ({
         const id = res.data.result.songs[0].id;
         console.log(id);
         const options2 = {
-          method: "GET",
-          url: "https://youtube-music1.p.rapidapi.com/get_download_url",
-          params: { id: id, ext: "mp3" },
+          method: 'GET',
+          url: 'https://youtube-music1.p.rapidapi.com/get_download_url',
+          params: { id: id, ext: 'mp3' },
           headers: {
             "X-RapidAPI-Key":
               "29eb251975msh4e8a63ff852eb80p18ac0bjsn6337e2cb89fc",
@@ -216,17 +218,30 @@ const Song = ({
     const { title, subtitle, images } = song;
     const image = images?.coverart;
     addToPlaylist({ title, subtitle, image });
-    setAlert("Added to Playlist", "success");
+    setAlert('Added to Playlist', 'success');
   };
 
   const handleAddToQueue = (song) => {
     const { title, subtitle, images } = song;
     const image = images?.coverart;
     addToQueue({ title, subtitle, image });
-    setAlert("Added to Queue", "success");
+    setAlert('Added to Queue', 'success');
   };
 
-  const handleLikeSong = (song) => {};
+  const handleLikeSong = async (song) => {
+    const { title, subtitle, images } = song;
+    const image = images?.coverart;
+    await likeSong({ title, subtitle, image });
+    console.log('From handle like');
+    setAlert('Added to Liked songs', 'success');
+    getLikedSongs();
+  };
+
+  const handleUnlikeSong = async (song) => {
+    await unlikeSong(song.title);
+    getLikedSongs();
+    setAlert('Removed from Liked songs', 'success');
+  };
 
   return (
     <ul class="text-xs sm:text-base divide-y border-t cursor-default">
@@ -262,8 +277,8 @@ const Song = ({
             </div>
             <div> {song.subtitle}</div>
           </div>
-          <div class="text-xs text-gray-400">3:20</div>
-     
+          {/* <div class="text-xs text-gray-400">3:20</div> */}
+{/*      
           <button class="focus:outline-none pr-4 group">
             <svg
               class="w-4 h-4 group-hover:text-green-600"
@@ -282,7 +297,7 @@ const Song = ({
             >
               <path d="M3 15v4c0 1.1.9 2 2 2h14a2 2 0 0 0 2-2v-4M17 9l-5 5-5-5M12 12.8V2.5" />
             </svg>
-          </button>
+          </button> */}
 
           <button
             className="btn btn-primary"
@@ -307,6 +322,7 @@ const Song = ({
     </ul>
   );
 };
+
 
 const mapStateToProps = (state) => ({
   songs: state.play.songs,
@@ -360,7 +376,9 @@ export default connect(mapStateToProps, {
   deleteFromQueue,
   getLikedSongs,
   likeSong,
+  unlikeSong,
 })(Song);
+
 
 // <div>
 // <div className="flex flex-col">
