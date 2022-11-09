@@ -29,6 +29,7 @@ import Sidebar from './components/layout/Sidebar';
 import LikedSong from './components/layout/LikedSong';
 import SharePlaylist from './components/layout/SharePlaylist';
 import PlaylistsShared from './components/layout/PlaylistsShared';
+import SongLyrics from './components/layout/SongLyrics';
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
@@ -68,6 +69,7 @@ const App = ({ isAuthenticated }) => {
                     <Route exact path = '/history' element = {<History />} />
                     <Route exact path = '/share' element={<SharePlaylist />} />
                     <Route exact path='/playlistsShared' element={<PlaylistsShared />} />
+                    <Route exact path = '/songLyrics' element ={<SongLyrics />} />
                     <Route
                       exact
                       path='/top-indian-songs'
