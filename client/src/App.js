@@ -46,16 +46,18 @@ const App = ({ isAuthenticated }) => {
           <div className='relative flex'>
             <Sidebar />
             {/* <div className="  h-[calc(100vh-72px)]   flex xl:flex-row flex-col-reverse"> */}
-            <div className="flex-1 h-fit pb-40">
+            <div className="flex-1 h-fit  ">
               <Navbar />
 
               <section>
                 <Alert />
                 <Routes>
                   <Route exact path='/' element={<Landing />} />
-
+                  {/* //modify this */}
                   <Route exact path='/register' element={<Register />} />
                   <Route exact path='/login' element={<Login />} />
+
+                  {/*  after this*/}
                   <Route element={<PrivateRoute />}>
                     <Route exact path='/dashboard' element={<Dashboard />} />
                     <Route exact path='/search' element={<Search />} />
