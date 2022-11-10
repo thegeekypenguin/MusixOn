@@ -27,6 +27,7 @@ import {
 import { BsMusicNoteBeamed } from "react-icons/bs";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { FcLikePlaceholder, FcLike } from "react-icons/fc";
+import {CgPlayListCheck,CgPlayListAdd}  from "react-icons/cg"
 
 import "https://kit.fontawesome.com/26504e4a1f.js";
 
@@ -40,6 +41,7 @@ import Queue from "../layout/Queue";
 import { setAlert } from "../../actions/alert";
 
 import { addToPlaylist, deleteFromPlaylist } from "../../actions/playlist";
+import { likeSong, getLikedSongs, unlikeSong } from "../../actions/like";
 
 import "https://kit.fontawesome.com/26504e4a1f.js";
 
@@ -53,7 +55,7 @@ import {
   setIndex,
   setLoading,
 } from "../../actions/play";
-import {HiQueueList} from "react-icons/hi2"
+import { HiQueueList, HiOutlineQueueList } from "react-icons/hi2";
 
 import { Navigate, useNavigate } from "react-router-dom";
 const MusicPlayer = ({
@@ -86,6 +88,7 @@ const MusicPlayer = ({
   historyCheck,
   deleteFromHistory,
   addCurrentSongInHistory,
+  likeSong, getLikedSongs, unlikeSong ,likedSongs
 }) => {
   const [open, setOpen] = useState(true);
 
@@ -240,6 +243,22 @@ const MusicPlayer = ({
     if (playing) audio.play();
     setLoading(false);
   }, [audio]);
+
+
+  const handleLikeSong = async (song) => {
+    const { title, subtitle, images } = song;
+    const image = images?.coverart;
+    await likeSong({ title, subtitle, image });
+    console.log("From handle like");
+    setAlert("Added to Liked songs", "success");
+    getLikedSongs();
+  };
+
+  const handleUnlikeSong = async (song) => {
+    await unlikeSong(song.title);
+    getLikedSongs();
+    setAlert("Removed from Liked songs", "success");
+  };
 
   const handlePlayAndPause = () => {
     if (playing) {
@@ -477,59 +496,8 @@ const MusicPlayer = ({
       {/*        
         <div class="absolute inset-y-0 right-0 w-16 ...">0fhgfhg6</div>
     */}
-      {/* {console.log("Queue")} */}
-      <Queue />
 
-      {/* 
-      <div className="absolute h-screen inset-y-0 right-0 w-16  sticky ">
-        <div
-          className={` ${
-            open ? "w-72" : "w-20 "
-          } bg-dark-purple h-screen p-5  pt-8 relative duration-300`}
-        >
-          <img
-            src=" /assets/control.png"
-            className={`absolute cursor-pointer -left-3 top-9 w-7 border-dark-purple
-           border-2 rounded-full  ${!open && "rotate-180"}`}
-            onClick={() => setOpen(!open)}
-            alt="assets"
-          />
-          <div className="flex gap-x-4 items-center">
-            <img
-              src="/assets/logo.png"
-              className={`cursor-pointer duration-500 ${
-                open && "rotate-[360deg]"
-              }`}
-              alt="logo"
-            />
-            <h1
-              className={`text-white origin-left font-medium text-xl duration-200 ${
-                !open && "scale-0"
-              }`}
-            >
-              MusixOn
-            </h1>
-          </div>
-          <ul className="pt-6">
-            {Menus.map((Menu, index) => (
-              <li
-                key={index}
-                className={`flex  rounded-md p-2 cursor-pointer hover:bg-light-white text-gray-300 text-sm items-center gap-x-4 
-              ${Menu.gap ? "mt-9" : "mt-2"} ${
-                  index === 0 && "bg-light-white"
-                } `}
-              >
-                <img src={`/assets/${Menu.src}.png`} alt="type" />
-                <span
-                  className={`${!open && "hidden"} origin-left duration-200`}
-                >
-                  {Menu.title}
-                </span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div> */}
+      <Queue />
 
       {/*displaying player*/}
 
@@ -586,47 +554,6 @@ const MusicPlayer = ({
       <h6>{currentSong?.subtitle}</h6>
 
   */}
-      {/* <div className="fixed w-screen bottom-0 inset-x-0 ">
-            <div className="py-3 bg-neutral-800/60 backdrop-blur-xl rounded-t-[2rem] text-white shadow-lg shadow-purple-50">
-              <div className="container mx-auto px-3 lg:px-0 flex justify-between">
-            
-                <div className="flex items-center lg:w-3/12 gap-2">
-                  <div className="w-14 h-14 lg:flex-shrink-0">image</div>
-                  <div className="flex flex-col gap-1">
-                    <h6 className="text-sm font-semibold">title</h6>
-                    <span className="text-xs text-gray-400">artist</span>
-                  </div>
-                </div>
-                <div className="flex items-center justify-center gap-3 lg:w-2/12">
-                  <button>skk</button>
-                  <button className="rounded-full p-1 border border-purple-700">
-                    tbplay/pause
-                  </button>
-                  <button>skipforward</button>
-                </div>
-                <div className="hidden lg:flex w-6/12 flex-col gap-1 justify-center">
-                  slider
-                  <div className="flex justify-between text-xs">
-                    <span>currtime</span>
-                    <span>duration</span>
-                  </div>
-                </div>
-                <div className="flex justify-end gap-3 lg:w-1/12">
-                  <div
-                    className="relative flex items-center h-full"
-                 
-                  >
-                    <div className="flex absolute -top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 shadow-lg w-8 h-20 rounded-2xl overflow-hidden bg-neutral-100 py-4 justify-center">
-                      slider
-                    </div>
-
-                    <button>tbvol</button>
-                  </div>
-                  <button>shuffle</button>
-                </div>
-              </div>
-            </div>
-          </div> */}
 
       <div className="fixed w-screen bottom-0 inset-x-0 ">
         <div className="py-3 bg-neutral-800/60 backdrop-blur-xl rounded-t-[2rem] text-white shadow-lg shadow-purple-50">
@@ -662,11 +589,8 @@ const MusicPlayer = ({
               </div>
             </button>
 
-            <button
-              type="button"
-              onClick={() => setShowModal(true)}
-            >
-              <HiQueueList size = {20} />
+            <button type="button" onClick={() => setShowModal(true)}>
+              <HiQueueList size={20} />
             </button>
 
             {/* play/pause and next/prev icons */}
@@ -810,110 +734,94 @@ const MusicPlayer = ({
                     </button>
                   </div>
                   {/*body*/}
-                  {/* Displaying the queueSongs */}
-                  <div className="flex flex-col">
-                    <div className="overflow-x-auto">
-                      <div className="p-1.5 w-full inline-block align-middle">
-                        <div className="overflow-hidden border rounded-lg">
-                          <table className="min-w-full divide-y divide-gray-200  table-auto">
-                            <thead className="bg-gray-50">
-                              <tr>
-                                <th
-                                  scope="col"
-                                  className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase  overflow-hidden truncate w-2 "
-                                >
-                                  #
-                                </th>
-                                <th
-                                  scope="col"
-                                  className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase "
-                                >
-                                  Song
-                                </th>
-                                <th
-                                  scope="col"
-                                  className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase  "
-                                >
-                                  Singer
-                                </th>
-                                <th
-                                  scope="col"
-                                  className="px-6 py-3 text-xs font-bold text-right text-gray-500 uppercase "
-                                >
-                                  Duration
-                                </th>
-                                <th
-                                  scope="col"
-                                  className="px-6 py-3 text-xs font-bold text-right text-gray-500 uppercase "
-                                >
-                                  buttons
-                                </th>
-                              </tr>
-                            </thead>
-                            <tbody className="divide-y divide-gray-200">
-                              {queueSongs.map((song, i) => (
-                                <tr key={song.key}>
-                                  <td className="px-6 py-4 text-sm font-medium text-gray-800 whitespace-nowrap">
-                                    {i + 1}
-                                  </td>
-                                  <td>
-                                    <div class="flex flex-row  ">
-                                      <div>
-                                        <img
-                                          alt="song_img"
-                                          src={song.images.coverart}
-                                          className="w-30 h-20 rounded-lg"
-                                          onClick={() => handleClick(song)}
-                                          style={{ cursor: "pointer" }}
-                                        />
-                                      </div>
-                                      <div>
-                                        {" "}
-                                        <strong>{song.title}</strong>
-                                      </div>
-                                    </div>
-                                  </td>
 
-                                  <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap ">
-                                    {song.subtitle}
-                                  </td>
-                                  <td>3min</td>
-                                  <td>
-                                    {" "}
-                                    <button
-                                      className="btn btn-primary"
-                                      onClick={() =>
-                                        !playlistCheck
-                                          ? handleAddToPlaylist(song)
-                                          : deleteFromPlaylist(song._id)
-                                      }
-                                    >
-                                      {playlistCheck
-                                        ? "Remove from playlist"
-                                        : "Add to playlist"}
-                                    </button>
-                                    <button
-                                      className="btn btn-primary"
-                                      onClick={() =>
-                                        !queueCheck
-                                          ? handleAddToQueue(song)
-                                          : deleteFromQueue(song._id)
-                                      }
-                                    >
-                                      {queueCheck
-                                        ? "Remove from queue"
-                                        : "Add to queue"}
-                                    </button>
-                                    <FavoriteBorderIcon />
-                                  </td>
-                                </tr>
-                              ))}
-                            </tbody>
-                          </table>
+                  {/* Displaying the queueSongs */}
+                  <ul class="text-xs sm:text-base divide-y border-t cursor-default">
+                    {queueSongs.map((song, i) => (
+                      <li class="flex items-center space-x-3 hover:bg-gray-100 mr-5">
+                        <button class="p-3 hover:bg-green-500 group focus:outline-none">
+                          <svg
+                            class="w-4 h-4 group-hover:text-white"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          >
+                            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                          </svg>
+                        </button>
+                        {/* <div class="flex">{i + 1}</div> */}
+
+                        <div className="flex">
+                          <img
+                            alt="song_img"
+                            src={song?.images?.coverart}
+                            className="w-30 h-20 rounded-lg"
+                            onClick={() => handleClick(song)}
+                            style={{ cursor: "pointer" }}
+                          />
                         </div>
-                      </div>
-                    </div>
-                  </div>
+                        <div class="flex-1">
+                          <div>
+                            <strong>{song.title}</strong>
+                          </div>
+                          <div> {song.subtitle}</div>
+                        </div>
+                        {/* <div class="text-xs text-gray-400">3:20</div> */}
+
+                        {likedSongs.includes(song) ? (
+                          <button
+                            className="btn btn-primary"
+                            onClick={(e) => {
+                              handleUnlikeSong(song);
+                            }}
+                          >
+                            <FcLike size={25} />
+                          </button>
+                        ) : (
+                          <button
+                            className="btn btn-primary"
+                            onClick={(e) => {
+                              handleLikeSong(song);
+                            }}
+                          >
+                            <FcLikePlaceholder size={25} />
+                          </button>
+                        )}
+                        <button
+                          className="btn btn-primary"
+                          onClick={() =>
+                            !playlistCheck
+                              ? handleAddToPlaylist(song)
+                              : deleteFromPlaylist(song._id)
+                          }
+                        >
+                          {playlistCheck ? (
+                            <CgPlayListCheck size={25} />
+                          ) : (
+                            <CgPlayListAdd size={25} />
+                          )}
+                        </button>
+
+                        <button
+                          className="btn btn-primary"
+                          onClick={() =>
+                            !queueCheck
+                              ? handleAddToQueue(song)
+                              : deleteFromQueue(song._id)
+                          }
+                        >
+                          {queueCheck ? (
+                            <HiQueueList size={25} />
+                          ) : (
+                            <HiOutlineQueueList size={25} />
+                          )}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
 
                   {/*footer*/}
                   <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
@@ -951,6 +859,8 @@ const mapStateToProps = (state) => ({
   subtitle: state.play.subtitle,
   image: state.play.image,
   historyCheck: state.history.historyCheck,
+  likedSongs: state.like.likedSongs,
+
 });
 
 MusicPlayer.propTypes = {
@@ -985,4 +895,6 @@ export default connect(mapStateToProps, {
   deleteFromQueue,
   deleteFromHistory,
   addCurrentSongInHistory,
+  getLikedSongs,
+  unlikeSong,
 })(MusicPlayer);
