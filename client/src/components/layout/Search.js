@@ -40,7 +40,7 @@ const Search = ({
         params: { query: e.target.value },
         headers: {
           'X-RapidAPI-Key':
-            '2f489e742emsh60346052aadd1b0p18936ejsn2e018d009227',
+            'efc42382bfmsh8a8358b837d16cap12b2afjsn340a9149fd2e',
           'X-RapidAPI-Host': 'shazam-core.p.rapidapi.com',
         },
       };
@@ -60,7 +60,7 @@ const Search = ({
       url: 'https://shazam-core.p.rapidapi.com/v2/artists/details',
       params: { artist_id: id },
       headers: {
-        'X-RapidAPI-Key': '2f489e742emsh60346052aadd1b0p18936ejsn2e018d009227',
+        'X-RapidAPI-Key': 'efc42382bfmsh8a8358b837d16cap12b2afjsn340a9149fd2e',
         'X-RapidAPI-Host': 'shazam-core.p.rapidapi.com',
       },
     };
@@ -94,7 +94,7 @@ const Search = ({
       url: 'https://shazam-core.p.rapidapi.com/v1/search/multi',
       params: { query: i, search_type: 'SONGS_ARTISTS' },
       headers: {
-        'X-RapidAPI-Key': '2f489e742emsh60346052aadd1b0p18936ejsn2e018d009227',
+        'X-RapidAPI-Key': 'efc42382bfmsh8a8358b837d16cap12b2afjsn340a9149fd2e',
         'X-RapidAPI-Host': 'shazam-core.p.rapidapi.com',
       },
     };
@@ -118,73 +118,95 @@ const Search = ({
 
   return (
     <div>
-      <div class='input-group rounded'>
+    <div class="max-w-md mx-auto mt-5">
+      <div class="relative flex items-center w-full h-12 rounded-lg focus-within:shadow-lg bg-slate-800 overflow-hidden">
+        <div class="grid place-items-center h-full w-12 text-gray-50">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            onClick={(e) =>
+              handleClick(document.getElementById("search_bar").value)
+            }
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            />
+          </svg>
+        </div>
         <input
-          type='search'
-          id='search_bar'
-          class='form-control rounded'
-          placeholder='Search'
-          aria-label='Search'
-          aria-describedby='search-addon'
+          type="text"
+          id="search_bar"
+          class="peer h-full w-full outline-none text-sm text-gray-50 bg-slate-800 pr-2"
+          placeholder="Search favourite Song or Artist .."
+          aria-label="Search"
+          aria-describedby="search-addon"
           onChange={(e) => {
             handleChange(e);
           }}
         />
-        <span class='input-group-text border-0' id='search-addon'>
-          <i
-            class='fas fa-search'
-            onClick={(e) =>
-              handleClick(document.getElementById('search_bar').value)
-            }
-            style={{ cursor: 'pointer' }}
-          ></i>
-        </span>
       </div>
-      {tempSearch?.map((i) => {
-        const name = i.term;
-        return (
+    </div>
+    {/**search bar finished  */}
+    {tempSearch?.map((i) => {
+      const name = i.term;
+      return (
+        <div class="my-4 space-y-3"
+          id="box"
+          style={{ cursor: "pointer" }}
+          onClick={() => {
+            handleClick(i.term);
+          }}
+        >
+          {/* <h1>{i.term}</h1> */}
+          <h3 class="mb-4 mx-80 text-xs font-extrabold tracking-tight leading-none text-zinc-900 md:text-xl lg:text-xl dark:text-black"><span class="text-black-600 dark:text-black-500">{i.term}</span></h3>
+          {/* <div>
+                <a href="#" class="flex items-center p-3 text-base font-bold text-gray-900 bg-gray-50 rounded-lg hover:bg-gray-100 group hover:shadow dark:bg-gray-600 dark:hover:bg-gray-500 dark:text-white">
+                    <span class="flex-1 ml-3 whitespace-nowrap">{i.term}</span>
+                </a>
+          </div> */}
+        </div>
+      );
+    })}
+    <h1 class="mb-4 text-3xl font-extrabold text-gray-900 dark:text-white md:text-5xl lg:text-6xl"><span class="text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-400">Tracks</span></h1>
+    <Song />
+    <h1 class="mb-4 text-3xl font-extrabold text-gray-900 dark:text-white md:text-5xl lg:text-6xl"><span class="text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-400">Artists</span></h1>
+
+    <div className="flex flex-wrap sm:justify-start justify-center gap-4 mx-10">
+      {searchArtists?.hits?.map((artist) => (
+        <div
+          class="w-72 max-w-sm bg-white rounded-lg border border-gray-200 shadow-md dark:bg-neutral-800 dark:bg-neutral-800"
+          key={artist?.artist?.adamid}
+        >
           <div
-            id='box'
-            style={{ cursor: 'pointer' }}
+            class="flex flex-col items-center pb-8"
+            style={{ cursor: "pointer" }}
+            key={artist.key}
             onClick={() => {
-              handleClick(i.term);
+              handleArtistClick(artist.artist.adamid);
             }}
           >
-            <h4>{i.term}</h4>
+            <img
+              class="mb-1 mt-3 w-28 h-28 rounded-full shadow-lg"
+              src={artist?.artist?.avatar}
+              alt="Bonnie image"
+            />
+            <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white">
+              {artist?.artist?.name}
+            </h5>
+            
           </div>
-        );
-      })}
-      <h2>Tracks</h2>
-      <Song />
-      <h2>Artists</h2>
-      <Row>
-        {searchArtists?.hits?.map((artist) => (
-          <Col key={artist?.artist?.adamid} sm={12} md={6} lg={4} xl={3}>
-            <Card
-              className='my-3 p-3 rounded'
-              style={{ cursor: 'pointer' }}
-              key={artist.key}
-              onClick={() => {
-                handleArtistClick(artist.artist.adamid);
-              }}
-            >
-              <Card.Img
-                //   className={playing ? 'bg-secondary' : 'bg-primary'}
-                src={artist?.artist?.avatar}
-                style={{ height: '15vw', objectFit: 'cover' }}
-              />
-
-              <Card.Body>
-                <Card.Title>
-                  <strong>{artist?.artist?.name}</strong>
-                </Card.Title>
-              </Card.Body>
-            </Card>
-          </Col>
-        ))}
-      </Row>
-      {/* <MusicPlayer /> */}
+        </div>
+      ))}
     </div>
+    {/* <MusicPlayer /> */}
+  </div>
+
   );
 };
 

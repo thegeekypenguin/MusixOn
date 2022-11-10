@@ -22,7 +22,7 @@ const Category = ({ setSongs, setPlaylistCheck, setQueueCheck }) => {
           params: { country_code: 'IN' },
           headers: {
             "X-RapidAPI-Key":
-              "  2f489e742emsh60346052aadd1b0p18936ejsn2e018d009227",
+              "  efc42382bfmsh8a8358b837d16cap12b2afjsn340a9149fd2e",
             "X-RapidAPI-Host": "shazam-core.p.rapidapi.com",
           },
         };
@@ -41,7 +41,7 @@ const Category = ({ setSongs, setPlaylistCheck, setQueueCheck }) => {
           url: 'https://shazam-core.p.rapidapi.com/v1/charts/world',
           headers: {
             "X-RapidAPI-Key":
-              "  2f489e742emsh60346052aadd1b0p18936ejsn2e018d009227",
+              "  efc42382bfmsh8a8358b837d16cap12b2afjsn340a9149fd2e",
             "X-RapidAPI-Host": "shazam-core.p.rapidapi.com",
           },
         };
@@ -61,7 +61,7 @@ const Category = ({ setSongs, setPlaylistCheck, setQueueCheck }) => {
           params: { genre_code: q },
           headers: {
             "X-RapidAPI-Key":
-              "  2f489e742emsh60346052aadd1b0p18936ejsn2e018d009227",
+              "  efc42382bfmsh8a8358b837d16cap12b2afjsn340a9149fd2e",
             "X-RapidAPI-Host": "shazam-core.p.rapidapi.com",
           },
         };

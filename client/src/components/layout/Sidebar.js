@@ -9,7 +9,7 @@ import { FcLike } from "react-icons/fc";
 import { FaHistory } from "react-icons/fa";
 import { FiShare2 } from "react-icons/fi";
 import { SlUserFollowing } from "react-icons/sl"
-
+import applogo from '../../img/applogo.png'
 const Sidebar = () => {
   const [open, setOpen] = useState(true);
 
@@ -57,7 +57,7 @@ const Sidebar = () => {
     {
       title: "Shared Playlist ",
       gap: true,
-      link: "/playlistShared",
+      link: "/playlistsShared",
       component: FiShare2,
     },
     {
@@ -83,8 +83,8 @@ const Sidebar = () => {
         />
         <div className="flex gap-x-4 items-center">
           <img
-            src="/assets/logo.png"
-            className={`cursor-pointer duration-500 ${
+            src={applogo}
+            className={`cursor-pointer duration-500 w-16 h-12 ${
               open && "rotate-[360deg]"
             }`}
             alt="logo"

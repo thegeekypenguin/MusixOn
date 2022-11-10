@@ -30,14 +30,29 @@ const Login = ({ login, isAuthenticated }) => {
   const fixedInputClass="rounded-md appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm"
 
   return (
-    <div  class="container mx-auto">
-      <Header   heading="Login to your account"
-                paragraph="Don't have an account yet? "
-                linkName="Signup"
+    <Fragment>
+      
+
+<section class="h-screen">
+<div class="container px-6 py-12 h-full">
+  <div class="flex justify-center items-center flex-wrap h-full g-6 text-gray-800">
+    <div class="md:w-8/12 lg:w-6/12 mb-12 md:mb-0">
+      <img
+        src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg"
+        class="w-full"
+        alt="Phone image"
+      />
+    </div>
+    <div class="md:w-8/12 lg:w-5/12 lg:ml-20 ">
+      <div class="w-5/3 h-92 max-w-sm bg-white rounded-lg border border-gray-200 shadow-md dark:bg-zinc-700 dark:border-gray-700">
+          
+      <Header   heading="Signup to create an account"
+                paragraph="Already have an account? "
+                linkName="SignIn"
                 linkUrl="/register" />
       <form className="mt-8 space-y-6" onSubmit={(e) => onSubmit(e)}>
       <div className="-space-y-px">
-        <div className='my-5'>
+        <div className='my-5 mx-5'>
           <input
             type='email'
             placeholder='Email Address'
@@ -48,7 +63,7 @@ const Login = ({ login, isAuthenticated }) => {
             className = {fixedInputClass}
           />
         </div>
-        <div className='my-5'>
+        <div className='my-5 mx-5'>
           <input
             type='password'
             placeholder='Password'
@@ -67,13 +82,27 @@ const Login = ({ login, isAuthenticated }) => {
         {
             <button
                 type='submit'
-                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 mt-10"
+                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 mt-10"
                 value= 'Login /'
             > Login</button>
         }
       </>
       </form>
+
+          
+      
+      
+      
+        </div>
+      </div>
     </div>
+  </div>
+</section>
+
+
+
+
+    </Fragment>
   );
 };
 

@@ -7,7 +7,8 @@ import MusicPlayer from "./MusicPlayer";
 import { setQueueCheck } from "../../actions/queue";
 import Song from "./Song";
 import { useNavigate } from "react-router-dom";
-
+import { setAlert } from '../../actions/alert';
+import axios from 'axios';
 const Playlist = ({
   playlistSongs,
   loadPlaylist,
@@ -15,6 +16,7 @@ const Playlist = ({
   playlistCheck,
   setPlaylistCheck,
   setQueueCheck,
+  user,setAlert,
 }) => {
   useEffect(() => {
     setSongs([]);
@@ -30,10 +32,30 @@ const Playlist = ({
   const navigate = useNavigate();
   console.log(playlistSongs);
 
-  const handleSharePlaylist = () => {
-    navigate("/share");
-  };
+ 
 
+
+  const handleSharePlaylistToEmail = async (email) => {
+    try {
+      const res = await axios.get(`/api/users/${email}`);
+      await loadPlaylist();
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      };
+      const sender = user._id;
+      const receiver = res.data._id;
+      console.log(res);
+      console.log(sender)
+      console.log(receiver)
+      const body = JSON.stringify({ sender, receiver, playlistSongs });
+      const a = await axios.put(`/api/sharePlaylist/${receiver}`, body, config);
+      setAlert('Playlist shared', 'success');
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
   return (
     <div>
       <div class="relative h-80 bg-white rounded-lg shadow-lg   mb-4">
@@ -73,14 +95,19 @@ const Playlist = ({
             </div>
           </div>
         </div>
-        <button onClick={handleSharePlaylist} class="absolute right-8 inline-flex items-center justify-center p-0.5 translate-y-60 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800">
+        <button onClick={(e) =>
+          handleSharePlaylistToEmail(document.getElementById('email').value)}  className="absolute right-8 inline-flex items-center justify-center p-0.5 translate-y-60 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800">
+
           <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-brown  dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
             Share
+            <span ><input type='text' name='email' id='email' class="block p-2 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 sm:text-xs focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mt-1"/></span>
+            
           </span>
         </button>
+
       </div>
       <Song />
-     
+          
     </div>
   );
 };
@@ -92,11 +119,14 @@ Playlist.propTypes = {
   playlistCheck: PropTypes.bool.isRequired,
   setPlaylistCheck: PropTypes.func.isRequired,
   setQueueCheck: PropTypes.func.isRequired,
+
 };
 
 const mapStateToProps = (state) => ({
   playlistSongs: state.playlist.playlistSongs,
   playlistCheck: state.playlist.playlistCheck,
+  user: state.auth.user,
+
 });
 
 export default connect(mapStateToProps, {
@@ -104,4 +134,5 @@ export default connect(mapStateToProps, {
   setSongs,
   setPlaylistCheck,
   setQueueCheck,
+  setAlert
 })(Playlist);
