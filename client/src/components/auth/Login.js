@@ -4,6 +4,7 @@ import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { login } from '../../actions/auth';
 import PropTypes from 'prop-types';
+import Header from './Header';
 
 // const navigate = useNavigate();
 const Login = ({ login, isAuthenticated }) => {
@@ -11,7 +12,7 @@ const Login = ({ login, isAuthenticated }) => {
     email: '',
     password: '',
   });
-
+  
   const { email, password } = formData;
 
   const onChange = (e) =>
@@ -26,14 +27,17 @@ const Login = ({ login, isAuthenticated }) => {
   if (isAuthenticated) {
     return <Navigate to='/dashboard' />;
   }
+  const fixedInputClass="rounded-md appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm"
+
   return (
     <Fragment>
-      <h1 className='large text-primary'>Sign In</h1>
-      <p className='lead'>
-        <i className='fas fa-user'></i> Sign into Your Account
-      </p>
-      <form className='form' onSubmit={(e) => onSubmit(e)}>
-        <div className='form-group'>
+      <Header   heading="Login to your account"
+                paragraph="Don't have an account yet? "
+                linkName="Signup"
+                linkUrl="/register" />
+      <form className="mt-8 space-y-6" onSubmit={(e) => onSubmit(e)}>
+      <div className="-space-y-px">
+        <div className='my-5'>
           <input
             type='email'
             placeholder='Email Address'
@@ -41,9 +45,10 @@ const Login = ({ login, isAuthenticated }) => {
             value={email}
             required
             onChange={(e) => onChange(e)}
+            className = {fixedInputClass}
           />
         </div>
-        <div className='form-group'>
+        <div className='my-5'>
           <input
             type='password'
             placeholder='Password'
@@ -51,15 +56,23 @@ const Login = ({ login, isAuthenticated }) => {
             minLength='6'
             value={password}
             required
+            className = {fixedInputClass}
             onChange={(e) => onChange(e)}
           />
         </div>
+      </div>
 
-        <input type='submit' className='btn btn-primary' value='Login' />
+      {/* //Button */}
+      <>
+        {
+            <button
+                type='submit'
+                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 mt-10"
+                value= 'Login /'
+            > Login</button>
+        }
+      </>
       </form>
-      <p className='my-1'>
-        Don't have an account? <Link to='/register'>Sign Up</Link>
-      </p>
     </Fragment>
   );
 };

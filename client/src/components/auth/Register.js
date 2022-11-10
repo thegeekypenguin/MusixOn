@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Link, Navigate } from 'react-router-dom';
 import { setAlert } from '../../actions/alert';
 import { register } from '../../actions/auth';
-
+import Header from './Header';
 const Register = ({ setAlert, register, isAuthenticated }) => {
   const [formData, setFormData] = useState({
     name: '',
@@ -31,64 +31,79 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
   if (isAuthenticated) {
     return <Navigate to='/dashboard' />;
   }
+  const fixedInputClass="rounded-md appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm"
   return (
-    <Fragment>
-      <h1 className='large text-primary'>Sign Up</h1>
-      <p className='lead'>
-        <i className='fas fa-user'></i> Create Your Account
-      </p>
-      <form className='form' onSubmit={(e) => onSubmit(e)}>
-        <div className='form-group'>
-          <input
-            type='text'
-            placeholder='Name'
-            name='name'
-            value={name}
-            required
-            onChange={(e) => onChange(e)}
-          />
+    <Fragment >
+      <Header   heading="Signup to create an account"
+                paragraph="Already have an account? "
+                linkName="SignIn"
+                linkUrl="/login" />
+      
+      <form className="mt-8 space-y-6" onSubmit={(e) => onSubmit(e)}>
+        <div className="-space-y-px ">
+          <div className='my-5'>
+            <input
+              type='text'
+              placeholder='Name'
+              name='name'
+              value={name}
+              required
+              onChange={(e) => onChange(e)}
+              className = {fixedInputClass}
+
+            />
+          </div>
+          <div className='my-5'>
+            <input
+              type='email'
+              placeholder='Email Address'
+              name='email'
+              value={email}
+              required
+              onChange={(e) => onChange(e)}
+              className = {fixedInputClass}
+
+            />
+            
+          </div>
+          <div className='my-5'>
+            <input
+              type='password'
+              placeholder='Password'
+              name='password'
+              minLength='6'
+              value={password}
+              required
+              onChange={(e) => onChange(e)}
+              className = {fixedInputClass}
+
+            />
+          </div>
+          <div className='my-5'>
+            <input
+              type='password'
+              placeholder='Confirm Password'
+              name='password2'
+              minLength='6'
+              value={password2}
+              required
+              onChange={(e) => onChange(e)}
+              className = {fixedInputClass}
+
+            />
+          </div>
         </div>
-        <div className='form-group'>
-          <input
-            type='email'
-            placeholder='Email Address'
-            name='email'
-            value={email}
-            required
-            onChange={(e) => onChange(e)}
-          />
-          <small className='form-text'>
-            This site uses Gravatar so if you want a profile image, use a
-            Gravatar email
-          </small>
-        </div>
-        <div className='form-group'>
-          <input
-            type='password'
-            placeholder='Password'
-            name='password'
-            minLength='6'
-            value={password}
-            required
-            onChange={(e) => onChange(e)}
-          />
-        </div>
-        <div className='form-group'>
-          <input
-            type='password'
-            placeholder='Confirm Password'
-            name='password2'
-            minLength='6'
-            value={password2}
-            required
-            onChange={(e) => onChange(e)}
-          />
-        </div>
-        <input type='submit' className='btn btn-primary' value='Register' />
+      <>
+        {
+            <button
+                type='submit'
+                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 mt-10"
+                value= 'Register'
+            > SignUp</button>
+        }
+      </>
       </form>
-      <p className='my-1'>
-        Already have an account? <Link to='/login'>Sign In</Link>
-      </p>
+     
     </Fragment>
   );
 };

@@ -46,7 +46,7 @@ import {
   setIndex,
   setLoading,
 } from '../../actions/play';
-
+import { Navigate, useNavigate } from "react-router-dom";
 const MusicPlayer = ({
   songs,
   currentSong,
@@ -326,7 +326,11 @@ const MusicPlayer = ({
   // to display queue songs on every page we are loading the queuesongs and displaying them in the musicplayer
 
   //why two
-
+  // useEffect(() => {
+  //   audio.play();
+  //   setLoading(false);
+  // }, [audio]);
+  const navigate = useNavigate();
   async function handleClick(song) {
     if (!playing) {
       setLoading(true);
@@ -618,12 +622,15 @@ const MusicPlayer = ({
             </div>
           </div> */}
 
-      <div className='fixed w-screen bottom-0 inset-x-0 '>
-        <div className='py-3 bg-neutral-800/60 backdrop-blur-xl rounded-t-[2rem] text-white shadow-lg shadow-purple-50'>
-          <div className='container mx-auto px-3 lg:px-0 flex justify-between'>
-            {/* title and thumbnail */}
-            <div className='flex items-center lg:w-2/12 gap-2'>
-              <div className='w-14 h-14 lg:flex-shrink-0'>
+      <div className="fixed w-screen bottom-0 inset-x-0 ">
+        <div className="py-3 bg-neutral-800/60 backdrop-blur-xl rounded-t-[2rem] text-white shadow-lg shadow-purple-50">
+          <div className="container mx-auto px-3 lg:px-0 flex justify-between">
+            {/* title and thumbnail clicking on this will open the song Lyrics*/}
+            <button onClick={() =>{
+              navigate('/songLyrics')
+            }}>
+            <div className="flex items-center lg:w-2/12 gap-2">
+              <div className="w-14 h-14 lg:flex-shrink-0">
                 <img
                   src={image ? image : null}
                   alt='img'
@@ -638,6 +645,7 @@ const MusicPlayer = ({
                 </span>
               </div>
             </div>
+            </button>
             {/* play/pause and next/prev icons */}
 
             <div className='flex items-center justify-center gap-3 lg:w-2/12'>
