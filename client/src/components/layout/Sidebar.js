@@ -37,11 +37,7 @@ const Sidebar = () => {
     },
     { title: "Search", link: "/search", component: BiSearchAlt2 },
     { title: "Playlist", gap: true, link: "/playlist", component: TbPlaylist },
-    {
-      title: "Queue ",
-      link: "/queue",
-      component: HiOutlineQueueList,
-    },
+ 
     {
       title: "Liked Songs",
       link: "/likedSong",
