@@ -1,36 +1,36 @@
-import React, { Fragment, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import React, { Fragment, useEffect } from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 // import "./bootstrap.min.css";
 
 // import "./App.css";
-import './index.css';
-import Navbar from './components/layout/Navbar';
-import Landing from './components/layout/Landing';
-import Login from './components/auth/Login';
-import Register from './components/auth/Register';
-import Alert from './components/layout/Alert';
-import { loadUser } from './actions/auth';
-import Dashboard from './components/dashboard/Dashboard';
-import Search from './components/layout/Search';
-import Artist from './components/layout/Artist';
-import Playlist from './components/layout/Playlist';
-import History from './components/features/History';
+import "./index.css";
+import Navbar from "./components/layout/Navbar";
+import Landing from "./components/layout/Landing";
+import Login from "./components/auth/Login";
+import Register from "./components/auth/Register";
+import Alert from "./components/layout/Alert";
+import { loadUser } from "./actions/auth";
+import Dashboard from "./components/dashboard/Dashboard";
+import Search from "./components/layout/Search";
+import Artist from "./components/layout/Artist";
+import Playlist from "./components/layout/Playlist";
+import History from "./components/features/History";
 // redux
-import { Provider } from 'react-redux';
-import store from './store';
-import setAuthToken from './utils/setAuthToken';
-import PrivateRoute from './utils/PrivateRoute';
-import Category from './components/layout/Category';
-import Queue from './components/layout/Queue';
-import MusicPlayer from './components/layout/MusicPlayer';
-import { connect } from 'react-redux';
-import Sidebar from './components/layout/Sidebar';
-import LikedSong from './components/layout/LikedSong';
-import SharePlaylist from './components/layout/SharePlaylist';
-import PlaylistsShared from './components/layout/PlaylistsShared';
-import ArtistsFollowed from './components/layout/AritstsFollowed';
-import SongLyrics from './components/layout/SongLyrics';
+import { Provider } from "react-redux";
+import store from "./store";
+import setAuthToken from "./utils/setAuthToken";
+import PrivateRoute from "./utils/PrivateRoute";
+import Category from "./components/layout/Category";
+import Queue from "./components/layout/Queue";
+import MusicPlayer from "./components/layout/MusicPlayer";
+import { connect } from "react-redux";
+import Sidebar from "./components/layout/Sidebar";
+import LikedSong from "./components/layout/LikedSong";
+import SharePlaylist from "./components/layout/SharePlaylist";
+import PlaylistsShared from "./components/layout/PlaylistsShared";
+import ArtistsFollowed from "./components/layout/AritstsFollowed";
+import SongLyrics from "./components/layout/SongLyrics";
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
@@ -45,7 +45,9 @@ const App = ({ isAuthenticated }) => {
     <>
       <Router>
         <Fragment>
+
           <div className='relative flex'>
+
             <Sidebar />
             {/* <div className="  h-[calc(100vh-72px)]   flex xl:flex-row flex-col-reverse"> */}
             <div className='flex-1 h-fit pb-40'>
@@ -114,7 +116,7 @@ const App = ({ isAuthenticated }) => {
           {/* <div className="fixed w-screen bottom-0 inset-x-0 ">
             <div className="py-3 bg-neutral-800/60 backdrop-blur-xl rounded-t-[2rem] text-white shadow-lg shadow-purple-50">
               <div className="container mx-auto px-3 lg:px-0 flex justify-between">
-            
+
                 <div className="flex items-center lg:w-3/12 gap-2">
                   <div className="w-14 h-14 lg:flex-shrink-0">image</div>
                   <div className="flex flex-col gap-1">
@@ -139,7 +141,7 @@ const App = ({ isAuthenticated }) => {
                 <div className="flex justify-end gap-3 lg:w-1/12">
                   <div
                     className="relative flex items-center h-full"
-                 
+
                   >
                     <div className="flex absolute -top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 shadow-lg w-8 h-20 rounded-2xl overflow-hidden bg-neutral-100 py-4 justify-center">
                       slider
@@ -159,6 +161,8 @@ const App = ({ isAuthenticated }) => {
         </Fragment>
       </Router>
     </>
+
+    
   );
 };
 

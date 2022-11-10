@@ -21,13 +21,15 @@ import {
   setArtistId,
 } from "../../actions/play";
 
-import { FcLikePlaceholder,FcLike } from "react-icons/fc";
-
+import { FcLikePlaceholder, FcLike } from "react-icons/fc";
+import {CgPlayListCheck,CgPlayListAdd}  from "react-icons/cg"
 import { addToPlaylist, deleteFromPlaylist } from "../../actions/playlist";
 import axios from "axios";
 import { setAlert } from "../../actions/alert";
 import { deleteFromQueue, addToQueue } from "../../actions/queue";
 import { useNavigate } from "react-router-dom";
+import {HiOutlineQueueList} from "react-icons/hi2"
+import {HiQueueList} from "react-icons/hi2"
 
 const Song = ({
   songs,
@@ -68,10 +70,10 @@ const Song = ({
   // }, []);
 
   const [titles, setTitles] = useState([]);
-  const [title, setTitle] = useState('');
-  const [subtitle, setSubtitle] = useState('');
-  const [image, setImage] = useState('');
-  const [downloadUrl, setDownloadUrl] = useState('');
+  const [title, setTitle] = useState("");
+  const [subtitle, setSubtitle] = useState("");
+  const [image, setImage] = useState("");
+  const [downloadUrl, setDownloadUrl] = useState("");
   const navigate = useNavigate();
   useEffect(() => {
     audio.play();
@@ -90,6 +92,8 @@ const Song = ({
     setTitles(array);
   }, [likedSongs]);
 
+
+  console.log(likedSongs,"hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii")
   async function handleClick(song) {
     if (!playing) {
       setLoading(true);
@@ -117,7 +121,7 @@ const Song = ({
         deleteFromHistory(song.id);
       }
       setCurrentSong({ title, subtitle, image });
-      addCurrentSongInHistory({ title, subtitle,  image });
+      addCurrentSongInHistory({ title, subtitle, image });
       // console.log("---------------Debug----------")
       // console.log(song);
       // console.log(currentSong)
@@ -163,8 +167,6 @@ const Song = ({
         console.log(err.message);
       }
     } else if (title === song?.title) {
-
-       
       // setNotPlaying();
       audio.pause();
     } else {
@@ -256,37 +258,34 @@ const Song = ({
   };
 
   return (
-    <ul class='text-xs sm:text-base divide-y border-t cursor-default'>
+    <ul class="text-xs sm:text-base divide-y border-t cursor-default">
       {songs.map((song, i) => (
-        <li class='flex items-center space-x-3 hover:bg-gray-100'>
-          <button class='p-3 hover:bg-green-500 group focus:outline-none'>
+        <li class="flex items-center space-x-3 hover:bg-gray-100 mr-5" >
+          <button class="p-3 hover:bg-green-500 group focus:outline-none">
             <svg
-              class='w-4 h-4 group-hover:text-white'
-              viewBox='0 0 24 24'
-              fill='none'
-              stroke='currentColor'
-              stroke-width='2'
-              stroke-linecap='round'
-              stroke-linejoin='round'
+              class="w-4 h-4 group-hover:text-white"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
             >
-              <polygon points='5 3 19 12 5 21 5 3'></polygon>
+              <polygon points="5 3 19 12 5 21 5 3"></polygon>
             </svg>
           </button>
           {/* <div class="flex">{i + 1}</div> */}
 
-          <div className='flex'>
+          <div className="flex">
             <img
-              alt='song_img'
-              src={
-                song?.images?.coverart
-                  
-              }
-              className='w-30 h-20 rounded-lg'
+              alt="song_img"
+              src={song?.images?.coverart}
+              className="w-30 h-20 rounded-lg"
               onClick={() => handleClick(song)}
-              style={{ cursor: 'pointer' }}
+              style={{ cursor: "pointer" }}
             />
           </div>
-          <div class='flex-1'>
+          <div class="flex-1">
             <div>
               <strong>{song.title}</strong>
             </div>
@@ -314,14 +313,25 @@ const Song = ({
             </svg>
           </button> */}
 
-          <button
-            className="btn btn-primary"
-            onClick={(e) => {
-              handleLikeSong(song);
-            }}
-          >
-            <FcLikePlaceholder size={25} />
-          </button>
+          {likedSongs.includes(song) ? (
+            <button
+              className="btn btn-primary"
+              onClick={(e) => {
+                handleUnlikeSong(song);
+              }}
+            >
+              <FcLike size={25} />
+            </button>
+          ) : (
+            <button
+              className="btn btn-primary"
+              onClick={(e) => {
+                handleLikeSong(song);
+              }}
+            >
+              <FcLikePlaceholder size={25} />
+            </button>
+          )}
           <button
             className="btn btn-primary"
             onClick={() =>
@@ -330,21 +340,18 @@ const Song = ({
                 : deleteFromPlaylist(song._id)
             }
           >
-            {playlistCheck ? 'Remove from playlist' : 'Add to playlist'}
+            {playlistCheck ? <CgPlayListCheck size={25} /> :  <CgPlayListAdd size={25}/>}
           </button>
+
+          
           <button
-            className='btn btn-primary'
+            className="btn btn-primary"
             onClick={() =>
               !queueCheck ? handleAddToQueue(song) : deleteFromQueue(song._id)
             }
           >
-            {queueCheck ? 'Remove from queue' : 'Add to queue'}
+            {queueCheck ?  <HiQueueList size={25} />:  <HiOutlineQueueList size={25} />}
           </button>
-            <FavoriteBorderIcon
-                     onClick={(e) => {
-                       handleLikeSong(song);
-                     }}
-                   />
         </li>
       ))}
     </ul>

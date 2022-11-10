@@ -53,6 +53,8 @@ import {
   setIndex,
   setLoading,
 } from "../../actions/play";
+import {HiQueueList} from "react-icons/hi2"
+
 import { Navigate, useNavigate } from "react-router-dom";
 const MusicPlayer = ({
   songs,
@@ -332,11 +334,6 @@ const MusicPlayer = ({
 
   // to display queue songs on every page we are loading the queuesongs and displaying them in the musicplayer
 
-  //why two
-  // useEffect(() => {
-  //   audio.play();
-  //   setLoading(false);
-  // }, [audio]);
   const navigate = useNavigate();
   async function handleClick(song) {
     if (!playing) {
@@ -472,6 +469,8 @@ const MusicPlayer = ({
     addToQueue({ title, subtitle, image });
     setAlert("Added to Queue", "success");
   };
+
+  const [showModal, setShowModal] = React.useState(false);
 
   return (
     <div>
@@ -639,7 +638,7 @@ const MusicPlayer = ({
               }}
             >
               {/* lg:w-6/12 gap-2 */}
-              
+
               <div className="flex items-center ">
                 {image ? (
                   <div className="w-14 h-14 lg:flex-shrink-0">
@@ -647,8 +646,8 @@ const MusicPlayer = ({
                   </div>
                 ) : (
                   <div className="">
-                      <BsMusicNoteBeamed size={25} className="my-auto" />
-                      </div>
+                    <BsMusicNoteBeamed size={25} className="my-auto" />
+                  </div>
                 )}
 
                 <div className="flex flex-col gap-1">
@@ -662,6 +661,14 @@ const MusicPlayer = ({
                 </div>
               </div>
             </button>
+
+            <button
+              type="button"
+              onClick={() => setShowModal(true)}
+            >
+              <HiQueueList size = {20} />
+            </button>
+
             {/* play/pause and next/prev icons */}
 
             <div className="flex items-center justify-center gap-3 lg:w-2/12">
@@ -783,108 +790,148 @@ const MusicPlayer = ({
         </div>
       </div>
 
-      {/* Displaying the queueSongs */}
-      <div className="flex flex-col">
-        <div className="overflow-x-auto">
-          <div className="p-1.5 w-full inline-block align-middle">
-            <div className="overflow-hidden border rounded-lg">
-              <table className="min-w-full divide-y divide-gray-200  table-auto">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase  overflow-hidden truncate w-2 "
+      <>
+        {showModal ? (
+          <>
+            <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+              <div className="relative w-auto my-6 mx-auto max-w-3xl">
+                {/*content*/}
+                <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                  {/*header*/}
+                  <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
+                    <h3 className="text-3xl font-semibold">Queue</h3>
+                    <button
+                      className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                      onClick={() => setShowModal(false)}
                     >
-                      #
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase "
-                    >
-                      Song
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase  "
-                    >
-                      Singer
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-xs font-bold text-right text-gray-500 uppercase "
-                    >
-                      Duration
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-xs font-bold text-right text-gray-500 uppercase "
-                    >
-                      buttons
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-200">
-                  {queueSongs.map((song, i) => (
-                    <tr key={song.key}>
-                      <td className="px-6 py-4 text-sm font-medium text-gray-800 whitespace-nowrap">
-                        {i + 1}
-                      </td>
-                      <td>
-                        <div class="flex flex-row  ">
-                          <div>
-                            <img
-                              alt="song_img"
-                              src={song.images.coverart}
-                              className="w-30 h-20 rounded-lg"
-                              onClick={() => handleClick(song)}
-                              style={{ cursor: "pointer" }}
-                            />
-                          </div>
-                          <div>
-                            {" "}
-                            <strong>{song.title}</strong>
-                          </div>
-                        </div>
-                      </td>
+                      <span className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
+                        ×
+                      </span>
+                    </button>
+                  </div>
+                  {/*body*/}
+                  {/* Displaying the queueSongs */}
+                  <div className="flex flex-col">
+                    <div className="overflow-x-auto">
+                      <div className="p-1.5 w-full inline-block align-middle">
+                        <div className="overflow-hidden border rounded-lg">
+                          <table className="min-w-full divide-y divide-gray-200  table-auto">
+                            <thead className="bg-gray-50">
+                              <tr>
+                                <th
+                                  scope="col"
+                                  className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase  overflow-hidden truncate w-2 "
+                                >
+                                  #
+                                </th>
+                                <th
+                                  scope="col"
+                                  className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase "
+                                >
+                                  Song
+                                </th>
+                                <th
+                                  scope="col"
+                                  className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase  "
+                                >
+                                  Singer
+                                </th>
+                                <th
+                                  scope="col"
+                                  className="px-6 py-3 text-xs font-bold text-right text-gray-500 uppercase "
+                                >
+                                  Duration
+                                </th>
+                                <th
+                                  scope="col"
+                                  className="px-6 py-3 text-xs font-bold text-right text-gray-500 uppercase "
+                                >
+                                  buttons
+                                </th>
+                              </tr>
+                            </thead>
+                            <tbody className="divide-y divide-gray-200">
+                              {queueSongs.map((song, i) => (
+                                <tr key={song.key}>
+                                  <td className="px-6 py-4 text-sm font-medium text-gray-800 whitespace-nowrap">
+                                    {i + 1}
+                                  </td>
+                                  <td>
+                                    <div class="flex flex-row  ">
+                                      <div>
+                                        <img
+                                          alt="song_img"
+                                          src={song.images.coverart}
+                                          className="w-30 h-20 rounded-lg"
+                                          onClick={() => handleClick(song)}
+                                          style={{ cursor: "pointer" }}
+                                        />
+                                      </div>
+                                      <div>
+                                        {" "}
+                                        <strong>{song.title}</strong>
+                                      </div>
+                                    </div>
+                                  </td>
 
-                      <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap ">
-                        {song.subtitle}
-                      </td>
-                      <td>3min</td>
-                      <td>
-                        {" "}
-                        <button
-                          className="btn btn-primary"
-                          onClick={() =>
-                            !playlistCheck
-                              ? handleAddToPlaylist(song)
-                              : deleteFromPlaylist(song._id)
-                          }
-                        >
-                          {playlistCheck
-                            ? "Remove from playlist"
-                            : "Add to playlist"}
-                        </button>
-                        <button
-                          className="btn btn-primary"
-                          onClick={() =>
-                            !queueCheck
-                              ? handleAddToQueue(song)
-                              : deleteFromQueue(song._id)
-                          }
-                        >
-                          {queueCheck ? "Remove from queue" : "Add to queue"}
-                        </button>
-                        <FavoriteBorderIcon />
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+                                  <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap ">
+                                    {song.subtitle}
+                                  </td>
+                                  <td>3min</td>
+                                  <td>
+                                    {" "}
+                                    <button
+                                      className="btn btn-primary"
+                                      onClick={() =>
+                                        !playlistCheck
+                                          ? handleAddToPlaylist(song)
+                                          : deleteFromPlaylist(song._id)
+                                      }
+                                    >
+                                      {playlistCheck
+                                        ? "Remove from playlist"
+                                        : "Add to playlist"}
+                                    </button>
+                                    <button
+                                      className="btn btn-primary"
+                                      onClick={() =>
+                                        !queueCheck
+                                          ? handleAddToQueue(song)
+                                          : deleteFromQueue(song._id)
+                                      }
+                                    >
+                                      {queueCheck
+                                        ? "Remove from queue"
+                                        : "Add to queue"}
+                                    </button>
+                                    <FavoriteBorderIcon />
+                                  </td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/*footer*/}
+                  <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
+                    <button
+                      className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                      type="button"
+                      onClick={() => setShowModal(false)}
+                    >
+                      Close
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      </div>
+            <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+          </>
+        ) : null}
+      </>
     </div>
   );
 };
