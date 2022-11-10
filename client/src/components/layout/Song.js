@@ -68,10 +68,10 @@ const Song = ({
   // }, []);
 
   const [titles, setTitles] = useState([]);
-  const [title, setTitle] = useState("");
-  const [subtitle, setSubtitle] = useState("");
-  const [image, setImage] = useState("");
-  const [downloadUrl, setDownloadUrl] = useState("");
+  const [title, setTitle] = useState('');
+  const [subtitle, setSubtitle] = useState('');
+  const [image, setImage] = useState('');
+  const [downloadUrl, setDownloadUrl] = useState('');
   const navigate = useNavigate();
   useEffect(() => {
     audio.play();
@@ -101,19 +101,23 @@ const Song = ({
       // console.log("-----------------------------------------------");
       // console.log("Song Data");
       // console.log(song);
+
+      // setTitle(title)
+      // setSubtitle(subtitle)
+      // setImage(images.coverart);
       const { title, subtitle, images } = song;
       setTitle(title);
       setSubtitle(subtitle);
       setImage(images.coverart);
       const image = images?.coverart;
-      setCurrentSong({ title, subtitle, image });
+      // setCurrentSong({ title, subtitle, image });
       console.log(images);
-      const img_url = images?.coverart;
-      console.log(img_url);
+      console.log(image);
       if (historyCheck) {
         deleteFromHistory(song.id);
       }
-      addCurrentSongInHistory({ title, subtitle, img_url });
+      setCurrentSong({ title, subtitle, image });
+      addCurrentSongInHistory({ title, subtitle,  image });
       // console.log("---------------Debug----------")
       // console.log(song);
       // console.log(currentSong)
@@ -128,7 +132,7 @@ const Song = ({
         params: { query: song?.title },
         headers: {
           "X-RapidAPI-Key":
-            " 14c05f9d39msh620bb14ad7e9531p102005jsna39efb78a39b",
+            "2f489e742emsh60346052aadd1b0p18936ejsn2e018d009227",
           "X-RapidAPI-Host": "youtube-music1.p.rapidapi.com",
         },
       };
@@ -142,7 +146,7 @@ const Song = ({
           params: { id: id, ext: "mp3" },
           headers: {
             "X-RapidAPI-Key":
-              " 14c05f9d39msh620bb14ad7e9531p102005jsna39efb78a39b",
+              "2f489e742emsh60346052aadd1b0p18936ejsn2e018d009227",
             "X-RapidAPI-Host": "youtube-music1.p.rapidapi.com",
           },
         };
@@ -158,8 +162,10 @@ const Song = ({
       } catch (err) {
         console.log(err.message);
       }
-    } else if (currentSong?.title === song?.title) {
-      setNotPlaying();
+    } else if (title === song?.title) {
+
+       
+      // setNotPlaying();
       audio.pause();
     } else {
       setLoading(true);
@@ -167,9 +173,15 @@ const Song = ({
       audio.pause();
       audio.currentTime = 0;
       const { title, subtitle, images } = song;
-      const image = images.coverart;
-      setCurrentSong({ title, subtitle, image });
 
+      console.log(images);
+      const image = images?.coverart;
+      console.log(image);
+      if (historyCheck) {
+        deleteFromHistory(song.id);
+      }
+      setCurrentSong({ title, subtitle, image });
+      addCurrentSongInHistory({ title, subtitle, image });
       setIndex(songs.indexOf(song));
       const options = {
         method: "GET",
@@ -177,7 +189,7 @@ const Song = ({
         params: { query: song.title },
         headers: {
           "X-RapidAPI-Key":
-            " 14c05f9d39msh620bb14ad7e9531p102005jsna39efb78a39b",
+            "2f489e742emsh60346052aadd1b0p18936ejsn2e018d009227",
           "X-RapidAPI-Host": "youtube-music1.p.rapidapi.com",
         },
       };
@@ -191,7 +203,7 @@ const Song = ({
           params: { id: id, ext: "mp3" },
           headers: {
             "X-RapidAPI-Key":
-              " 14c05f9d39msh620bb14ad7e9531p102005jsna39efb78a39b",
+              "2f489e742emsh60346052aadd1b0p18936ejsn2e018d009227",
             "X-RapidAPI-Host": "youtube-music1.p.rapidapi.com",
           },
         };
@@ -211,6 +223,8 @@ const Song = ({
       }
     }
   }
+
+  console.log(currentSong);
 
   const handleAddToPlaylist = (song) => {
     const { title, subtitle, images } = song;
@@ -242,34 +256,37 @@ const Song = ({
   };
 
   return (
-    <ul class="text-xs sm:text-base divide-y border-t cursor-default">
+    <ul class='text-xs sm:text-base divide-y border-t cursor-default'>
       {songs.map((song, i) => (
-        <li class="flex items-center space-x-3 hover:bg-gray-100">
-          <button class="p-3 hover:bg-green-500 group focus:outline-none">
+        <li class='flex items-center space-x-3 hover:bg-gray-100'>
+          <button class='p-3 hover:bg-green-500 group focus:outline-none'>
             <svg
-              class="w-4 h-4 group-hover:text-white"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              class='w-4 h-4 group-hover:text-white'
+              viewBox='0 0 24 24'
+              fill='none'
+              stroke='currentColor'
+              stroke-width='2'
+              stroke-linecap='round'
+              stroke-linejoin='round'
             >
-              <polygon points="5 3 19 12 5 21 5 3"></polygon>
+              <polygon points='5 3 19 12 5 21 5 3'></polygon>
             </svg>
           </button>
           {/* <div class="flex">{i + 1}</div> */}
 
-          <div className="flex">
+          <div className='flex'>
             <img
-              alt="song_img"
-              src={song?.images?.coverart ? song.images.coverart : song.img_url}
-              className="w-30 h-20 rounded-lg"
+              alt='song_img'
+              src={
+                song?.images?.coverart
+                  
+              }
+              className='w-30 h-20 rounded-lg'
               onClick={() => handleClick(song)}
-              style={{ cursor: "pointer" }}
+              style={{ cursor: 'pointer' }}
             />
           </div>
-          <div class="flex-1">
+          <div class='flex-1'>
             <div>
               <strong>{song.title}</strong>
             </div>
@@ -313,16 +330,21 @@ const Song = ({
                 : deleteFromPlaylist(song._id)
             }
           >
-            {playlistCheck ? "Remove from playlist" : "Add to playlist"}
+            {playlistCheck ? 'Remove from playlist' : 'Add to playlist'}
           </button>
           <button
-            className="btn btn-primary"
+            className='btn btn-primary'
             onClick={() =>
               !queueCheck ? handleAddToQueue(song) : deleteFromQueue(song._id)
             }
           >
-            {queueCheck ? "Remove from queue" : "Add to queue"}
+            {queueCheck ? 'Remove from queue' : 'Add to queue'}
           </button>
+            <FavoriteBorderIcon
+                     onClick={(e) => {
+                       handleLikeSong(song);
+                     }}
+                   />
         </li>
       ))}
     </ul>
@@ -438,7 +460,7 @@ export default connect(mapStateToProps, {
 //                         src={
 //                           song?.images?.coverart
 //                             ? song.images.coverart
-//                             : song.img_url
+//                             : song.images
 //                         }
 //                         className="w-30 h-20 rounded-lg"
 //                         onClick={() => handleClick(song)}

@@ -11,7 +11,7 @@ function Navbar({ auth: { isAuthenticated, loading }, logout }) {
   const authLinks = (
     <div  >
  
-   
+  
       <Link
         to='#!'
         onClick={logout}

@@ -8,6 +8,7 @@ import { HiOutlineQueueList } from "react-icons/hi2";
 import { FcLike } from "react-icons/fc";
 import { FaHistory } from "react-icons/fa";
 import { FiShare2 } from "react-icons/fi";
+import { SlUserFollowing } from "react-icons/sl"
 
 const Sidebar = () => {
   const [open, setOpen] = useState(true);
@@ -46,10 +47,12 @@ const Sidebar = () => {
       link: "/likedSong",
       component: FcLike,
     },
+
+
     {
-      title: "History",
-      link: "/history",
-      component: FaHistory,
+      title: "Artists Followed",
+      link: "/artistsFollowed",
+      component: SlUserFollowing,
     },
     {
       title: "Shared Playlist ",
@@ -57,11 +60,11 @@ const Sidebar = () => {
       link: "/playlistShared",
       component: FiShare2,
     },
-    // {
-    //   title: "Setting",
-    //   link: "/dashboard",
-    //   component: AiOutlineHome,
-    // },
+    {
+      title: "History",
+      link: "/history",
+      component: FaHistory,
+    },
   ];
 
   return (

@@ -8,6 +8,7 @@ import {
   LOADING_SONG,
   LOAD_ARTIST,
   ARTIST_ID,
+  FOLLOW_CHECK
 } from '../actions/types';
 
 const initialState = {
@@ -21,7 +22,8 @@ const initialState = {
   artistId: -1,
   title: '',
   subtitle: '',
-  image: ''
+  image: '',
+  followCheck: false,
 };
 
 export default function (state = initialState, action) {
@@ -77,6 +79,11 @@ export default function (state = initialState, action) {
         ...state,
         artistId: payload,
       };
+    case FOLLOW_CHECK:
+      return {
+        ...state, 
+        followCheck: payload
+      }
     default:
       return state;
   }

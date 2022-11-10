@@ -16,7 +16,8 @@ const History = ({getCurrentUserHistory,
         //getting the history of the user
         setSongs([]);
         getCurrentUserHistory();
-    },[]);
+    }, []);
+    
     useEffect(()=>{
         console.log('History data is cominnggggggggggggggggggggggg');
         console.log(histories);

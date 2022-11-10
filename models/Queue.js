@@ -13,9 +13,8 @@ const QueueSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  image: {
-    type: String,
-    required: true,
+  images: {
+    coverart: { type: String, required: true },
   },
 });
 

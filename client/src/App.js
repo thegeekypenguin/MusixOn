@@ -4,18 +4,18 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 // import "./bootstrap.min.css";
 
 // import "./App.css";
-import "./index.css";
-import Navbar from "./components/layout/Navbar";
-import Landing from "./components/layout/Landing";
-import Login from "./components/auth/Login";
-import Register from "./components/auth/Register";
-import Alert from "./components/layout/Alert";
-import { loadUser } from "./actions/auth";
-import Dashboard from "./components/dashboard/Dashboard";
-import Search from "./components/layout/Search";
-import Artist from "./components/layout/Artist";
-import Playlist from "./components/layout/Playlist";
-import History from "./components/features/History";
+import './index.css';
+import Navbar from './components/layout/Navbar';
+import Landing from './components/layout/Landing';
+import Login from './components/auth/Login';
+import Register from './components/auth/Register';
+import Alert from './components/layout/Alert';
+import { loadUser } from './actions/auth';
+import Dashboard from './components/dashboard/Dashboard';
+import Search from './components/layout/Search';
+import Artist from './components/layout/Artist';
+import Playlist from './components/layout/Playlist';
+import History from './components/features/History';
 // redux
 import { Provider } from 'react-redux';
 import store from './store';
@@ -29,6 +29,8 @@ import Sidebar from './components/layout/Sidebar';
 import LikedSong from './components/layout/LikedSong';
 import SharePlaylist from './components/layout/SharePlaylist';
 import PlaylistsShared from './components/layout/PlaylistsShared';
+import ArtistsFollowed from './components/layout/AritstsFollowed';
+import SongLyrics from './components/layout/SongLyrics';
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
@@ -46,16 +48,18 @@ const App = ({ isAuthenticated }) => {
           <div className='relative flex'>
             <Sidebar />
             {/* <div className="  h-[calc(100vh-72px)]   flex xl:flex-row flex-col-reverse"> */}
-            <div className="flex-1 h-fit pb-40">
+            <div className='flex-1 h-fit pb-40'>
               <Navbar />
 
               <section>
                 <Alert />
                 <Routes>
                   <Route exact path='/' element={<Landing />} />
-
+                  {/* //modify this */}
                   <Route exact path='/register' element={<Register />} />
                   <Route exact path='/login' element={<Login />} />
+
+                  {/*  after this*/}
                   <Route element={<PrivateRoute />}>
                     <Route exact path='/dashboard' element={<Dashboard />} />
                     <Route exact path='/search' element={<Search />} />
@@ -63,9 +67,19 @@ const App = ({ isAuthenticated }) => {
                     <Route exact path='/playlist' element={<Playlist />} />
                     <Route exact path='/queue' element={<Queue />} />
                     <Route exact path='/likedSong' element={<LikedSong />} />
-                    <Route exact path = '/history' element = {<History />} />
-                    <Route exact path = '/share' element={<SharePlaylist />} />
-                    <Route exact path='/playlistsShared' element={<PlaylistsShared />} />
+                    <Route exact path='/history' element={<History />} />
+                    <Route exact path='/share' element={<SharePlaylist />} />
+                    <Route
+                      exact
+                      path='/playlistsShared'
+                      element={<PlaylistsShared />}
+                    />
+                    <Route
+                      exact
+                      path='/artistsFollowed'
+                      element={<ArtistsFollowed />}
+                    />
+                    <Route exact path = '/songLyrics' element ={<SongLyrics />} />
                     <Route
                       exact
                       path='/top-indian-songs'
@@ -138,9 +152,9 @@ const App = ({ isAuthenticated }) => {
               </div>
             </div>
           </div> */}
-          <div className="absolute bottom-0 left-0">
-              {isAuthenticated && <MusicPlayer />}
-            </div>
+          {/* <div className='absolute bottom-0 left-0'>
+            {isAuthenticated && <MusicPlayer />}
+          </div> */}
           {/* </div> */}
         </Fragment>
       </Router>

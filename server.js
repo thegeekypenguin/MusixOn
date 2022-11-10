@@ -17,6 +17,7 @@ app.use('/api/queue', require('./routes/api/queue'));
 app.use('/api/likedSong', require('./routes/api/likedSong'));
 app.use('/api/history', require('./routes/api/history'));
 app.use('/api/sharePlaylist', require('./routes/api/sharePlaylist'));
+app.use('/api/followArtist', require('./routes/api/followArtist'));
 
 const PORT = process.env.PORT || 5000;
 app.use(cors());
