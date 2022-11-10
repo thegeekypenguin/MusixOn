@@ -17,9 +17,11 @@ import {
   TbPlayerTrackPrev,
   TbRepeat,
   TbVolume3,
-  TbDownload
+  TbDownload,
 } from "react-icons/tb";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import { FcLikePlaceholder, FcLike } from "react-icons/fc";
+
 import "https://kit.fontawesome.com/26504e4a1f.js";
 
 import songslist from "../../songs.json";
@@ -67,7 +69,9 @@ const MusicPlayer = ({
   deleteFromPlaylist,
   setArtistId,
   setAlert,
-  title, subtitle, image
+  title,
+  subtitle,
+  image,
 }) => {
   const [open, setOpen] = useState(true);
 
@@ -178,7 +182,7 @@ const MusicPlayer = ({
         params: { query: songsList[index]?.title },
         headers: {
           "X-RapidAPI-Key":
-            "29eb251975msh4e8a63ff852eb80p18ac0bjsn6337e2cb89fc",
+            "14c05f9d39msh620bb14ad7e9531p102005jsna39efb78a39b",
           "X-RapidAPI-Host": "youtube-music1.p.rapidapi.com",
         },
       };
@@ -192,7 +196,7 @@ const MusicPlayer = ({
           params: { id: id, ext: "mp3" },
           headers: {
             "X-RapidAPI-Key":
-              "29eb251975msh4e8a63ff852eb80p18ac0bjsn6337e2cb89fc",
+              " 14c05f9d39msh620bb14ad7e9531p102005jsna39efb78a39b",
             "X-RapidAPI-Host": "youtube-music1.p.rapidapi.com",
           },
         };
@@ -211,10 +215,10 @@ const MusicPlayer = ({
     call();
   }, [index]);
 
-  // useEffect(() => {
-  //   if (playing) audio.play();
-  //   setLoading(false);
-  // }, [audio]);
+  useEffect(() => {
+    if (playing) audio.play();
+    setLoading(false);
+  }, [audio]);
 
   const handlePlayAndPause = () => {
     if (playing) {
@@ -312,7 +316,7 @@ const MusicPlayer = ({
   async function handleClick(song) {
     if (!playing) {
       setLoading(true);
-      
+
       setPlaying();
       console.log(currentSong);
       if (currentSong && queueSongs.includes(currentSong)) {
@@ -328,7 +332,7 @@ const MusicPlayer = ({
         params: { query: song?.title },
         headers: {
           "X-RapidAPI-Key":
-            "29eb251975msh4e8a63ff852eb80p18ac0bjsn6337e2cb89fc",
+            " 14c05f9d39msh620bb14ad7e9531p102005jsna39efb78a39b",
           "X-RapidAPI-Host": "youtube-music1.p.rapidapi.com",
         },
       };
@@ -342,7 +346,7 @@ const MusicPlayer = ({
           params: { id: id, ext: "mp3" },
           headers: {
             "X-RapidAPI-Key":
-              "29eb251975msh4e8a63ff852eb80p18ac0bjsn6337e2cb89fc",
+              " 14c05f9d39msh620bb14ad7e9531p102005jsna39efb78a39b",
             "X-RapidAPI-Host": "youtube-music1.p.rapidapi.com",
           },
         };
@@ -372,7 +376,7 @@ const MusicPlayer = ({
         params: { query: song.title },
         headers: {
           "X-RapidAPI-Key":
-            "29eb251975msh4e8a63ff852eb80p18ac0bjsn6337e2cb89fc",
+            " 14c05f9d39msh620bb14ad7e9531p102005jsna39efb78a39b",
           "X-RapidAPI-Host": "youtube-music1.p.rapidapi.com",
         },
       };
@@ -386,7 +390,7 @@ const MusicPlayer = ({
           params: { id: id, ext: "mp3" },
           headers: {
             "X-RapidAPI-Key":
-              "29eb251975msh4e8a63ff852eb80p18ac0bjsn6337e2cb89fc",
+              " 14c05f9d39msh620bb14ad7e9531p102005jsna39efb78a39b",
             "X-RapidAPI-Host": "youtube-music1.p.rapidapi.com",
           },
         };
@@ -425,7 +429,6 @@ const MusicPlayer = ({
     */}
       {/* {console.log("Queue")} */}
       <Queue />
-     
 
       {/* 
       <div className="absolute h-screen inset-y-0 right-0 w-16  sticky ">
@@ -582,27 +585,30 @@ const MusicPlayer = ({
             <div className="flex items-center lg:w-2/12 gap-2">
               <div className="w-14 h-14 lg:flex-shrink-0">
                 <img
-                  src={
-                    image? image
-                      : null
-                  }
+                  src={image ? image : null}
                   alt="img"
                   className="rounded-lg"
                 />
               </div>
               <div className="flex flex-col gap-1">
-                <h6 className="text-sm font-semibold">
-                  {title ? title : ""}
-                </h6>
+                <h6 className="text-sm font-semibold">{title ? title : ""}</h6>
                 <span className="text-xs text-gray-400">
                   {" "}
-                  {subtitle ?subtitle : ""}
+                  {subtitle ? subtitle : ""}
                 </span>
               </div>
             </div>
             {/* play/pause and next/prev icons */}
 
             <div className="flex items-center justify-center gap-3 lg:w-2/12">
+              <button
+                className="btn btn-primary mr-2"
+                // onClick={(e) => {
+                //   handleLikeSong(song);
+                // }}
+              >
+                <FcLikePlaceholder size={25} />
+              </button>
               <button onClick={handlePrevious}>
                 <TbPlayerSkipBack size={20} />
               </button>
@@ -664,26 +670,27 @@ const MusicPlayer = ({
                 <TbArrowsShuffle2 size={20} />
               </button>
               <div className="relative flex items-center h-full mx-2">
-                {isVolumeOpen && (<div className="flex absolute -top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 shadow-lg w-8 h-20 rounded-2xl overflow-hidden bg-neutral-800/60 py-4 justify-center">
-                  <Slider
-                    vertical
-                    min={0}
-                    max={1}
-                    step={0.01}
-                    value={volume}
-                    onChange={(val) => {
-                      console.log(volume);
-                      audio.volume = val;
-                      setVolume(val);
-                    }}
-                  trackStyle={{ background: "#081A51" }}
-
-                    handleStyle={{
-                      background: "#081A51",
-                      border: "2px solid #081A51",
-                    }}
-                  />
-                </div>)}
+                {isVolumeOpen && (
+                  <div className="flex absolute -top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 shadow-lg w-8 h-20 rounded-2xl overflow-hidden bg-neutral-800/60 py-4 justify-center">
+                    <Slider
+                      vertical
+                      min={0}
+                      max={1}
+                      step={0.01}
+                      value={volume}
+                      onChange={(val) => {
+                        console.log(volume);
+                        audio.volume = val;
+                        setVolume(val);
+                      }}
+                      trackStyle={{ background: "#081A51" }}
+                      handleStyle={{
+                        background: "#081A51",
+                        border: "2px solid #081A51",
+                      }}
+                    />
+                  </div>
+                )}
 
                 <button onClick={() => setIsVolumeOpen(!isVolumeOpen)}>
                   {volume === 0 ? (
@@ -701,9 +708,8 @@ const MusicPlayer = ({
         </div>
       </div>
 
-
-       {/* Displaying the queueSongs */}
-       {/* <div className="flex flex-col">
+      {/* Displaying the queueSongs */}
+      {/* <div className="flex flex-col">
         <div className="overflow-x-auto">
           <div className="p-1.5 w-full inline-block align-middle">
             <div className="overflow-hidden border rounded-lg">

@@ -12,6 +12,8 @@ const Category = ({ setSongs, setPlaylistCheck, setQueueCheck }) => {
   useEffect(() => {
     async function call() {
       var q = window.location.pathname.slice(1);
+      var categoryTitle = q.split('-').join(' ').toUpperCase()
+      // alert(categoryTitle)
       // const options = {};
       if (q === "top-indian-songs") {
         const options = {
@@ -20,7 +22,7 @@ const Category = ({ setSongs, setPlaylistCheck, setQueueCheck }) => {
           params: { country_code: "IN" },
           headers: {
             "X-RapidAPI-Key":
-              "  29eb251975msh4e8a63ff852eb80p18ac0bjsn6337e2cb89fc",
+              "   14c05f9d39msh620bb14ad7e9531p102005jsna39efb78a39b",
             "X-RapidAPI-Host": "shazam-core.p.rapidapi.com",
           },
         };
@@ -39,7 +41,7 @@ const Category = ({ setSongs, setPlaylistCheck, setQueueCheck }) => {
           url: "https://shazam-core.p.rapidapi.com/v1/charts/world",
           headers: {
             "X-RapidAPI-Key":
-              "  29eb251975msh4e8a63ff852eb80p18ac0bjsn6337e2cb89fc",
+              "   14c05f9d39msh620bb14ad7e9531p102005jsna39efb78a39b",
             "X-RapidAPI-Host": "shazam-core.p.rapidapi.com",
           },
         };
@@ -59,7 +61,7 @@ const Category = ({ setSongs, setPlaylistCheck, setQueueCheck }) => {
           params: { genre_code: q },
           headers: {
             "X-RapidAPI-Key":
-              "  29eb251975msh4e8a63ff852eb80p18ac0bjsn6337e2cb89fc",
+              "   14c05f9d39msh620bb14ad7e9531p102005jsna39efb78a39b",
             "X-RapidAPI-Host": "shazam-core.p.rapidapi.com",
           },
         };
@@ -122,7 +124,7 @@ const Category = ({ setSongs, setPlaylistCheck, setQueueCheck }) => {
         <div class="relative">
           <img
             src="https://img.freepik.com/premium-photo/classic-sheets-with-music-notes-sign_488220-9925.jpg?w=2000"
-            class="object-cover w-full"
+            class="object-cover h-80  w-full"
             alt="img"
           />
           <div class="absolute p-4 inset-0 flex flex-col justify-end bg-gradient-to-b from-transparent to-gray-900 backdrop backdrop-blur-5 text-white">

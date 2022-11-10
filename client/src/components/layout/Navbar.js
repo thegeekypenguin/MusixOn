@@ -10,43 +10,8 @@ function Navbar({ auth: { isAuthenticated, loading }, logout }) {
 
   const authLinks = (
     <div  >
-      <Link
-        to='/search'
-        className='text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium'
-      >
-        <i className='fas fa-search'></i>{' '}
-        <span className='hide-sm'>Search</span>
-      </Link>
-      <Link
-        to='/playlist'
-        className='text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium'
-      >
-        <span>Playlist</span>
-      </Link>
-      <Link
-        to='/queue'
-        className='text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium'
-      >
-        <span>Queue</span>
-      </Link>
-      <Link
-        to='/likedSong'
-        className='text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium'
-      >
-        <span>Liked Songs</span>
-      </Link>
-      <Link
-        to='/history'
-        className='text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium'
-      >
-        <span>History</span>
-      </Link>
-      <Link
-        to='/playlistsShared'
-        className='text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium'
-      >
-        <span>Shared Playlists</span>
-      </Link>
+ 
+   
       <Link
         to='#!'
         onClick={logout}
