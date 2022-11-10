@@ -1,21 +1,25 @@
 const mongoose = require('mongoose');
 
-const LikedSongSchema = new mongoose.Schema({
+const FollowArtistSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user',
   },
-  title: {
+  name: {
     type: String,
     required: true,
   },
-  subtitle: {
+  image: {
     type: String,
     required: true,
   },
-  images: {
-    coverart: { type: String, required: true },
+  id: {
+    type: String,
+    required: true,
   },
 });
 
-module.exports = LikedSong = mongoose.model('likedSong', LikedSongSchema);
+module.exports = FollowArtist = mongoose.model(
+  'followArtist',
+  FollowArtistSchema
+);

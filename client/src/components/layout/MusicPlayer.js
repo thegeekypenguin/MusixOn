@@ -1,11 +1,15 @@
-import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
-import { Card, Button } from "react-bootstrap";
-import { Row, Col } from "react-bootstrap";
-import Slider, { Range } from "rc-slider";
-import "rc-slider/assets/index.css";
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { Card, Button } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
+import Slider, { Range } from 'rc-slider';
+import 'rc-slider/assets/index.css';
+import {
+  deleteFromHistory,
+  addCurrentSongInHistory,
+} from '../../actions/history';
 
-import "./style.css";
+import './style.css';
 import {
   TbArrowsShuffle2,
   TbPlayerPause,
@@ -17,21 +21,21 @@ import {
   TbPlayerTrackPrev,
   TbRepeat,
   TbVolume3,
-  TbDownload
-} from "react-icons/tb";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import "https://kit.fontawesome.com/26504e4a1f.js";
+  TbDownload,
+} from 'react-icons/tb';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import 'https://kit.fontawesome.com/26504e4a1f.js';
 
-import songslist from "../../songs.json";
-import Song from "./Song";
-import { lazy } from "react";
-import axios from "axios";
-import { connect } from "react-redux";
-import { deleteFromQueue, addToQueue } from "../../actions/queue";
-import Queue from "../layout/Queue";
-import { setAlert } from "../../actions/alert";
+import songslist from '../../songs.json';
+import Song from './Song';
+import { lazy } from 'react';
+import axios from 'axios';
+import { connect } from 'react-redux';
+import { deleteFromQueue, addToQueue } from '../../actions/queue';
+import Queue from '../layout/Queue';
+import { setAlert } from '../../actions/alert';
 
-import { addToPlaylist, deleteFromPlaylist } from "../../actions/playlist";
+import { addToPlaylist, deleteFromPlaylist } from '../../actions/playlist';
 import {
   setCurrentSong,
   setNotPlaying,
@@ -41,7 +45,7 @@ import {
   setArtistId,
   setIndex,
   setLoading,
-} from "../../actions/play";
+} from '../../actions/play';
 
 const MusicPlayer = ({
   songs,
@@ -67,22 +71,30 @@ const MusicPlayer = ({
   deleteFromPlaylist,
   setArtistId,
   setAlert,
-  title, subtitle, image
+  title,
+  subtitle,
+  image,
+  historyCheck,
+  deleteFromHistory,
+  addCurrentSongInHistory,
 }) => {
   const [open, setOpen] = useState(true);
 
   const [isMobile, setIsMobile] = useState(false);
 
+  const [titles, setTitles] = useState([]);
+  const [songId, setSongId] = useState('');
+
   const secondsToMinutes = (sec) => {
-    if (!sec) return "00:00";
+    if (!sec) return '00:00';
     sec = Math.trunc(+sec);
     const minutes = Math.floor(sec / 60);
     const seconds = sec % 60;
 
     return (
-      minutes.toString().padStart(2, "0") +
-      ":" +
-      seconds.toString().padStart(2, "0")
+      minutes.toString().padStart(2, '0') +
+      ':' +
+      seconds.toString().padStart(2, '0')
     );
   };
 
@@ -97,18 +109,18 @@ const MusicPlayer = ({
 
   // create an event listener
   useEffect(() => {
-    window.addEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
   });
 
   const Menus = [
-    { title: "Dashboard", src: "Chart_fill" },
-    { title: "Inbox", src: "Chat" },
-    { title: "Accounts", src: "User", gap: true },
-    { title: "Schedule ", src: "Calendar" },
-    { title: "Search", src: "Search" },
-    { title: "Analytics", src: "Chart" },
-    { title: "Files ", src: "Folder", gap: true },
-    { title: "Setting", src: "Setting" },
+    { title: 'Dashboard', src: 'Chart_fill' },
+    { title: 'Inbox', src: 'Chat' },
+    { title: 'Accounts', src: 'User', gap: true },
+    { title: 'Schedule ', src: 'Calendar' },
+    { title: 'Search', src: 'Search' },
+    { title: 'Analytics', src: 'Chart' },
+    { title: 'Files ', src: 'Folder', gap: true },
+    { title: 'Setting', src: 'Setting' },
   ];
   // const [index, setIndex] = useState(0);
   // const [audio, setAudio] = useState(new Audio(song2));
@@ -131,10 +143,11 @@ const MusicPlayer = ({
   }
 
   useEffect(() => {
-    console.log("useEffect");
-    console.log(queueSongs);
-    console.log(songs);
     if (queueSongs.length > 0) {
+      var array = new Array();
+      for (var i = 0; i < queueSongs.length; i++)
+        array.push(queueSongs[i].title);
+      setTitles(array);
       setSongsList(queueSongs);
     } else {
       setSongsList(songs);
@@ -169,17 +182,20 @@ const MusicPlayer = ({
     async function call() {
       audio.pause();
       audio.currentTime = 0;
-      setNotPlaying();
+      // setNotPlaying();
       setLoading(true);
       // await setCurrentSong(songsList[index]);
+      const { title, subtitle, images } = songsList[index];
+      const image = images?.coverart;
+      setCurrentSong({ title, subtitle, image });
       const options = {
-        method: "GET",
-        url: "https://youtube-music1.p.rapidapi.com/v2/search",
+        method: 'GET',
+        url: 'https://youtube-music1.p.rapidapi.com/v2/search',
         params: { query: songsList[index]?.title },
         headers: {
-          "X-RapidAPI-Key":
-            "29eb251975msh4e8a63ff852eb80p18ac0bjsn6337e2cb89fc",
-          "X-RapidAPI-Host": "youtube-music1.p.rapidapi.com",
+          'X-RapidAPI-Key':
+            '29eb251975msh4e8a63ff852eb80p18ac0bjsn6337e2cb89fc',
+          'X-RapidAPI-Host': 'youtube-music1.p.rapidapi.com',
         },
       };
       try {
@@ -187,13 +203,13 @@ const MusicPlayer = ({
         const id = res.data.result.songs[0].id;
         console.log(id);
         const options2 = {
-          method: "GET",
-          url: "https://youtube-music1.p.rapidapi.com/get_download_url",
-          params: { id: id, ext: "mp3" },
+          method: 'GET',
+          url: 'https://youtube-music1.p.rapidapi.com/get_download_url',
+          params: { id: id, ext: 'mp3' },
           headers: {
-            "X-RapidAPI-Key":
-              "29eb251975msh4e8a63ff852eb80p18ac0bjsn6337e2cb89fc",
-            "X-RapidAPI-Host": "youtube-music1.p.rapidapi.com",
+            'X-RapidAPI-Key':
+              '29eb251975msh4e8a63ff852eb80p18ac0bjsn6337e2cb89fc',
+            'X-RapidAPI-Host': 'youtube-music1.p.rapidapi.com',
           },
         };
         try {
@@ -211,10 +227,10 @@ const MusicPlayer = ({
     call();
   }, [index]);
 
-  // useEffect(() => {
-  //   if (playing) audio.play();
-  //   setLoading(false);
-  // }, [audio]);
+  useEffect(() => {
+    if (playing) audio.play();
+    setLoading(false);
+  }, [audio]);
 
   const handlePlayAndPause = () => {
     if (playing) {
@@ -244,16 +260,22 @@ const MusicPlayer = ({
     // Change the state of song
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
+    // console.log(songId);
+    console.log(titles);
+    console.log(index);
+    console.log(title);
     if (shuffleOn) handleShuffle();
     else {
       if (queueSongs.length > 0) {
-        if (queueSongs.includes(currentSong)) {
-          deleteFromQueue(currentSong?._id);
-          setIndex(index + 1);
-        } else {
-          setIndex(0);
-        }
+        // if (titles.includes(title)) {
+        var i = titles.indexOf(title);
+          deleteFromQueue(songsList[i]._id);
+        i++;
+        alert(i)
+        setIndex(i);
+        // } else {
+        //   setIndex(0);
       } else if (index >= songsList.length - 1) setIndex(0);
       else setIndex(index + 1);
     }
@@ -277,7 +299,7 @@ const MusicPlayer = ({
     }
   };
 
-  audio?.addEventListener("ended", function () {
+  audio?.addEventListener('ended', function () {
     audio.currentTime = 0;
     if (repeatOn) {
       audio.play();
@@ -288,8 +310,8 @@ const MusicPlayer = ({
   const [isVolumeOpen, setIsVolumeOpen] = useState(false);
 
   const [currentSongTime, setCurrentSongTime] = useState(0);
-  const myProgressBar = document.getElementById("myProgressBar");
-  audio?.addEventListener("timeupdate", () => {
+  const myProgressBar = document.getElementById('myProgressBar');
+  audio?.addEventListener('timeupdate', () => {
     // console.log("time is updating")
     // var val = audio.duration;
     setCurrentSongTime(audio.currentTime);
@@ -304,32 +326,40 @@ const MusicPlayer = ({
   // to display queue songs on every page we are loading the queuesongs and displaying them in the musicplayer
 
   //why two
-  // useEffect(() => {
-  //   audio.play();
-  //   setLoading(false);
-  // }, [audio]);
 
   async function handleClick(song) {
     if (!playing) {
       setLoading(true);
-      
+
       setPlaying();
       console.log(currentSong);
-      if (currentSong && queueSongs.includes(currentSong)) {
-        deleteFromQueue(currentSong._id);
-        console.log("deleted");
+      const { title, subtitle, images } = song;
+
+      const image = images?.coverart;
+      console.log(image);
+      if (historyCheck) {
+        deleteFromHistory(song.id);
+      }
+      setCurrentSong({ title, subtitle, image });
+      addCurrentSongInHistory({ title, subtitle, image });
+      setIndex(songsList.indexOf(song));
+      if (titles.includes(title)) {
+        const { _id } = song;
+        // deleteFromQueue(songId);
+        setSongId(_id);
+        console.log('deleted');
       }
       // setCurrentSong(song);
-      setIndex(songsList.indexOf(song));
+
       console.log(index);
       const options = {
-        method: "GET",
-        url: "https://youtube-music1.p.rapidapi.com/v2/search",
+        method: 'GET',
+        url: 'https://youtube-music1.p.rapidapi.com/v2/search',
         params: { query: song?.title },
         headers: {
-          "X-RapidAPI-Key":
-            "29eb251975msh4e8a63ff852eb80p18ac0bjsn6337e2cb89fc",
-          "X-RapidAPI-Host": "youtube-music1.p.rapidapi.com",
+          'X-RapidAPI-Key':
+            '29eb251975msh4e8a63ff852eb80p18ac0bjsn6337e2cb89fc',
+          'X-RapidAPI-Host': 'youtube-music1.p.rapidapi.com',
         },
       };
       try {
@@ -337,13 +367,13 @@ const MusicPlayer = ({
         const id = res.data.result.songs[0].id;
         console.log(id);
         const options2 = {
-          method: "GET",
-          url: "https://youtube-music1.p.rapidapi.com/get_download_url",
-          params: { id: id, ext: "mp3" },
+          method: 'GET',
+          url: 'https://youtube-music1.p.rapidapi.com/get_download_url',
+          params: { id: id, ext: 'mp3' },
           headers: {
-            "X-RapidAPI-Key":
-              "29eb251975msh4e8a63ff852eb80p18ac0bjsn6337e2cb89fc",
-            "X-RapidAPI-Host": "youtube-music1.p.rapidapi.com",
+            'X-RapidAPI-Key':
+              '29eb251975msh4e8a63ff852eb80p18ac0bjsn6337e2cb89fc',
+            'X-RapidAPI-Host': 'youtube-music1.p.rapidapi.com',
           },
         };
         try {
@@ -365,15 +395,30 @@ const MusicPlayer = ({
       audio.pause();
       audio.currentTime = 0;
       // setCurrentSong(song);
-      setIndex(queueSongs.indexOf(song));
+      const { title, subtitle, images } = song;
+
+      const image = images?.coverart;
+      console.log(image);
+      if (historyCheck) {
+        deleteFromHistory(song.id);
+      }
+      setCurrentSong({ title, subtitle, image });
+      addCurrentSongInHistory({ title, subtitle, image });
+      setIndex(songsList.indexOf(song));
+      if (titles.includes(title)) {
+        const { _id } = song;
+        // deleteFromQueue(songId);
+        setSongId(_id);
+        console.log('deleted');
+      }
       const options = {
-        method: "GET",
-        url: "https://youtube-music1.p.rapidapi.com/v2/search",
+        method: 'GET',
+        url: 'https://youtube-music1.p.rapidapi.com/v2/search',
         params: { query: song.title },
         headers: {
-          "X-RapidAPI-Key":
-            "29eb251975msh4e8a63ff852eb80p18ac0bjsn6337e2cb89fc",
-          "X-RapidAPI-Host": "youtube-music1.p.rapidapi.com",
+          'X-RapidAPI-Key':
+            '29eb251975msh4e8a63ff852eb80p18ac0bjsn6337e2cb89fc',
+          'X-RapidAPI-Host': 'youtube-music1.p.rapidapi.com',
         },
       };
       try {
@@ -381,13 +426,13 @@ const MusicPlayer = ({
         const id = res.data.result.songs[0].id;
         console.log(id);
         const options2 = {
-          method: "GET",
-          url: "https://youtube-music1.p.rapidapi.com/get_download_url",
-          params: { id: id, ext: "mp3" },
+          method: 'GET',
+          url: 'https://youtube-music1.p.rapidapi.com/get_download_url',
+          params: { id: id, ext: 'mp3' },
           headers: {
-            "X-RapidAPI-Key":
-              "29eb251975msh4e8a63ff852eb80p18ac0bjsn6337e2cb89fc",
-            "X-RapidAPI-Host": "youtube-music1.p.rapidapi.com",
+            'X-RapidAPI-Key':
+              '29eb251975msh4e8a63ff852eb80p18ac0bjsn6337e2cb89fc',
+            'X-RapidAPI-Host': 'youtube-music1.p.rapidapi.com',
           },
         };
         try {
@@ -401,21 +446,20 @@ const MusicPlayer = ({
         console.log(err.message);
       }
     }
-    deleteFromQueue(currentSong._id);
   }
 
   const handleAddToPlaylist = (song) => {
     const { title, subtitle, images } = song;
     const image = images?.coverart;
     addToPlaylist({ title, subtitle, image });
-    setAlert("Added to Playlist", "success");
+    setAlert('Added to Playlist', 'success');
   };
 
   const handleAddToQueue = (song) => {
     const { title, subtitle, images } = song;
     const image = images?.coverart;
     addToQueue({ title, subtitle, image });
-    setAlert("Added to Queue", "success");
+    setAlert('Added to Queue', 'success');
   };
 
   return (
@@ -425,7 +469,6 @@ const MusicPlayer = ({
     */}
       {/* {console.log("Queue")} */}
       <Queue />
-     
 
       {/* 
       <div className="absolute h-screen inset-y-0 right-0 w-16  sticky ">
@@ -575,34 +618,29 @@ const MusicPlayer = ({
             </div>
           </div> */}
 
-      <div className="fixed w-screen bottom-0 inset-x-0 ">
-        <div className="py-3 bg-neutral-800/60 backdrop-blur-xl rounded-t-[2rem] text-white shadow-lg shadow-purple-50">
-          <div className="container mx-auto px-3 lg:px-0 flex justify-between">
+      <div className='fixed w-screen bottom-0 inset-x-0 '>
+        <div className='py-3 bg-neutral-800/60 backdrop-blur-xl rounded-t-[2rem] text-white shadow-lg shadow-purple-50'>
+          <div className='container mx-auto px-3 lg:px-0 flex justify-between'>
             {/* title and thumbnail */}
-            <div className="flex items-center lg:w-2/12 gap-2">
-              <div className="w-14 h-14 lg:flex-shrink-0">
+            <div className='flex items-center lg:w-2/12 gap-2'>
+              <div className='w-14 h-14 lg:flex-shrink-0'>
                 <img
-                  src={
-                    image? image
-                      : null
-                  }
-                  alt="img"
-                  className="rounded-lg"
+                  src={image ? image : null}
+                  alt='img'
+                  className='rounded-lg'
                 />
               </div>
-              <div className="flex flex-col gap-1">
-                <h6 className="text-sm font-semibold">
-                  {title ? title : ""}
-                </h6>
-                <span className="text-xs text-gray-400">
-                  {" "}
-                  {subtitle ?subtitle : ""}
+              <div className='flex flex-col gap-1'>
+                <h6 className='text-sm font-semibold'>{title ? title : ''}</h6>
+                <span className='text-xs text-gray-400'>
+                  {' '}
+                  {subtitle ? subtitle : ''}
                 </span>
               </div>
             </div>
             {/* play/pause and next/prev icons */}
 
-            <div className="flex items-center justify-center gap-3 lg:w-2/12">
+            <div className='flex items-center justify-center gap-3 lg:w-2/12'>
               <button onClick={handlePrevious}>
                 <TbPlayerSkipBack size={20} />
               </button>
@@ -610,34 +648,45 @@ const MusicPlayer = ({
               <button onClick={handleRewind}>
                 <TbPlayerTrackPrev size={20} />
               </button>
+              {loading ? (
+                <div class='flex justify-center items-center'>
+                  <div
+                    class='spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full'
+                    role='status'
+                  >
+                    <span class='visually-hidden'> </span>
+                  </div>
+                </div>
+              ) : (
+                <button
+                  onClick={handlePlayAndPause}
+                  id='masterPlay'
+                  className='rounded-full p-1 border border-black'
+                >
+                  {playing ? (
+                    <TbPlayerPause size={26} />
+                  ) : (
+                    <TbPlayerPlay size={26} />
+                  )}
+                </button>
+              )}
 
-              <button
-                onClick={handlePlayAndPause}
-                id="masterPlay"
-                className="rounded-full p-1 border border-black"
-              >
-                {playing ? (
-                  <TbPlayerPause size={26} />
-                ) : (
-                  <TbPlayerPlay size={26} />
-                )}
-              </button>
               <button onClick={handleFastForward}>
                 <TbPlayerTrackNext size={20} />
               </button>
-              <button onClick={handleNext} id="next">
+              <button onClick={handleNext} id='next'>
                 <TbPlayerSkipForward size={20} />
               </button>
             </div>
             {/* progress */}
-            <div className="hidden lg:flex w-6/12 flex-col gap-1 justify-center">
-              <div style={{ cursor: "pointer" }}>
+            <div className='hidden lg:flex w-6/12 flex-col gap-1 justify-center'>
+              <div style={{ cursor: 'pointer' }}>
                 <Slider
-                  trackStyle={{ background: "#081A51" }}
+                  trackStyle={{ background: '#081A51' }}
                   handleStyle={{
-                    border: "2px solid #081A51",
-                    background: "#081A51",
-                    boxShadow: "none",
+                    border: '2px solid #081A51',
+                    background: '#081A51',
+                    boxShadow: 'none',
                     opacity: 1,
                   }}
                   min={0}
@@ -646,44 +695,45 @@ const MusicPlayer = ({
                   onChange={(value) => {
                     audio.currentTime = value;
                   }}
-                  id="myProgressBar"
+                  id='myProgressBar'
                 />
               </div>
-              <div className="flex justify-between text-xs">
+              <div className='flex justify-between text-xs'>
                 <span>{secondsToMinutes(currentSongTime)}</span>
                 <span>{secondsToMinutes(200)}</span>
               </div>
             </div>
             {/* settings */}
 
-            <div className="flex justify-between lg:w-1/12">
-              <button class="mx-1.5">
+            <div className='flex justify-between lg:w-1/12'>
+              <button class='mx-1.5'>
                 <TbRepeat size={20}></TbRepeat>
               </button>
-              <button class="mx-1.5">
+              <button class='mx-1.5'>
                 <TbArrowsShuffle2 size={20} />
               </button>
-              <div className="relative flex items-center h-full mx-2">
-                {isVolumeOpen && (<div className="flex absolute -top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 shadow-lg w-8 h-20 rounded-2xl overflow-hidden bg-neutral-800/60 py-4 justify-center">
-                  <Slider
-                    vertical
-                    min={0}
-                    max={1}
-                    step={0.01}
-                    value={volume}
-                    onChange={(val) => {
-                      console.log(volume);
-                      audio.volume = val;
-                      setVolume(val);
-                    }}
-                  trackStyle={{ background: "#081A51" }}
-
-                    handleStyle={{
-                      background: "#081A51",
-                      border: "2px solid #081A51",
-                    }}
-                  />
-                </div>)}
+              <div className='relative flex items-center h-full mx-2'>
+                {isVolumeOpen && (
+                  <div className='flex absolute -top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 shadow-lg w-8 h-20 rounded-2xl overflow-hidden bg-neutral-800/60 py-4 justify-center'>
+                    <Slider
+                      vertical
+                      min={0}
+                      max={1}
+                      step={0.01}
+                      value={volume}
+                      onChange={(val) => {
+                        console.log(volume);
+                        audio.volume = val;
+                        setVolume(val);
+                      }}
+                      trackStyle={{ background: '#081A51' }}
+                      handleStyle={{
+                        background: '#081A51',
+                        border: '2px solid #081A51',
+                      }}
+                    />
+                  </div>
+                )}
 
                 <button onClick={() => setIsVolumeOpen(!isVolumeOpen)}>
                   {volume === 0 ? (
@@ -693,7 +743,7 @@ const MusicPlayer = ({
                   )}
                 </button>
               </div>
-              <button class="mx-1.5">
+              <button class='mx-1.5'>
                 <TbDownload size={20} />
               </button>
             </div>
@@ -701,83 +751,78 @@ const MusicPlayer = ({
         </div>
       </div>
 
-
-       {/* Displaying the queueSongs */}
-       {/* <div className="flex flex-col">
-        <div className="overflow-x-auto">
-          <div className="p-1.5 w-full inline-block align-middle">
-            <div className="overflow-hidden border rounded-lg">
-              <table className="min-w-full divide-y divide-gray-200  table-auto">
-                <thead className="bg-gray-50">
+      {/* Displaying the queueSongs */}
+      <div className='flex flex-col'>
+        <div className='overflow-x-auto'>
+          <div className='p-1.5 w-full inline-block align-middle'>
+            <div className='overflow-hidden border rounded-lg'>
+              <table className='min-w-full divide-y divide-gray-200  table-auto'>
+                <thead className='bg-gray-50'>
                   <tr>
                     <th
-                      scope="col"
-                      className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase  overflow-hidden truncate w-2 "
+                      scope='col'
+                      className='px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase  overflow-hidden truncate w-2 '
                     >
                       #
                     </th>
                     <th
-                      scope="col"
-                      className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase "
+                      scope='col'
+                      className='px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase '
                     >
                       Song
                     </th>
                     <th
-                      scope="col"
-                      className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase  "
+                      scope='col'
+                      className='px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase  '
                     >
                       Singer
                     </th>
                     <th
-                      scope="col"
-                      className="px-6 py-3 text-xs font-bold text-right text-gray-500 uppercase "
+                      scope='col'
+                      className='px-6 py-3 text-xs font-bold text-right text-gray-500 uppercase '
                     >
                       Duration
                     </th>
                     <th
-                      scope="col"
-                      className="px-6 py-3 text-xs font-bold text-right text-gray-500 uppercase "
+                      scope='col'
+                      className='px-6 py-3 text-xs font-bold text-right text-gray-500 uppercase '
                     >
                       buttons
                     </th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-200">
+                <tbody className='divide-y divide-gray-200'>
                   {queueSongs.map((song, i) => (
                     <tr key={song.key}>
-                      <td className="px-6 py-4 text-sm font-medium text-gray-800 whitespace-nowrap">
+                      <td className='px-6 py-4 text-sm font-medium text-gray-800 whitespace-nowrap'>
                         {i + 1}
                       </td>
                       <td>
-                        <div class="flex flex-row  ">
+                        <div class='flex flex-row  '>
                           <div>
                             <img
-                              alt="song_img"
-                              src={
-                                song?.images?.coverart
-                                  ? song.images.coverart
-                                  : song.image
-                              }
-                              className="w-30 h-20 rounded-lg"
+                              alt='song_img'
+                              src={song.images.coverart}
+                              className='w-30 h-20 rounded-lg'
                               onClick={() => handleClick(song)}
-                              style={{ cursor: "pointer" }}
+                              style={{ cursor: 'pointer' }}
                             />
                           </div>
                           <div>
-                            {" "}
+                            {' '}
                             <strong>{song.title}</strong>
                           </div>
                         </div>
                       </td>
 
-                      <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap ">
+                      <td className='px-6 py-4 text-sm text-gray-800 whitespace-nowrap '>
                         {song.subtitle}
                       </td>
                       <td>3min</td>
                       <td>
-                        {" "}
+                        {' '}
                         <button
-                          className="btn btn-primary"
+                          className='btn btn-primary'
                           onClick={() =>
                             !playlistCheck
                               ? handleAddToPlaylist(song)
@@ -785,21 +830,19 @@ const MusicPlayer = ({
                           }
                         >
                           {playlistCheck
-                            ? "Remove from playlist"
-                            : "Add to playlist"}
+                            ? 'Remove from playlist'
+                            : 'Add to playlist'}
                         </button>
                         <button
-                          className="btn btn-primary"
+                          className='btn btn-primary'
                           onClick={() =>
                             !queueCheck
                               ? handleAddToQueue(song)
                               : deleteFromQueue(song._id)
                           }
                         >
-                          {queueCheck ? "Remove from queue" : "Add to queue"}
+                          {queueCheck ? 'Remove from queue' : 'Add to queue'}
                         </button>
-
-                        
                         <FavoriteBorderIcon />
                       </td>
                     </tr>
@@ -809,7 +852,7 @@ const MusicPlayer = ({
             </div>
           </div>
         </div>
-      </div> */}
+      </div>
     </div>
   );
 };
@@ -828,6 +871,7 @@ const mapStateToProps = (state) => ({
   title: state.play.title,
   subtitle: state.play.subtitle,
   image: state.play.image,
+  historyCheck: state.history.historyCheck,
 });
 
 MusicPlayer.propTypes = {
@@ -860,4 +904,6 @@ export default connect(mapStateToProps, {
   deleteFromPlaylist,
   addToQueue,
   deleteFromQueue,
+  deleteFromHistory,
+  addCurrentSongInHistory,
 })(MusicPlayer);

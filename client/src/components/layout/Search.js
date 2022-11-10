@@ -7,13 +7,21 @@ import {
   setSongs,
   setArtist,
   setArtistId,
+  setFollowCheck,
 } from '../../actions/play';
 import axios from 'axios';
 import MusicPlayer from './MusicPlayer';
 import Song from './Song';
 import { Row, Col, Card } from 'react-bootstrap';
 
-const Search = ({ songs, setSongs, artist, setArtist, setArtistId }) => {
+const Search = ({
+  songs,
+  setSongs,
+  artist,
+  setArtist,
+  setArtistId,
+  setFollowCheck,
+}) => {
   const [tempSearch, setTempSearch] = useState([]);
   const [searchArtists, setSearchArtists] = useState({});
   const navigate = useNavigate();
@@ -26,7 +34,7 @@ const Search = ({ songs, setSongs, artist, setArtist, setArtistId }) => {
         params: { query: e.target.value },
         headers: {
           'X-RapidAPI-Key':
-            '  29eb251975msh4e8a63ff852eb80p18ac0bjsn6337e2cb89fc',
+            '  d64082b894mshea4b72f597ca98cp1a3f67jsncc372fa04065',
           'X-RapidAPI-Host': 'shazam-core.p.rapidapi.com',
         },
       };
@@ -46,14 +54,25 @@ const Search = ({ songs, setSongs, artist, setArtist, setArtistId }) => {
       url: 'https://shazam-core.p.rapidapi.com/v2/artists/details',
       params: { artist_id: id },
       headers: {
-        'X-RapidAPI-Key': '  29eb251975msh4e8a63ff852eb80p18ac0bjsn6337e2cb89fc',
+        'X-RapidAPI-Key':
+          '  d64082b894mshea4b72f597ca98cp1a3f67jsncc372fa04065',
         'X-RapidAPI-Host': 'shazam-core.p.rapidapi.com',
       },
     };
     try {
       const res = await axios.request(options);
       setArtist(res.data);
-      console.log(res.data);
+      console.log('Result', res);
+      try {
+        const data = await axios.get(`/api/followArtist/${id}`);
+        console.log(data);
+        if (data.data) {
+          setFollowCheck(true);
+        }
+      } catch (err) {
+        console.log(err.message);
+      }
+
       navigate('/artist');
     } catch (err) {
       console.log(err.message);
@@ -70,7 +89,8 @@ const Search = ({ songs, setSongs, artist, setArtist, setArtistId }) => {
       url: 'https://shazam-core.p.rapidapi.com/v1/search/multi',
       params: { query: i, search_type: 'SONGS_ARTISTS' },
       headers: {
-        'X-RapidAPI-Key': '  29eb251975msh4e8a63ff852eb80p18ac0bjsn6337e2cb89fc',
+        'X-RapidAPI-Key':
+          '  d64082b894mshea4b72f597ca98cp1a3f67jsncc372fa04065',
         'X-RapidAPI-Host': 'shazam-core.p.rapidapi.com',
       },
     };
@@ -177,4 +197,5 @@ export default connect(mapStateToProps, {
   setSongs,
   setArtist,
   setArtistId,
+  setFollowCheck,
 })(Search);

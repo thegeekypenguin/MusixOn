@@ -13,7 +13,7 @@ router.post(
     [
       check('title', 'Title is required').not().isEmpty(),
       check('subtitle', 'Subtitle is required').not().isEmpty(),
-      check('image', 'Image url is required').not().isEmpty(),
+      // check('images', 'Image url is required').not().isEmpty(),
     ],
   ],
   async (req, res) => {
@@ -34,7 +34,7 @@ router.post(
       const newSong = new Queue({
         title: req.body.title,
         subtitle: req.body.subtitle,
-        image: req.body.image,
+        images: { coverart: req.body.image },
         user: req.user.id,
       });
       await newSong.save();

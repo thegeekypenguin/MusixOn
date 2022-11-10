@@ -19,12 +19,12 @@ import {
   setIndex,
   setLoading,
   setArtistId,
-} from "../../actions/play";
-import { addToPlaylist, deleteFromPlaylist } from "../../actions/playlist";
-import axios from "axios";
-import { setAlert } from "../../actions/alert";
-import { deleteFromQueue, addToQueue } from "../../actions/queue";
-import { useNavigate } from "react-router-dom";
+} from '../../actions/play';
+import { addToPlaylist, deleteFromPlaylist } from '../../actions/playlist';
+import axios from 'axios';
+import { setAlert } from '../../actions/alert';
+import { deleteFromQueue, addToQueue } from '../../actions/queue';
+import { useNavigate } from 'react-router-dom';
 
 const Song = ({
   songs,
@@ -65,10 +65,10 @@ const Song = ({
   // }, []);
 
   const [titles, setTitles] = useState([]);
-  const [title, setTitle] = useState('')
+  const [title, setTitle] = useState('');
   const [subtitle, setSubtitle] = useState('');
   const [image, setImage] = useState('');
-  const [downloadUrl, setDownloadUrl] = useState("");
+  const [downloadUrl, setDownloadUrl] = useState('');
   const navigate = useNavigate();
   useEffect(() => {
     audio.play();
@@ -88,37 +88,35 @@ const Song = ({
   }, [likedSongs]);
 
   async function handleClick(song) {
-
     if (!playing) {
-
       setLoading(true);
-      setPlaying();      
-        // setCurrentSong(song);
-      console.log("debugg",currentSong)
+      setPlaying();
+      // setCurrentSong(song);
+      console.log('debugg', currentSong);
       //add it in history
 
       // console.log("-----------------------------------------------");
       // console.log("Song Data");
       // console.log(song);
+
+      // setTitle(title)
+      // setSubtitle(subtitle)
+      // setImage(images.coverart);
       const { title, subtitle, images } = song;
-      setTitle(title)
-      setSubtitle(subtitle)
-      setImage(images.coverart);
-      const image = images?.coverart
-      setCurrentSong({ title, subtitle, image });
+
       console.log(images);
-      const img_url = images?.coverart;
-      console.log(img_url);
+      const image = images?.coverart;
+      console.log(image);
       if (historyCheck) {
         deleteFromHistory(song.id);
       }
-      addCurrentSongInHistory({ title, subtitle, img_url });
+      setCurrentSong({ title, subtitle, image });
+      addCurrentSongInHistory({ title, subtitle,  image });
       // console.log("---------------Debug----------")
       // console.log(song);
       // console.log(currentSong)
 
-
-      setAlert("Added in the history", "success");
+      setAlert('Added in the history', 'success');
 
       setIndex(songs.indexOf(song));
       console.log(index);
@@ -127,9 +125,9 @@ const Song = ({
         url: 'https://youtube-music1.p.rapidapi.com/v2/search',
         params: { query: song?.title },
         headers: {
-          "X-RapidAPI-Key":
-            "29eb251975msh4e8a63ff852eb80p18ac0bjsn6337e2cb89fc",
-          "X-RapidAPI-Host": "youtube-music1.p.rapidapi.com",
+          'X-RapidAPI-Key':
+            '29eb251975msh4e8a63ff852eb80p18ac0bjsn6337e2cb89fc',
+          'X-RapidAPI-Host': 'youtube-music1.p.rapidapi.com',
         },
       };
       try {
@@ -141,9 +139,9 @@ const Song = ({
           url: 'https://youtube-music1.p.rapidapi.com/get_download_url',
           params: { id: id, ext: 'mp3' },
           headers: {
-            "X-RapidAPI-Key":
-              "29eb251975msh4e8a63ff852eb80p18ac0bjsn6337e2cb89fc",
-            "X-RapidAPI-Host": "youtube-music1.p.rapidapi.com",
+            'X-RapidAPI-Key':
+              '29eb251975msh4e8a63ff852eb80p18ac0bjsn6337e2cb89fc',
+            'X-RapidAPI-Host': 'youtube-music1.p.rapidapi.com',
           },
         };
         try {
@@ -158,8 +156,10 @@ const Song = ({
       } catch (err) {
         console.log(err.message);
       }
-    } else if (currentSong?.title === song?.title) {
-      setNotPlaying();
+    } else if (title === song?.title) {
+
+       
+      // setNotPlaying();
       audio.pause();
     } else {
       setLoading(true);
@@ -167,18 +167,24 @@ const Song = ({
       audio.pause();
       audio.currentTime = 0;
       const { title, subtitle, images } = song;
-      const image = images.coverart
-      setCurrentSong({ title, subtitle, image });
 
+      console.log(images);
+      const image = images?.coverart;
+      console.log(image);
+      if (historyCheck) {
+        deleteFromHistory(song.id);
+      }
+      setCurrentSong({ title, subtitle, image });
+      addCurrentSongInHistory({ title, subtitle, image });
       setIndex(songs.indexOf(song));
       const options = {
         method: 'GET',
         url: 'https://youtube-music1.p.rapidapi.com/v2/search',
         params: { query: song.title },
         headers: {
-          "X-RapidAPI-Key":
-            "29eb251975msh4e8a63ff852eb80p18ac0bjsn6337e2cb89fc",
-          "X-RapidAPI-Host": "youtube-music1.p.rapidapi.com",
+          'X-RapidAPI-Key':
+            '29eb251975msh4e8a63ff852eb80p18ac0bjsn6337e2cb89fc',
+          'X-RapidAPI-Host': 'youtube-music1.p.rapidapi.com',
         },
       };
       try {
@@ -190,9 +196,9 @@ const Song = ({
           url: 'https://youtube-music1.p.rapidapi.com/get_download_url',
           params: { id: id, ext: 'mp3' },
           headers: {
-            "X-RapidAPI-Key":
-              "29eb251975msh4e8a63ff852eb80p18ac0bjsn6337e2cb89fc",
-            "X-RapidAPI-Host": "youtube-music1.p.rapidapi.com",
+            'X-RapidAPI-Key':
+              '29eb251975msh4e8a63ff852eb80p18ac0bjsn6337e2cb89fc',
+            'X-RapidAPI-Host': 'youtube-music1.p.rapidapi.com',
           },
         };
         try {
@@ -212,7 +218,7 @@ const Song = ({
     }
   }
 
-
+  console.log(currentSong);
 
   const handleAddToPlaylist = (song) => {
     const { title, subtitle, images } = song;
@@ -244,41 +250,44 @@ const Song = ({
   };
 
   return (
-    <ul class="text-xs sm:text-base divide-y border-t cursor-default">
+    <ul class='text-xs sm:text-base divide-y border-t cursor-default'>
       {songs.map((song, i) => (
-        <li class="flex items-center space-x-3 hover:bg-gray-100">
-          <button class="p-3 hover:bg-green-500 group focus:outline-none">
+        <li class='flex items-center space-x-3 hover:bg-gray-100'>
+          <button class='p-3 hover:bg-green-500 group focus:outline-none'>
             <svg
-              class="w-4 h-4 group-hover:text-white"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              class='w-4 h-4 group-hover:text-white'
+              viewBox='0 0 24 24'
+              fill='none'
+              stroke='currentColor'
+              stroke-width='2'
+              stroke-linecap='round'
+              stroke-linejoin='round'
             >
-              <polygon points="5 3 19 12 5 21 5 3"></polygon>
+              <polygon points='5 3 19 12 5 21 5 3'></polygon>
             </svg>
           </button>
           {/* <div class="flex">{i + 1}</div> */}
 
-          <div className="flex">
+          <div className='flex'>
             <img
-              alt="song_img"
-              src={song?.images?.coverart ? song.images.coverart : song.img_url}
-              className="w-30 h-20 rounded-lg"
+              alt='song_img'
+              src={
+                song?.images?.coverart
+                  
+              }
+              className='w-30 h-20 rounded-lg'
               onClick={() => handleClick(song)}
-              style={{ cursor: "pointer" }}
+              style={{ cursor: 'pointer' }}
             />
           </div>
-          <div class="flex-1">
+          <div class='flex-1'>
             <div>
               <strong>{song.title}</strong>
             </div>
             <div> {song.subtitle}</div>
           </div>
           {/* <div class="text-xs text-gray-400">3:20</div> */}
-{/*      
+          {/*      
           <button class="focus:outline-none pr-4 group">
             <svg
               class="w-4 h-4 group-hover:text-green-600"
@@ -300,29 +309,33 @@ const Song = ({
           </button> */}
 
           <button
-            className="btn btn-primary"
+            className='btn btn-primary'
             onClick={() =>
               !playlistCheck
                 ? handleAddToPlaylist(song)
                 : deleteFromPlaylist(song._id)
             }
           >
-            {playlistCheck ? "Remove from playlist" : "Add to playlist"}
+            {playlistCheck ? 'Remove from playlist' : 'Add to playlist'}
           </button>
           <button
-            className="btn btn-primary"
+            className='btn btn-primary'
             onClick={() =>
               !queueCheck ? handleAddToQueue(song) : deleteFromQueue(song._id)
             }
           >
-            {queueCheck ? "Remove from queue" : "Add to queue"}
+            {queueCheck ? 'Remove from queue' : 'Add to queue'}
           </button>
+            <FavoriteBorderIcon
+                     onClick={(e) => {
+                       handleLikeSong(song);
+                     }}
+                   />
         </li>
       ))}
     </ul>
   );
 };
-
 
 const mapStateToProps = (state) => ({
   songs: state.play.songs,
@@ -379,7 +392,6 @@ export default connect(mapStateToProps, {
   unlikeSong,
 })(Song);
 
-
 // <div>
 // <div className="flex flex-col">
 //   <div className="overflow-x-auto">
@@ -434,7 +446,7 @@ export default connect(mapStateToProps, {
 //                         src={
 //                           song?.images?.coverart
 //                             ? song.images.coverart
-//                             : song.img_url
+//                             : song.images
 //                         }
 //                         className="w-30 h-20 rounded-lg"
 //                         onClick={() => handleClick(song)}

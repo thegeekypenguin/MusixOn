@@ -9,7 +9,7 @@ function Navbar({ auth: { isAuthenticated, loading }, logout }) {
   const [isOpen, setIsOpen] = useState(false);
 
   const authLinks = (
-    <div  >
+    <div>
       <Link
         to='/search'
         className='text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium'
@@ -46,6 +46,12 @@ function Navbar({ auth: { isAuthenticated, loading }, logout }) {
         className='text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium'
       >
         <span>Shared Playlists</span>
+      </Link>
+      <Link
+        to='/artistsFollowed'
+        className='text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium'
+      >
+        <span>Followed Artists</span>
       </Link>
       <Link
         to='#!'

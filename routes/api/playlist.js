@@ -12,7 +12,6 @@ router.post(
     [
       check('title', 'Title is required').not().isEmpty(),
       check('subtitle', 'Subtitle is required').not().isEmpty(),
-      check('image', 'Image url is required').not().isEmpty(),
     ],
   ],
   async (req, res) => {
@@ -30,12 +29,18 @@ router.post(
           .status(400)
           .json({ errors: [{ msg: 'Song already added to playlist' }] });
       }
+      const im = {
+        coverart: req.body.image,
+      };
+      console.log(req.body.image);
       const newSong = new Playlist({
         title: req.body.title,
         subtitle: req.body.subtitle,
-        image: req.body.image,
+        images: im,
         user: req.user.id,
       });
+      console.log('New song');
+      console.log(newSong);
       await newSong.save();
       res.json(newSong);
     } catch (err) {

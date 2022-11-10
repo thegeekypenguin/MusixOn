@@ -15,9 +15,13 @@ export const addToPlaylist =
         'Content-Type': 'application/json',
       },
     };
+    console.log(image);
     const body = JSON.stringify({ title, subtitle, image });
+    
     try {
+      console.log(body);
       const res = await axios.post('/api/playlist', body, config);
+      console.log(res);
       dispatch({
         type: ADD_TO_PLAYLIST,
       });

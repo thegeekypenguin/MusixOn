@@ -1,27 +1,27 @@
-import React, { useEffect } from "react";
-import PropTypes from "prop-types";
-import axios from "axios";
-import MusicPlayer from "./MusicPlayer";
-import Song from "./Song";
-import { connect } from "react-redux";
-import { setSongs } from "../../actions/play";
-import { setPlaylistCheck } from "../../actions/playlist";
-import { setQueueCheck } from "../../actions/queue";
+import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
+import axios from 'axios';
+import MusicPlayer from './MusicPlayer';
+import Song from './Song';
+import { connect } from 'react-redux';
+import { setSongs } from '../../actions/play';
+import { setPlaylistCheck } from '../../actions/playlist';
+import { setQueueCheck } from '../../actions/queue';
 
 const Category = ({ setSongs, setPlaylistCheck, setQueueCheck }) => {
   useEffect(() => {
     async function call() {
       var q = window.location.pathname.slice(1);
       // const options = {};
-      if (q === "top-indian-songs") {
+      if (q === 'top-indian-songs') {
         const options = {
-          method: "GET",
-          url: "https://shazam-core.p.rapidapi.com/v1/charts/country",
-          params: { country_code: "IN" },
+          method: 'GET',
+          url: 'https://shazam-core.p.rapidapi.com/v1/charts/country',
+          params: { country_code: 'IN' },
           headers: {
-            "X-RapidAPI-Key":
-              "  29eb251975msh4e8a63ff852eb80p18ac0bjsn6337e2cb89fc",
-            "X-RapidAPI-Host": "shazam-core.p.rapidapi.com",
+            'X-RapidAPI-Key':
+              '  d64082b894mshea4b72f597ca98cp1a3f67jsncc372fa04065',
+            'X-RapidAPI-Host': 'shazam-core.p.rapidapi.com',
           },
         };
         try {
@@ -33,14 +33,14 @@ const Category = ({ setSongs, setPlaylistCheck, setQueueCheck }) => {
         } catch (err) {
           console.log(err.message);
         }
-      } else if (q === "top-world-songs") {
+      } else if (q === 'top-world-songs') {
         const options = {
-          method: "GET",
-          url: "https://shazam-core.p.rapidapi.com/v1/charts/world",
+          method: 'GET',
+          url: 'https://shazam-core.p.rapidapi.com/v1/charts/world',
           headers: {
-            "X-RapidAPI-Key":
-              "  29eb251975msh4e8a63ff852eb80p18ac0bjsn6337e2cb89fc",
-            "X-RapidAPI-Host": "shazam-core.p.rapidapi.com",
+            'X-RapidAPI-Key':
+              '  d64082b894mshea4b72f597ca98cp1a3f67jsncc372fa04065',
+            'X-RapidAPI-Host': 'shazam-core.p.rapidapi.com',
           },
         };
         try {
@@ -54,13 +54,13 @@ const Category = ({ setSongs, setPlaylistCheck, setQueueCheck }) => {
         }
       } else {
         const options = {
-          method: "GET",
-          url: "https://shazam-core.p.rapidapi.com/v1/charts/genre-world",
+          method: 'GET',
+          url: 'https://shazam-core.p.rapidapi.com/v1/charts/genre-world',
           params: { genre_code: q },
           headers: {
-            "X-RapidAPI-Key":
-              "  29eb251975msh4e8a63ff852eb80p18ac0bjsn6337e2cb89fc",
-            "X-RapidAPI-Host": "shazam-core.p.rapidapi.com",
+            'X-RapidAPI-Key':
+              '  d64082b894mshea4b72f597ca98cp1a3f67jsncc372fa04065',
+            'X-RapidAPI-Host': 'shazam-core.p.rapidapi.com',
           },
         };
         try {
@@ -78,7 +78,7 @@ const Category = ({ setSongs, setPlaylistCheck, setQueueCheck }) => {
   }, []);
 
   return (
-    <div class="min-h-screen bg-gray-100  ">
+    <div class='min-h-screen bg-gray-100  '>
       {/* <div class="relative   w-full h-44 bg-white rounded-lg shadow-lg overflow-hidde mb-32">
         <div class="absolute inset-0 rounded-lg overflow-hidden bg-red-200">
           <img
@@ -118,17 +118,17 @@ const Category = ({ setSongs, setPlaylistCheck, setQueueCheck }) => {
         </div>
       </div> */}
 
-      <div class="  bg-white rounded-lg shadow-lg overflow-hidden ">
-        <div class="relative">
+      <div class='  bg-white rounded-lg shadow-lg overflow-hidden '>
+        <div class='relative'>
           <img
-            src="https://img.freepik.com/premium-photo/classic-sheets-with-music-notes-sign_488220-9925.jpg?w=2000"
-            class="object-cover w-full"
-            alt="img"
+            src='https://img.freepik.com/premium-photo/classic-sheets-with-music-notes-sign_488220-9925.jpg?w=2000'
+            class='object-cover w-full'
+            alt='img'
           />
-          <div class="absolute p-4 inset-0 flex flex-col justify-end bg-gradient-to-b from-transparent to-gray-900 backdrop backdrop-blur-5 text-white">
-            <h3 class="font-bold">Super Artist</h3>
+          <div class='absolute p-4 inset-0 flex flex-col justify-end bg-gradient-to-b from-transparent to-gray-900 backdrop backdrop-blur-5 text-white'>
+            <h3 class='font-bold'>Super Artist</h3>
 
-            <span class="opacity-70">Albumtitle</span>
+            <span class='opacity-70'>Albumtitle</span>
           </div>
         </div>
 
