@@ -22,14 +22,14 @@ import {
 } from "../../actions/play";
 
 import { FcLikePlaceholder, FcLike } from "react-icons/fc";
-import {CgPlayListCheck,CgPlayListAdd}  from "react-icons/cg"
+import { CgPlayListCheck, CgPlayListAdd } from "react-icons/cg";
 import { addToPlaylist, deleteFromPlaylist } from "../../actions/playlist";
 import axios from "axios";
 import { setAlert } from "../../actions/alert";
 import { deleteFromQueue, addToQueue } from "../../actions/queue";
 import { useNavigate } from "react-router-dom";
-import {HiOutlineQueueList} from "react-icons/hi2"
-import { HiQueueList } from "react-icons/hi2"
+import { HiOutlineQueueList } from "react-icons/hi2";
+import { HiQueueList } from "react-icons/hi2";
 import { loadPlaylist } from "../../actions/playlist";
 import { loadQueue } from "../../actions/queue";
 
@@ -65,7 +65,6 @@ const Song = ({
   playlistSongs,
   loadQueue,
   queueSongs,
-
 }) => {
   // const [audio, setAudio] = useState(new Audio());
 
@@ -120,8 +119,7 @@ const Song = ({
     setqueueTitles(array);
   }, [queueSongs]);
 
-
-  console.log(likedSongs,"hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii")
+  console.log(likedSongs, "hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
   async function handleClick(song) {
     if (!playing) {
       setLoading(true);
@@ -256,7 +254,7 @@ const Song = ({
 
   console.log(currentSong);
 
-  const handleAddToPlaylist =async (song) => {
+  const handleAddToPlaylist = async (song) => {
     const { title, subtitle, images } = song;
     const image = images?.coverart;
     await addToPlaylist({ title, subtitle, image });
@@ -264,7 +262,7 @@ const Song = ({
     setAlert("Added to Playlist", "success");
   };
 
-  const handleAddToQueue = async(song) => {
+  const handleAddToQueue = async (song) => {
     const { title, subtitle, images } = song;
     const image = images?.coverart;
     await addToQueue({ title, subtitle, image });
@@ -290,8 +288,7 @@ const Song = ({
   return (
     <ul class="text-xs sm:text-base divide-y border-t cursor-default">
       {songs.map((song, i) => (
-        <li class="flex items-center space-x-3 hover:bg-gray-100 mr-5" >
-      
+        <li class="flex items-center space-x-3 hover:bg-gray-100 mr-5">
           {/* <div class="flex">{i + 1}</div> */}
 
           <div className="flex">
@@ -309,7 +306,6 @@ const Song = ({
             </div>
             <div> {song.subtitle}</div>
           </div>
- 
 
           {titles.includes(song.title) ? (
             <button
@@ -338,21 +334,42 @@ const Song = ({
                 : deleteFromPlaylist(song._id)
             }
           >
-            {playlistTitles.includes(song.title) ? <CgPlayListCheck size={25}  /> :  <CgPlayListAdd size={25}/>}
+            {playlistTitles.includes(song.title) ? (
+              <CgPlayListCheck size={25} />
+            ) : (
+              <CgPlayListAdd size={25} />
+            )}
           </button>
 
-          
           <button
             className="btn btn-primary"
-            onClick={() =>
-              handleAddToQueue(song)
-            }
+            onClick={() => handleAddToQueue(song)}
           >
-            {queueTitles.includes(song.title) ?  <HiQueueList size={25} />:  <HiOutlineQueueList size={25} />}
+            {queueTitles.includes(song.title) ? (
+              <HiQueueList size={25} />
+            ) : (
+              <HiOutlineQueueList size={25} />
+            )}
           </button>
-              {/* <button class="mx-1.5">
-                <TbDownload size={20} />
-              </button> */}
+          <button class="focus:outline-none pr-4 group">
+            <svg
+              class="w-4 h-4 group-hover:text-green-600"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              onClick={() => {
+                console.log("yooo");
+                console.log("download wala", downloadUrl);
+          
+                window.location.href = downloadUrl;
+              }}
+            >
+              <path d="M3 15v4c0 1.1.9 2 2 2h14a2 2 0 0 0 2-2v-4M17 9l-5 5-5-5M12 12.8V2.5" />
+            </svg>
+          </button>
         </li>
       ))}
     </ul>
@@ -372,7 +389,7 @@ const mapStateToProps = (state) => ({
   queueCheck: state.queue.queueCheck,
   likedSongs: state.like.likedSongs,
   playlistSongs: state.playlist.playlistSongs,
-  queueSongs: state.queue.queueSongs
+  queueSongs: state.queue.queueSongs,
 });
 
 Song.propTypes = {
@@ -415,7 +432,5 @@ export default connect(mapStateToProps, {
   likeSong,
   unlikeSong,
   loadPlaylist,
-  loadQueue
+  loadQueue,
 })(Song);
-
- 
