@@ -302,10 +302,11 @@ const MusicPlayer = ({
         i++;
         alert(i);
         setIndex(i);
-        // } else {
-        //   setIndex(0);
-      } else if (index >= songsList.length - 1) setIndex(0);
-      else setIndex(index + 1);
+        } else {
+          setIndex(0);
+      }
+      //  else if (index >= songsList.length - 1) setIndex(0);
+      // else setIndex(index + 1);
     }
   };
 
@@ -810,14 +811,12 @@ const MusicPlayer = ({
                           onClick={() =>
                             !queueCheck
                               ? handleAddToQueue(song)
-                              : deleteFromQueue(song._id)
+                              :deleteFromQueue(song._id)
                           }
                         >
-                          {queueCheck ? (
+                          
                             <HiQueueList size={25} />
-                          ) : (
-                            <HiOutlineQueueList size={25} />
-                          )}
+                         
                         </button>
                       </li>
                     ))}

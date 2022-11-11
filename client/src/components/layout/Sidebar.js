@@ -53,7 +53,7 @@ const Sidebar = () => {
     {
       title: "Shared Playlist ",
       gap: true,
-      link: "/playlistShared",
+      link: "/playlistsShared",
       component: FiShare2,
     },
     {

@@ -29,7 +29,9 @@ import { setAlert } from "../../actions/alert";
 import { deleteFromQueue, addToQueue } from "../../actions/queue";
 import { useNavigate } from "react-router-dom";
 import {HiOutlineQueueList} from "react-icons/hi2"
-import {HiQueueList} from "react-icons/hi2"
+import { HiQueueList } from "react-icons/hi2"
+import { loadPlaylist } from "../../actions/playlist";
+import { loadQueue } from "../../actions/queue";
 
 const Song = ({
   songs,
@@ -59,6 +61,11 @@ const Song = ({
   getLikedSongs,
   likedSongs,
   unlikeSong,
+  loadPlaylist,
+  playlistSongs,
+  loadQueue,
+  queueSongs,
+
 }) => {
   // const [audio, setAudio] = useState(new Audio());
 
@@ -70,6 +77,9 @@ const Song = ({
   // }, []);
 
   const [titles, setTitles] = useState([]);
+  const [playlistTitles, setplaylistTitles] = useState([]);
+
+  const [queueTitles, setqueueTitles] = useState([]);
   const [title, setTitle] = useState("");
   const [subtitle, setSubtitle] = useState("");
   const [image, setImage] = useState("");
@@ -82,6 +92,8 @@ const Song = ({
 
   useEffect(() => {
     getLikedSongs();
+    loadPlaylist();
+    loadQueue();
   }, []);
 
   useEffect(() => {
@@ -91,6 +103,22 @@ const Song = ({
     }
     setTitles(array);
   }, [likedSongs]);
+
+  useEffect(() => {
+    var array = new Array();
+    for (var i = 0; i < playlistSongs.length; i++) {
+      array.push(playlistSongs[i].title);
+    }
+    setplaylistTitles(array);
+  }, [playlistSongs]);
+
+  useEffect(() => {
+    var array = new Array();
+    for (var i = 0; i < queueSongs.length; i++) {
+      array.push(queueSongs[i].title);
+    }
+    setqueueTitles(array);
+  }, [queueSongs]);
 
 
   console.log(likedSongs,"hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii")
@@ -228,17 +256,19 @@ const Song = ({
 
   console.log(currentSong);
 
-  const handleAddToPlaylist = (song) => {
+  const handleAddToPlaylist =async (song) => {
     const { title, subtitle, images } = song;
     const image = images?.coverart;
-    addToPlaylist({ title, subtitle, image });
+    await addToPlaylist({ title, subtitle, image });
+    loadPlaylist();
     setAlert("Added to Playlist", "success");
   };
 
-  const handleAddToQueue = (song) => {
+  const handleAddToQueue = async(song) => {
     const { title, subtitle, images } = song;
     const image = images?.coverart;
-    addToQueue({ title, subtitle, image });
+    await addToQueue({ title, subtitle, image });
+    loadQueue();
     setAlert("Added to Queue", "success");
   };
 
@@ -313,7 +343,7 @@ const Song = ({
             </svg>
           </button> */}
 
-          {likedSongs.includes(song) ? (
+          {titles.includes(song.title) ? (
             <button
               className="btn btn-primary"
               onClick={(e) => {
@@ -340,17 +370,17 @@ const Song = ({
                 : deleteFromPlaylist(song._id)
             }
           >
-            {playlistCheck ? <CgPlayListCheck size={25} /> :  <CgPlayListAdd size={25}/>}
+            {playlistTitles.includes(song.title) ? <CgPlayListCheck size={25}  /> :  <CgPlayListAdd size={25}/>}
           </button>
 
           
           <button
             className="btn btn-primary"
             onClick={() =>
-              !queueCheck ? handleAddToQueue(song) : deleteFromQueue(song._id)
+              handleAddToQueue(song)
             }
           >
-            {queueCheck ?  <HiQueueList size={25} />:  <HiOutlineQueueList size={25} />}
+            {queueTitles.includes(song.title) ?  <HiQueueList size={25} />:  <HiOutlineQueueList size={25} />}
           </button>
         </li>
       ))}
@@ -370,6 +400,8 @@ const mapStateToProps = (state) => ({
   playlistCheck: state.playlist.playlistCheck,
   queueCheck: state.queue.queueCheck,
   likedSongs: state.like.likedSongs,
+  playlistSongs: state.playlist.playlistSongs,
+  queueSongs: state.queue.queueSongs
 });
 
 Song.propTypes = {
@@ -411,6 +443,8 @@ export default connect(mapStateToProps, {
   getLikedSongs,
   likeSong,
   unlikeSong,
+  loadPlaylist,
+  loadQueue
 })(Song);
 
 // <div>
