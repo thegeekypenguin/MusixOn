@@ -220,7 +220,7 @@ const MusicPlayer = ({
           params: { id: id, ext: "mp3" },
           headers: {
             "X-RapidAPI-Key":
-              "2f489e742emsh60346052aadd1b0p18936ejsn2e018d009227",
+              "efc42382bfmsh8a8358b837d16cap12b2afjsn340a9149fd2e",
             "X-RapidAPI-Host": "youtube-music1.p.rapidapi.com",
           },
         };
@@ -386,7 +386,7 @@ const MusicPlayer = ({
         params: { query: song?.title },
         headers: {
           "X-RapidAPI-Key":
-            "2f489e742emsh60346052aadd1b0p18936ejsn2e018d009227",
+            "efc42382bfmsh8a8358b837d16cap12b2afjsn340a9149fd2e",
           "X-RapidAPI-Host": "youtube-music1.p.rapidapi.com",
         },
       };
@@ -400,7 +400,7 @@ const MusicPlayer = ({
           params: { id: id, ext: "mp3" },
           headers: {
             "X-RapidAPI-Key":
-              "2f489e742emsh60346052aadd1b0p18936ejsn2e018d009227",
+              "efc42382bfmsh8a8358b837d16cap12b2afjsn340a9149fd2e",
             "X-RapidAPI-Host": "youtube-music1.p.rapidapi.com",
           },
         };
@@ -445,7 +445,7 @@ const MusicPlayer = ({
         params: { query: song.title },
         headers: {
           "X-RapidAPI-Key":
-            "2f489e742emsh60346052aadd1b0p18936ejsn2e018d009227",
+            "efc42382bfmsh8a8358b837d16cap12b2afjsn340a9149fd2e",
           "X-RapidAPI-Host": "youtube-music1.p.rapidapi.com",
         },
       };
@@ -459,7 +459,7 @@ const MusicPlayer = ({
           params: { id: id, ext: "mp3" },
           headers: {
             "X-RapidAPI-Key":
-              "2f489e742emsh60346052aadd1b0p18936ejsn2e018d009227",
+              "efc42382bfmsh8a8358b837d16cap12b2afjsn340a9149fd2e",
             "X-RapidAPI-Host": "youtube-music1.p.rapidapi.com",
           },
         };
@@ -499,62 +499,7 @@ const MusicPlayer = ({
     */}
 
       <Queue />
-
-      {/*displaying player*/}
-
-      {/* 
-
-
-
-      <div className="bottom" style={{ cursor: "pointer" }}>
-        <input
-          type="range"
-          name="range"
-          id="myProgressBar"
-          min="0"
-          value="0"
-          max="200"
-        />
-        <div className="icons">
-          <button
-            className={shuffleOn ? "btn btn-primary" : "btn btn-secondary"}
-            onClick={() => {
-              setShuffleOn(!shuffleOn);
-            }}
-          >
-            Shuffle
-          </button>
-          <button
-            className={repeatOn ? "btn btn-primary" : "btn btn-secondary"}
-            onClick={() => {
-              setRepeatOn(!repeatOn);
-            }}
-          >
-            Repeat
-          </button>
-          <i
-            className="fas fa-3x fa-step-backward"
-            onClick={handlePrevious}
-            id="previous"
-          ></i>
-          <i
-            className={
-              playing ? "fas fa-3x fa-pause-circle" : "fas fa-3x fa-play-circle"
-            }
-            onClick={handlePlayAndPause}
-            id="masterPlay"
-          ></i>
-          <i
-            className="fas fa-3x fa-step-forward"
-            onClick={handleNext}
-            id="next"
-          ></i>
-        </div>
-      </div>
-      <h5>{currentSong?.title}</h5>
-      <h6>{currentSong?.subtitle}</h6>
-
-  */}
+ 
 
       <div className="fixed w-screen bottom-0 inset-x-0 ">
         <div className="py-3 bg-neutral-800/60 backdrop-blur-xl rounded-t-[2rem] text-white shadow-lg shadow-purple-50">
@@ -597,17 +542,7 @@ const MusicPlayer = ({
             {/* play/pause and next/prev icons */}
 
             <div className="flex items-center justify-center gap-3 lg:w-2/12">
-              <button
-                className="btn btn-primary mr-2"
-                // onClick={(e) => {
-                //   handleLikeSong(song);
-                // }}
-              >
-                <FcLikePlaceholder size={25} />
-              </button>
-              <button onClick={handlePrevious}>
-                <TbPlayerSkipBack size={20} />
-              </button>
+            
 
               <button onClick={handleRewind}>
                 <TbPlayerTrackPrev size={20} />
@@ -707,9 +642,9 @@ const MusicPlayer = ({
                   )}
                 </button>
               </div>
-              <button class="mx-1.5">
+              {/* <button class="mx-1.5">
                 <TbDownload size={20} />
-              </button>
+              </button> */}
             </div>
           </div>
         </div>
@@ -740,19 +675,7 @@ const MusicPlayer = ({
                   <ul class="text-xs sm:text-base divide-y border-t cursor-default">
                     {queueSongs.map((song, i) => (
                       <li class="flex items-center space-x-3 hover:bg-gray-100 mr-5">
-                        <button class="p-3 hover:bg-green-500 group focus:outline-none">
-                          <svg
-                            class="w-4 h-4 group-hover:text-white"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          >
-                            <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                          </svg>
-                        </button>
+                       
                         {/* <div class="flex">{i + 1}</div> */}
 
                         <div className="flex">

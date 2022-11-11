@@ -164,7 +164,7 @@ const Song = ({
         params: { query: song?.title },
         headers: {
           "X-RapidAPI-Key":
-            "2f489e742emsh60346052aadd1b0p18936ejsn2e018d009227",
+            "efc42382bfmsh8a8358b837d16cap12b2afjsn340a9149fd2e",
           "X-RapidAPI-Host": "youtube-music1.p.rapidapi.com",
         },
       };
@@ -178,7 +178,7 @@ const Song = ({
           params: { id: id, ext: "mp3" },
           headers: {
             "X-RapidAPI-Key":
-              "2f489e742emsh60346052aadd1b0p18936ejsn2e018d009227",
+              "efc42382bfmsh8a8358b837d16cap12b2afjsn340a9149fd2e",
             "X-RapidAPI-Host": "youtube-music1.p.rapidapi.com",
           },
         };
@@ -219,7 +219,7 @@ const Song = ({
         params: { query: song.title },
         headers: {
           "X-RapidAPI-Key":
-            "2f489e742emsh60346052aadd1b0p18936ejsn2e018d009227",
+            "efc42382bfmsh8a8358b837d16cap12b2afjsn340a9149fd2e",
           "X-RapidAPI-Host": "youtube-music1.p.rapidapi.com",
         },
       };
@@ -233,7 +233,7 @@ const Song = ({
           params: { id: id, ext: "mp3" },
           headers: {
             "X-RapidAPI-Key":
-              "2f489e742emsh60346052aadd1b0p18936ejsn2e018d009227",
+              "efc42382bfmsh8a8358b837d16cap12b2afjsn340a9149fd2e",
             "X-RapidAPI-Host": "youtube-music1.p.rapidapi.com",
           },
         };
@@ -291,19 +291,7 @@ const Song = ({
     <ul class="text-xs sm:text-base divide-y border-t cursor-default">
       {songs.map((song, i) => (
         <li class="flex items-center space-x-3 hover:bg-gray-100 mr-5" >
-          <button class="p-3 hover:bg-green-500 group focus:outline-none">
-            <svg
-              class="w-4 h-4 group-hover:text-white"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <polygon points="5 3 19 12 5 21 5 3"></polygon>
-            </svg>
-          </button>
+      
           {/* <div class="flex">{i + 1}</div> */}
 
           <div className="flex">
@@ -321,27 +309,7 @@ const Song = ({
             </div>
             <div> {song.subtitle}</div>
           </div>
-          {/* <div class="text-xs text-gray-400">3:20</div> */}
-          {/*      
-          <button class="focus:outline-none pr-4 group">
-            <svg
-              class="w-4 h-4 group-hover:text-green-600"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              onClick={() => {
-                console.log("yooo");
-                console.log("download wala", downloadUrl);
-                const urlTest = "https://www.google.com/";
-                window.location.href = downloadUrl;
-              }}
-            >
-              <path d="M3 15v4c0 1.1.9 2 2 2h14a2 2 0 0 0 2-2v-4M17 9l-5 5-5-5M12 12.8V2.5" />
-            </svg>
-          </button> */}
+ 
 
           {titles.includes(song.title) ? (
             <button
@@ -382,6 +350,9 @@ const Song = ({
           >
             {queueTitles.includes(song.title) ?  <HiQueueList size={25} />:  <HiOutlineQueueList size={25} />}
           </button>
+              {/* <button class="mx-1.5">
+                <TbDownload size={20} />
+              </button> */}
         </li>
       ))}
     </ul>
@@ -447,115 +418,4 @@ export default connect(mapStateToProps, {
   loadQueue
 })(Song);
 
-// <div>
-// <div className="flex flex-col">
-//   <div className="overflow-x-auto">
-//     <div className="p-1.5 w-full inline-block align-middle">
-//       <div className="overflow-hidden border rounded-lg">
-//         <table className="min-w-full divide-y divide-gray-200   ">
-//           <thead className="bg-gray-50">
-//             <tr>
-//               <th
-//                 scope="col"
-//                 className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase  overflow-hidden truncate w-2 "
-//               >
-//                 #
-//               </th>
-//               <th
-//                 scope="col"
-//                 className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase "
-//               >
-//                 Song
-//               </th>
-//               <th
-//                 scope="col"
-//                 className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase  "
-//               >
-//                 Singer
-//               </th>
-//               <th
-//                 scope="col"
-//                 className="px-6 py-3 text-xs font-bold text-right text-gray-500 uppercase "
-//               >
-//                 Duration
-//               </th>
-//               <th
-//                 scope="col"
-//                 className="px-6 py-3 text-xs font-bold text-right text-gray-500 uppercase "
-//               >
-//                 buttons
-//               </th>
-//             </tr>
-//           </thead>
-//           <tbody className="divide-y divide-gray-200">
-//             {songs.map((song, i) => (
-//               <tr key={song.key}>
-//                 <td className="px-6 py-4 text-sm font-medium text-gray-800 whitespace-nowrap">
-//                   {i + 1}
-//                 </td>
-//                 <td>
-//                   <div class="flex flex-row  ">
-//                     <div>
-//                       <img
-//                         alt="song_img"
-//                         src={
-//                           song?.images?.coverart
-//                             ? song.images.coverart
-//                             : song.images
-//                         }
-//                         className="w-30 h-20 rounded-lg"
-//                         onClick={() => handleClick(song)}
-//                         style={{ cursor: "pointer" }}
-//                       />
-//                     </div>
-//                     <div>
-//                       {" "}
-//                       <strong>{song.title}</strong>
-//                     </div>
-//                   </div>
-//                 </td>
-
-//                 <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap ">
-//                   {song.subtitle}
-//                 </td>
-//                 <td>3min</td>
-//                 <td>
-//                   {" "}
-//                   <button
-//                     className="btn btn-primary"
-//                     onClick={() =>
-//                       !playlistCheck
-//                         ? handleAddToPlaylist(song)
-//                         : deleteFromPlaylist(song._id)
-//                     }
-//                   >
-//                     {playlistCheck
-//                       ? "Remove from playlist"
-//                       : "Add to playlist"}
-//                   </button>
-//                   <button
-//                     className="btn btn-primary"
-//                     onClick={() =>
-//                       !queueCheck
-//                         ? handleAddToQueue(song)
-//                         : deleteFromQueue(song._id)
-//                     }
-//                   >
-//                     {queueCheck ? "Remove from queue" : "Add to queue"}
-//                   </button>
-//                   {titles}
-//                   <FavoriteBorderIcon
-//                     onClick={(e) => {
-//                       handleLikeSong(song);
-//                     }}
-//                   />
-//                 </td>
-//               </tr>
-//             ))}
-//           </tbody>
-//         </table>
-//       </div>
-//     </div>
-//   </div>
-// </div>
-// </div>
+ 

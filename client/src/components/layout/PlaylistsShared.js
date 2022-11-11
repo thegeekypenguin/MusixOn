@@ -53,8 +53,7 @@ const PlaylistsShared = ({ user, setSongs }) => {
 
   return (
     <div>
-      
-      <select
+      {/* <select
         class='form-select'
         aria-label='Default select example'
         onChange={(e) => handleChange(e.target.value)}
@@ -64,7 +63,17 @@ const PlaylistsShared = ({ user, setSongs }) => {
           console.log(user._id);
           return <option value={user._id}>{user.name}</option>;
         })}
-      </select>
+      </select> */}
+      {/**Adding tailwind Dropdown */}
+        
+    <select disabled=""  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-6/12 px-7 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mt-5 mx-auto mb-9" onChange={(e) => handleChange(e.target.value)}>
+      <option selected="">Select User</option>
+            {users.map((user) => {
+              console.log(user._id);
+              return <option value={user._id}>{user.name}</option>;
+            })}
+      
+    </select> 
       <Song />
     </div>
   );

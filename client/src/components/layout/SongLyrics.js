@@ -1,5 +1,5 @@
 import { Propane } from '@mui/icons-material';
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import PropTypes from "prop-types";
 import { connect } from 'react-redux';
 import axios from 'axios';
@@ -29,12 +29,12 @@ const  SongLyrics= ({
             //       console.error(error);
             //   });
 
-
+            console.log(title)
             const options = {
               method: 'GET',
               url: `https://lyrics-plus.p.rapidapi.com/lyrics/${title}/${subtitle}`,
               headers: {
-                'X-RapidAPI-Key': '2c061aba86msh183b4c22b799477p1cda77jsnf97151caa57d',
+                'X-RapidAPI-Key': 'efc42382bfmsh8a8358b837d16cap12b2afjsn340a9149fd2e',
                 'X-RapidAPI-Host': 'lyrics-plus.p.rapidapi.com'
               }
             };
@@ -59,9 +59,9 @@ const  SongLyrics= ({
     },[])
     
   return (
-    <div>
-        <h1>SongLyrics...........</h1>
-        <p>{lyrics}</p>
+    <div className='w-fit bg-blue-600 text-gray-100 pb-96 pt-20 px-16'>
+        <h1 className="mb-4 mx-5 text-2xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-black">Song Lyrics</h1>
+        <h1 className="mb-4 mx-5 text-2xl font-extrabold tracking-wide leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">{lyrics}</h1>
     </div>
   )
 }

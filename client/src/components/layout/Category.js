@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, {useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import MusicPlayer from './MusicPlayer';
@@ -9,10 +9,11 @@ import { setPlaylistCheck } from '../../actions/playlist';
 import { setQueueCheck } from '../../actions/queue';
 
 const Category = ({ setSongs, setPlaylistCheck, setQueueCheck }) => {
+  const [categoryTitle,setCategoryTitle]=useState("Songs")
   useEffect(() => {
     async function call() {
       var q = window.location.pathname.slice(1);
-      var categoryTitle = q.split('-').join(' ').toUpperCase()
+      setCategoryTitle(q.split('-').join(' ').toUpperCase())
       // alert(categoryTitle)
       // const options = {};
       if (q === 'top-indian-songs') {
@@ -22,7 +23,7 @@ const Category = ({ setSongs, setPlaylistCheck, setQueueCheck }) => {
           params: { country_code: 'IN' },
           headers: {
             "X-RapidAPI-Key":
-              "d64082b894mshea4b72f597ca98cp1a3f67jsncc372fa04065",
+              "  efc42382bfmsh8a8358b837d16cap12b2afjsn340a9149fd2e",
             "X-RapidAPI-Host": "shazam-core.p.rapidapi.com",
           },
         };
@@ -41,7 +42,7 @@ const Category = ({ setSongs, setPlaylistCheck, setQueueCheck }) => {
           url: 'https://shazam-core.p.rapidapi.com/v1/charts/world',
           headers: {
             "X-RapidAPI-Key":
-              "d64082b894mshea4b72f597ca98cp1a3f67jsncc372fa04065",
+              "  efc42382bfmsh8a8358b837d16cap12b2afjsn340a9149fd2e",
             "X-RapidAPI-Host": "shazam-core.p.rapidapi.com",
           },
         };
@@ -61,7 +62,7 @@ const Category = ({ setSongs, setPlaylistCheck, setQueueCheck }) => {
           params: { genre_code: q },
           headers: {
             "X-RapidAPI-Key":
-              "d64082b894mshea4b72f597ca98cp1a3f67jsncc372fa04065",
+              "  efc42382bfmsh8a8358b837d16cap12b2afjsn340a9149fd2e",
             "X-RapidAPI-Host": "shazam-core.p.rapidapi.com",
           },
         };
@@ -128,9 +129,9 @@ const Category = ({ setSongs, setPlaylistCheck, setQueueCheck }) => {
             alt="img"
           />
           <div class='absolute p-4 inset-0 flex flex-col justify-end bg-gradient-to-b from-transparent to-gray-900 backdrop backdrop-blur-5 text-white'>
-            <h3 class='font-bold'>Super Artist</h3>
+            <h3 class='font-bold text-3xl'>{categoryTitle}</h3>
 
-            <span class='opacity-70'>Albumtitle</span>
+        
           </div>
         </div>
 
