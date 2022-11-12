@@ -13,9 +13,9 @@ Team Name: Trinity
 - Implement music player with functionalities
 - Options to shuffle, repeat queue and repeat current song
 - User can shuffle the playing queue and add or remove a song in it
-- Artist  profile tageed to song they sung
+- Artist  profile tagged to song they sung
 - User can follow or unfollow an Artist
-- Searh the songs by thier title, artists or genre
+- Search the songs by their title, artists or genre
 - Song History of a User
 - User can like a song
 - User can make private playlist where they can add songs
