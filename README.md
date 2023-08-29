@@ -4,10 +4,11 @@
 Team Name: Four Bugs
 
 ## Team Members
+- [@Shubham Sahay](https://github.com/thegeekypenguin)
 - [@Utkrisht Singh](https://github.com/utkrisht5)
 - [@Shubham Kushwaha](https://github.com/Shubham-20205157)
 - [@Satyam Agarawal](https://github.com/Satyam107git)
-- [@Shubham Sahay](https://github.com/thegeekypenguin)
+
 
 ## Proposed Features
 - Login/SignUp
