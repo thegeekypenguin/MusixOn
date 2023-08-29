@@ -1,12 +1,13 @@
 
 # MusixOn
 # Webster2k22
-Team Name: Trinity
+Team Name: Four Bugs
 
 ## Team Members
 - [@Utkrisht Singh](https://github.com/utkrisht5)
 - [@Shubham Kushwaha](https://github.com/Shubham-20205157)
 - [@Satyam Agarawal](https://github.com/Satyam107git)
+- [@Shubham Sahay](https://github.com/thegeekypenguin)
 
 ## Proposed Features
 - Login/SignUp
